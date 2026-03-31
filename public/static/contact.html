@@ -445,4 +445,33 @@ document.querySelector('.btn-submit').addEventListener('click', async function(e
   }
 });
 </script>
+
+<script>
+// Auto-save form progress
+const formInputs = document.querySelectorAll('.form-input');
+formInputs.forEach((input, i) => {
+  const saved = localStorage.getItem('meridian_contact_' + i);
+  if (saved) input.value = saved;
+  input.addEventListener('input', () => {
+    localStorage.setItem('meridian_contact_' + i, input.value);
+  });
+});
+
+// Clear saved data on successful submit
+const origSubmit = document.querySelector('.btn-submit');
+const origClick = origSubmit.onclick;
+window.addEventListener('online', () => {
+  const banner = document.getElementById('offlineBanner');
+  if (banner) banner.remove();
+});
+window.addEventListener('offline', () => {
+  if (!document.getElementById('offlineBanner')) {
+    const div = document.createElement('div');
+    div.id = 'offlineBanner';
+    div.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#dc2626;color:white;text-align:center;padding:10px;font-size:13px;font-weight:600;z-index:99999;';
+    div.textContent = 'You are offline. Your form data is saved and will be available when you reconnect.';
+    document.body.appendChild(div);
+  }
+});
+</script>
 </body></html>

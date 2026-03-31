@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getDB } from '@/lib/db';
-
 // Banking knowledge base for smart responses
 const KNOWLEDGE_BASE: Record<string, string> = {
   'checking': 'We offer 4 checking accounts: Total Checking® ($0 fee with direct deposit), Secure Checking ($5/mo), Premier Checking (for balances $15K+), and Student Checking (no fee ages 17-24). Visit /personal/compare-checking.html to compare.',
@@ -47,7 +44,13 @@ function getSmartResponse(message: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { message, session_id } = await req.json();
+    const ip = req.headers.get('x-forwarded-for') || 'unknown';
+    const { allowed } = rateLimit(`chat:${ip}`, 20, 60000);
+    if (!allowed) return NextResponse.json({ error: 'Too many messages. Slow down.' }, { status: 429 });
+
+    const body = await req.json();
+    const message = sanitize(body.message || '');
+    const session_id = body.session_id;
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -76,7 +79,7 @@ export async function POST(req: NextRequest) {
       session_id: sid,
     });
   } catch (error: any) {
-    console.error('Chat error:', error);
+    logger.error('Chat error', { error: error.message });
     return NextResponse.json({ error: 'Chat failed' }, { status: 500 });
   }
 }
