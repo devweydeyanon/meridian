@@ -532,3 +532,22 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
     font-size: 11.5px !important;
   }
 }
+
+/* ===== COOKIE CONSENT BANNER ===== */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--navy-900);
+  color: var(--white);
+  padding: 16px 0;
+  z-index: 10000;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width: 768px) {
+  .cookie-banner .container > div {
+    flex-direction: column;
+    text-align: center;
+  }
+}
