@@ -7,183 +7,10 @@
 <title>Contact Us — Meridian Bank</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-.util-hero { background: var(--navy-900); padding: 40px 0 48px; }
-.util-hero h1 { font-size: 30px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
-.util-hero p { font-size: 15px; color: rgba(255,255,255,0.6); }
-.util-breadcrumb { font-size: 12.5px; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
-.util-breadcrumb a { color: rgba(255,255,255,0.5); }
 
-.contact-layout { display: grid; grid-template-columns: 1fr 380px; gap: 40px; padding: 56px 0; align-items: start; }
-
-/* Form */
-.contact-form-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 12px; padding: 36px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
-.contact-form-card h2 { font-size: 22px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
-.contact-form-card .form-subtitle { font-size: 14px; color: var(--gray-500); margin-bottom: 24px; }
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; }
-.form-input { width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid var(--gray-300); border-radius: 6px; outline: none; font-family: var(--font); transition: border-color 0.15s; background: var(--white); color: var(--gray-800); box-sizing: border-box; }
-.form-input:focus { border-color: var(--accent-500); box-shadow: 0 0 0 3px rgba(0,119,190,0.1); }
-textarea.form-input { min-height: 120px; resize: vertical; }
-.form-select { appearance: auto; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.btn-submit { width: 100%; padding: 13px; font-size: 15px; font-weight: 700; color: var(--white); background: var(--cta-primary); border: none; border-radius: 6px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
-.btn-submit:hover { background: var(--cta-hover); }
-.form-note { font-size: 12px; color: var(--gray-400); margin-top: 12px; line-height: 1.5; }
-
-/* Side cards */
-.contact-sidebar { display: flex; flex-direction: column; gap: 16px; }
-.contact-mini-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 10px; padding: 20px; display: flex; gap: 14px; align-items: flex-start; transition: all 0.15s; }
-.contact-mini-card:hover { border-color: var(--accent-500); box-shadow: 0 2px 12px rgba(0,102,164,0.06); }
-.mini-card-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--gray-50); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent-500); }
-.mini-card-icon svg { width: 20px; height: 20px; }
-.mini-card-text h4 { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
-.mini-card-text p { font-size: 12.5px; color: var(--gray-500); line-height: 1.4; }
-.mini-card-text a { font-size: 12.5px; font-weight: 700; color: var(--accent-500); display: inline-block; margin-top: 4px; }
-
-/* Department numbers */
-.dept-section { padding: 48px 0; background: var(--gray-50); border-top: 1px solid var(--gray-200); }
-.dept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
-.dept-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px 20px; }
-.dept-card h4 { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
-.dept-card p { font-size: 13px; color: var(--accent-500); font-weight: 600; }
-
-/* =============================================== */
-/* =============================================== */
-
-/* === TABLET (max 1100px) === */
-
-/* === MOBILE (max 768px) === */
-
-/* === SMALL PHONE (max 480px) === */
-</style>
 </head>
 <body>
-<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;left:0;background:var(--accent-500);color:white;padding:8px 16px;z-index:99999;font-size:14px;font-weight:600;transition:top 0.2s;text-decoration:none">Skip to main content</a><style>.skip-link:focus{top:0;}
-/* Hamburger Menu */
-.hamburger { display: none; width: 36px; height: 36px; background: none; border: none; cursor: pointer; padding: 6px; position: relative; z-index: 10001; margin-left: 8px; }
-.hamburger span { display: block; width: 20px; height: 2px; background: var(--gray-700); margin: 4px auto; transition: all 0.3s; border-radius: 2px; }
-.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
-.hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
-.mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9998; }
-.mobile-nav-overlay.open { display: block; }
-.mobile-nav-panel { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--white); z-index: 9999; transition: right 0.3s ease; overflow-y: auto; box-shadow: -4px 0 20px rgba(0,0,0,0.12); }
-.mobile-nav-panel.open { right: 0; }
-.mobile-nav-header { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; }
-.mobile-nav-header h3 { font-size: 14px; font-weight: 700; color: var(--gray-800); }
-.mobile-nav-close { background: none; border: none; cursor: pointer; padding: 4px; color: var(--gray-400); }
-.mobile-nav-close svg { width: 20px; height: 20px; }
-.mobile-nav-section { padding: 4px 20px 12px; }
-.mobile-nav-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-400); margin-bottom: 4px; padding-top: 12px; }
-.mobile-nav-link { display: block; padding: 9px 0; font-size: 14px; font-weight: 500; color: var(--gray-700); text-decoration: none; border-bottom: 1px solid var(--gray-100); }
-.mobile-nav-link:hover { color: var(--accent-500); }
-.mobile-nav-cta { padding: 16px 20px; border-top: 1px solid var(--gray-200); margin-top: 8px; }
-.mobile-nav-cta a { display: block; text-align: center; padding: 11px; font-size: 14px; font-weight: 700; border-radius: 6px; text-decoration: none; margin-bottom: 8px; }
-.mobile-nav-cta .mob-primary { background: var(--cta-primary); color: var(--white); }
-.mobile-nav-cta .mob-secondary { background: var(--white); color: var(--gray-700); border: 1.5px solid var(--gray-300); }
-@media (max-width: 768px) { .hamburger { display: block; } }
-@media (min-width: 769px) { .mobile-nav-overlay, .mobile-nav-panel { display: none !important; } }
-
-/* Button pressed states */
-button:active { transform: scale(0.97); }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); outline-offset: 2px; }
-
-
-/* Trust section mobile compact */
-@media (max-width: 768px) {
-  .trust-grid { 
-    grid-template-columns: 1fr 1fr !important; 
-    gap: 10px !important; 
-  }
-  .trust-card {
-    padding: 14px !important;
-    text-align: center;
-  }
-  .trust-card-icon {
-    width: 36px !important;
-    height: 36px !important;
-    margin: 0 auto 8px !important;
-    border-radius: 8px !important;
-  }
-  .trust-card-icon svg {
-    width: 18px !important;
-    height: 18px !important;
-  }
-  .trust-card h3 {
-    font-size: 12.5px !important;
-    margin-bottom: 2px !important;
-  }
-  .trust-card p {
-    font-size: 11px !important;
-    line-height: 1.35 !important;
-    color: var(--gray-400) !important;
-  }
-}
-@media (max-width: 480px) {
-  .trust-grid {
-    gap: 8px !important;
-  }
-  .trust-card {
-    padding: 12px 10px !important;
-  }
-  .trust-card p {
-    display: none;
-  }
-}
-
-
-/* Footer compact mobile */
-@media (max-width: 768px) {
-  .site-footer { padding: 28px 0 16px; }
-  .footer-grid { 
-    grid-template-columns: 1fr 1fr !important; 
-    gap: 16px 24px !important; 
-  }
-  .footer-column h5 { 
-    font-size: 12px !important; 
-    margin-bottom: 6px !important; 
-  }
-  .footer-column ul li { 
-    margin-bottom: 2px !important; 
-  }
-  .footer-column ul li a { 
-    font-size: 12px !important; 
-    padding: 2px 0 !important; 
-    display: inline-block;
-  }
-  .footer-social { 
-    flex-direction: column !important; 
-    align-items: center !important; 
-    gap: 12px !important; 
-    padding: 14px 0 !important; 
-    margin-top: 16px !important; 
-  }
-  .footer-bottom { 
-    padding-top: 12px !important; 
-  }
-  .footer-legal { 
-    font-size: 10px !important; 
-    line-height: 1.5 !important; 
-  }
-  .footer-copyright { 
-    font-size: 10px !important; 
-    padding: 8px 0 !important; 
-  }
-}
-@media (max-width: 480px) {
-  .footer-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 14px 20px !important;
-  }
-  .footer-column ul li a {
-    font-size: 11.5px !important;
-  }
-}
-
-</style>
-
-<div class="utility-bar"><div class="container">
+<a href="#main-content" class="skip-link" style="position:absolute;top:-40px;left:0;background:var(--accent-500);color:white;padding:8px 16px;z-index:99999;font-size:14px;font-weight:600;transition:top 0.2s;text-decoration:none">Skip to main content</a><div class="utility-bar"><div class="container">
   <div class="audience-tabs">
     <div class="audience-tab active"><a href="index.html">Personal</a></div>
     <div class="audience-tab"><a href="business.html">Business</a></div>
@@ -324,7 +151,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
 </div></footer>
 <div class="footer-copyright"><div class="container">Meridian Bank, N.A. · Member FDIC · Equal Housing Lender</div></div>
 
-
 <div class="mobile-nav-overlay" id="mobileOverlay" onclick="toggleMobileNav()"></div>
 <div class="mobile-nav-panel" id="mobilePanel">
   <div class="mobile-nav-header">
@@ -386,7 +212,6 @@ function toggleMobileNav() {
 }
 </script>
 
-
 <script>
 function acceptCookies() {
   localStorage.setItem('meridian_cookies', 'accepted');
@@ -403,7 +228,6 @@ function declineCookies() {
   }
 })();
 </script>
-
 
 <script>
 document.querySelector('.btn-submit').addEventListener('click', async function(e) {
