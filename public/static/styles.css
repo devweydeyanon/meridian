@@ -551,3 +551,90 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
     text-align: center;
   }
 }
+
+
+/* ===== RESPONSIVE FIXES — BATCH ===== */
+
+/* FAQ list — constrained width */
+@media (max-width: 768px) {
+  .faq-list { 
+    width: 100% !important; 
+    max-width: 100% !important; 
+    padding: 0 !important; 
+  }
+  .faq-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Rewards grid (3 cols → 1) */
+@media (max-width: 768px) {
+  .rewards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* Fee options grid (3 cols → 1) */
+@media (max-width: 768px) {
+  .fee-options {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
+
+/* Stats grid (4 cols → 2 on tablet, 1 on mobile) */
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* Contact form row (2 cols → 1) */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+}
+
+/* Mobile app layout (2 cols → 1) */
+@media (max-width: 768px) {
+  .mobile-app-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+}
+
+/* Corporate hero inner fixed width */
+@media (max-width: 768px) {
+  .hero-inner-text {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* Insight card grid (image + text → stack) */
+@media (max-width: 768px) {
+  .insight-card {
+    grid-template-columns: 1fr !important;
+  }
+  .insight-card-img {
+    height: 180px !important;
+  }
+}
+
+/* Contact grid (2 cols → 1) */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
