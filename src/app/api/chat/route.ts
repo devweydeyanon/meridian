@@ -1,4 +1,9 @@
-// Banking knowledge base for smart responses
+import { NextRequest, NextResponse } from 'next/server';
+import { getDB } from '@/lib/db';
+import { sanitize } from '@/lib/validate';
+import { rateLimit } from '@/lib/rateLimit';
+import { logger } from '@/lib/logger';
+
 const KNOWLEDGE_BASE: Record<string, string> = {
   'checking': 'We offer 4 checking accounts: Total Checking® ($0 fee with direct deposit), Secure Checking ($5/mo), Premier Checking (for balances $15K+), and Student Checking (no fee ages 17-24). Visit /personal/compare-checking.html to compare.',
   'savings': 'Our High Yield Savings earns 4.25% APY with no minimum balance. We also offer Money Market accounts (tiered rates up to 4.50%) and CDs (3 months to 5 years). See rates at /personal/savings-rates.html.',
@@ -17,26 +22,19 @@ const KNOWLEDGE_BASE: Record<string, string> = {
 
 function getSmartResponse(message: string): string {
   const lower = message.toLowerCase();
-  
+
   for (const [key, response] of Object.entries(KNOWLEDGE_BASE)) {
-    if (lower.includes(key)) {
-      return response;
-    }
+    if (lower.includes(key)) return response;
   }
 
-  // Greeting detection
   if (/^(hi|hello|hey|good morning|good afternoon)/.test(lower)) {
     return 'Hello! Welcome to Meridian Bank. I can help you with accounts, rates, transfers, loans, credit cards, or any other banking questions. What can I help you with today?';
   }
-
-  // Thank you
   if (/thank|thanks/.test(lower)) {
     return 'You\'re welcome! Is there anything else I can help you with?';
   }
-
-  // Agent request
   if (/agent|human|representative|speak|talk/.test(lower)) {
-    return 'I\'d be happy to connect you with a live representative. Please call 1-800-MERIDIAN (available 24/7) or visit any of our 500+ branches. You can also send a secure message through online banking.';
+    return 'I\'d be happy to connect you with a live representative. Please call 1-800-MERIDIAN (available 24/7) or visit any of our 500+ branches.';
   }
 
   return 'I can help with checking & savings accounts, credit cards, loans & mortgages, investing, transfers, fees, branch hours, and more. Could you tell me more about what you\'re looking for?';
@@ -59,25 +57,13 @@ export async function POST(req: NextRequest) {
     const sql = getDB();
     const sid = session_id || 'session_' + Date.now();
 
-    // Store user message
-    await sql`
-      INSERT INTO chat_messages (session_id, role, content)
-      VALUES (${sid}, 'user', ${message})
-    `;
+    await sql`INSERT INTO chat_messages (session_id, role, content) VALUES (${sid}, 'user', ${message})`;
 
-    // Generate response
     const response = getSmartResponse(message);
 
-    // Store bot response
-    await sql`
-      INSERT INTO chat_messages (session_id, role, content)
-      VALUES (${sid}, 'assistant', ${response})
-    `;
+    await sql`INSERT INTO chat_messages (session_id, role, content) VALUES (${sid}, 'assistant', ${response})`;
 
-    return NextResponse.json({
-      response,
-      session_id: sid,
-    });
+    return NextResponse.json({ response, session_id: sid });
   } catch (error: any) {
     logger.error('Chat error', { error: error.message });
     return NextResponse.json({ error: 'Chat failed' }, { status: 500 });
