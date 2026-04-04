@@ -10,6 +10,32 @@ body { font-family: var(--font); color: var(--gray-800); background: var(--white
 a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 
+:root {
+  --font: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --navy-900: #0a1628;
+  --navy-800: #0f2035;
+  --navy-700: #142d54;
+  --white: #ffffff;
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #adb5bd;
+  --gray-500: #6c757d;
+  --gray-600: #495057;
+  --gray-700: #343a40;
+  --gray-800: #1a1a2e;
+  --cta-primary: #c8102e;
+  --cta-hover: #a50d24;
+  --accent-400: #60a5fa;
+  --accent-500: #0077be;
+  --accent-600: #0066a4;
+  --green-600: #0f7b3f;
+  --container-padding: 0 24px;
+  --section-padding: 64px 0;
+}
+
+
 /* ===== UTILITY BAR — MORE VISIBLE ===== */
 
 .utility-bar .container { max-width: 1200px; margin: 0 auto; padding: var(--container-padding); }
@@ -103,34 +129,9 @@ img { display: block; max-width: 100%; }
 .social-icon svg { width: 15px; height: 15px; }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 1100px) {
 
-}
 @media (max-width: 768px) {
-  :root {
-  --font: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --navy-900: #0a1628;
-  --navy-800: #0f2035;
-  --navy-700: #142d54;
-  --white: #ffffff;
-  --gray-50: #f8f9fa;
-  --gray-100: #f1f3f5;
-  --gray-200: #e9ecef;
-  --gray-300: #dee2e6;
-  --gray-400: #adb5bd;
-  --gray-500: #6c757d;
-  --gray-600: #495057;
-  --gray-700: #343a40;
-  --gray-800: #1a1a2e;
-  --cta-primary: #c8102e;
-  --cta-hover: #a50d24;
-  --accent-400: #60a5fa;
-  --accent-500: #0077be;
-  --accent-600: #0066a4;
-  --green-600: #0f7b3f;
-  --container-padding: 0 24px;
-  --section-padding: 64px 0;
-}
+  
   .utility-bar { display: none; }
 
   .compliance-inner { flex-direction: column; text-align: center; }
@@ -156,10 +157,15 @@ img { display: block; max-width: 100%; }
 
 }
 
+
+@media (max-width: 768px) {
+  :root { --container-padding: 0 20px; --section-padding: 40px 0; }
+}
+
 /* === MOBILE (max 768px) === */
 @media (max-width: 768px) {
   /* Root */
-  :root { --section-padding: 40px 0; }
+  
 
   
   /* Header */
@@ -527,10 +533,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
 }
 
 /* FAQ list — constrained width */
-@media (max-width: 768px) {
-
-  
-}
 
 /* Rewards grid (3 cols → 1) */
 @media (max-width: 768px) {
@@ -549,12 +551,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
 }
 
 /* Stats grid (4 cols → 2 on tablet, 1 on mobile) */
-@media (max-width: 1100px) {
-
-}
-@media (max-width: 768px) {
-
-}
 
 /* Contact form row (2 cols → 1) */
 @media (max-width: 768px) {
@@ -589,9 +585,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-500); ou
 }
 
 /* Contact grid (2 cols → 1) */
-@media (max-width: 768px) {
-
-}
 
 /* ===== PAGE HERO ===== */
 .btn-hero-primary:hover { background: var(--cta-hover); }
