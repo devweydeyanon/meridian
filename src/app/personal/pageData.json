@@ -1,0 +1,1105 @@
+{
+  "auto-loans": {
+    "title": "Meridian Auto Loans",
+    "subtitle": "Finance a new or used vehicle with competitive rates and flexible terms. Get pre-approved before you shop, or refinance your existing auto loan to save.",
+    "summary": [
+      {
+        "label": "New vehicle APR (from)",
+        "value": "5.49%"
+      },
+      {
+        "label": "Used vehicle APR (from)",
+        "value": "5.99%"
+      },
+      {
+        "label": "Refinance APR (from)",
+        "value": "6.24%"
+      },
+      {
+        "label": "Loan terms",
+        "value": "36 \u2013 84 months"
+      },
+      {
+        "label": "Loan amounts",
+        "value": "$5,000 \u2013 $100,000"
+      }
+    ],
+    "features": [
+      {
+        "title": "Pre-Approval in Minutes",
+        "desc": "Know your rate and budget before you step on the lot. Soft pull, no credit impact."
+      },
+      {
+        "title": "No Application Fee",
+        "desc": "No fees to apply. No prepayment penalties if you pay off early."
+      },
+      {
+        "title": "Flexible Terms",
+        "desc": "Choose 36 to 84 months. Match your payment to your budget."
+      },
+      {
+        "title": "Online Management",
+        "desc": "Make payments, set up autopay, and view your loan details in the app."
+      },
+      {
+        "title": "Dealer Network",
+        "desc": "Use your Meridian pre-approval at thousands of participating dealerships."
+      },
+      {
+        "title": "Rate Discount",
+        "desc": "0.25% rate discount when you set up autopay from a Meridian checking account."
+      }
+    ],
+    "faqs": [
+      "What credit score do I need for an auto loan?",
+      "Can I refinance my auto loan from another lender?",
+      "How does the autopay rate discount work?",
+      "Can I get a loan for a private party purchase?",
+      "Is there a prepayment penalty?"
+    ],
+    "cta_title": "Get pre-approved today",
+    "cta_desc": "Know your rate before you shop. No impact to your credit score.",
+    "category": "Loans",
+    "slug": "auto-loans"
+  },
+  "balance-transfer-card": {
+    "title": "Meridian Balance Transfer Visa\u00ae",
+    "subtitle": "0% intro APR for 21 months on balance transfers and 12 months on purchases. Pay down debt faster with one of the longest intro periods available.",
+    "summary": [],
+    "features": [
+      {
+        "title": "Debt Payoff Planner",
+        "desc": "In-app tools to create a payoff plan and track your progress monthly."
+      },
+      {
+        "title": "Zero Liability",
+        "desc": "Never pay for unauthorized charges. Real-time fraud monitoring."
+      },
+      {
+        "title": "Free Credit Score",
+        "desc": "Track your FICO\u00ae score monthly and see how your payments improve it."
+      },
+      {
+        "title": "Digital Wallet",
+        "desc": "Apple Pay, Google Pay, Samsung Pay \u2014 tap to pay everywhere."
+      },
+      {
+        "title": "Transaction Alerts",
+        "desc": "Real-time notifications for every purchase, payment, and transfer."
+      },
+      {
+        "title": "1% Cash Back",
+        "desc": "Earn 1% cash back on all purchases even while enjoying 0% intro APR."
+      }
+    ],
+    "faqs": [
+      "How do I transfer a balance?",
+      "What is the balance transfer fee?",
+      "What happens after the intro period?",
+      "Can I still make purchases with this card?"
+    ],
+    "cta_title": "Pay down your balance faster",
+    "cta_desc": "Apply online for 0% intro APR for 21 months. No annual fee.",
+    "category": "Credit Cards",
+    "slug": "balance-transfer-card"
+  },
+  "cash-back-card": {
+    "title": "Meridian Cash Rewards Visa\u00ae",
+    "subtitle": "Earn unlimited 1.5% cash back on every purchase. No annual fee. No rotating categories. Plus, a $200 bonus after qualifying spend.",
+    "summary": [],
+    "features": [
+      {
+        "title": "Zero Liability",
+        "desc": "Never pay for unauthorized charges. Fraud monitoring 24/7."
+      },
+      {
+        "title": "No Foreign Transaction Fees",
+        "desc": "Use your card anywhere in the world with no added fees."
+      },
+      {
+        "title": "Flexible Redemption",
+        "desc": "Redeem cash back as a statement credit, direct deposit, or check."
+      },
+      {
+        "title": "Digital Wallet",
+        "desc": "Add to Apple Pay, Google Pay, or Samsung Pay for tap-to-pay."
+      },
+      {
+        "title": "Free Credit Score",
+        "desc": "Track your FICO\u00ae score and get personalized insights in the app."
+      },
+      {
+        "title": "Instant Alerts",
+        "desc": "Real-time notifications for every transaction on your card."
+      }
+    ],
+    "faqs": [
+      "Is there an annual fee?",
+      "How do I redeem my cash back?",
+      "What credit score do I need?",
+      "Does cash back expire?",
+      "Can I add authorized users?"
+    ],
+    "cta_title": "Ready to start earning cash back?",
+    "cta_desc": "Apply online in minutes. No annual fee. Instant decision in most cases.",
+    "category": "Credit Cards",
+    "slug": "cash-back-card"
+  },
+  "certificates-of-deposit": {
+    "title": "Meridian Certificates of Deposit",
+    "subtitle": "Lock in a guaranteed rate for a fixed term. Choose from 3-month to 5-year terms with competitive rates. FDIC insured up to $250,000.",
+    "summary": [
+      {
+        "label": "APY (up to)",
+        "value": "4.75%"
+      },
+      {
+        "label": "Terms available",
+        "value": "3 months \u2013 5 years"
+      },
+      {
+        "label": "Min. deposit",
+        "value": "$1,000"
+      },
+      {
+        "label": "Rate type",
+        "value": "Fixed for full term"
+      },
+      {
+        "label": "FDIC insured",
+        "value": "Up to $250,000"
+      }
+    ],
+    "features": [
+      {
+        "title": "Guaranteed Rate",
+        "desc": "Your rate is locked in for the full term. No market fluctuations to worry about."
+      },
+      {
+        "title": "FDIC Protection",
+        "desc": "Your deposits are insured up to $250,000 per depositor, per ownership category."
+      },
+      {
+        "title": "Flexible Terms",
+        "desc": "Choose from 3 months to 5 years. Match your CD term to your savings timeline."
+      }
+    ],
+    "faqs": [
+      "What happens when my CD matures?",
+      "Can I withdraw money before the term ends?",
+      "What is a CD ladder?",
+      "Are CDs FDIC insured?",
+      "Can I add money to my CD after opening?"
+    ],
+    "cta_title": "Lock in your rate today",
+    "cta_desc": "Open a CD online or visit a branch. Rates may change \u2014 act now to secure today's APY.",
+    "category": "Savings & CDs",
+    "slug": "certificates-of-deposit"
+  },
+  "compare-cards": {
+    "title": "Compare credit cards",
+    "subtitle": "Find the right card for your goals. Compare rewards, rates, and benefits side by side.",
+    "summary": [],
+    "features": [],
+    "faqs": [
+      "Does checking pre-approval affect my credit score?",
+      "Can I have more than one Meridian credit card?",
+      "What credit score do I need to apply?",
+      "How quickly will I receive my card?",
+      "Can I add authorized users to my card?"
+    ],
+    "cta_title": "Not sure which card is right for you?",
+    "cta_desc": "Check if you're pre-approved with no impact to your credit score.",
+    "category": "Credit Cards",
+    "slug": "compare-cards"
+  },
+  "compare-checking": {
+    "title": "Compare checking accounts",
+    "subtitle": "Find the right checking account for your needs. Compare features, fees, and benefits side by side.",
+    "summary": [],
+    "features": [],
+    "faqs": [
+      "What do I need to open a checking account?",
+      "Can I switch my checking account type later?",
+      "How do I set up direct deposit?",
+      "Is there a minimum balance to open an account?"
+    ],
+    "cta_title": "Ready to get started?",
+    "cta_desc": "Open your account online in minutes.",
+    "category": "Checking",
+    "slug": "compare-checking"
+  },
+  "education-savings": {
+    "title": "Education Savings Plans",
+    "subtitle": "Save for education with tax-advantaged 529 plans and Coverdell ESAs. Invest in your child's future with flexible options and potential state tax benefits.",
+    "summary": [
+      {
+        "label": "Tax treatment",
+        "value": "Tax-free growth"
+      },
+      {
+        "label": "Contribution limit (2026)",
+        "value": "Up to $18,000/year gift tax free"
+      },
+      {
+        "label": "Qualified expenses",
+        "value": "Tuition, room, books, K-12"
+      },
+      {
+        "label": "Account fee",
+        "value": "$0"
+      },
+      {
+        "label": "State tax deduction",
+        "value": "Varies by state"
+      }
+    ],
+    "features": [
+      {
+        "title": "Tax-Free Growth",
+        "desc": "Earnings grow tax-free. Qualified withdrawals are also tax-free at the federal level."
+      },
+      {
+        "title": "State Tax Benefits",
+        "desc": "Many states offer tax deductions or credits for 529 plan contributions."
+      },
+      {
+        "title": "Gift From Family",
+        "desc": "Anyone can contribute \u2014 parents, grandparents, family, and friends."
+      },
+      {
+        "title": "Broad Qualified Expenses",
+        "desc": "Use for tuition, room and board, books, computers, and up to $10K/year K-12 tuition."
+      },
+      {
+        "title": "Age-Based Portfolios",
+        "desc": "Choose an age-based option that automatically adjusts allocation as your child grows."
+      },
+      {
+        "title": "Roth IRA Rollover",
+        "desc": "Starting 2024, unused 529 funds can be rolled into a Roth IRA (limits apply)."
+      }
+    ],
+    "faqs": [
+      "What's the difference between a 529 and a Coverdell ESA?",
+      "Can I use 529 funds for K-12 tuition?",
+      "What happens if my child doesn't go to college?",
+      "Can I change the beneficiary?",
+      "Is there a contribution limit?"
+    ],
+    "cta_title": "Invest in their future",
+    "cta_desc": "Open a 529 plan or Coverdell ESA today. Tax-free growth for education expenses.",
+    "category": "Investing",
+    "slug": "education-savings"
+  },
+  "high-yield-savings": {
+    "title": "Meridian High Yield Savings",
+    "subtitle": "Earn a competitive rate on your savings with no minimum balance to open. FDIC insured. Access your money anytime through online and mobile banking.",
+    "summary": [
+      {
+        "label": "APY",
+        "value": "4.25%"
+      },
+      {
+        "label": "Monthly fee",
+        "value": "$5 or $0"
+      },
+      {
+        "label": "Min. to open",
+        "value": "$0"
+      },
+      {
+        "label": "Interest compounding",
+        "value": "Daily"
+      },
+      {
+        "label": "FDIC insured",
+        "value": "Up to $250,000"
+      }
+    ],
+    "features": [
+      {
+        "title": "Competitive APY",
+        "desc": "Earn 4.25% APY on your entire balance \u2014 significantly higher than the national average savings rate."
+      },
+      {
+        "title": "No Minimum Balance",
+        "desc": "Open your account with any amount. No minimum balance required to earn interest."
+      },
+      {
+        "title": "Autosave Feature",
+        "desc": "Set up automatic transfers from your checking account to build savings effortlessly."
+      },
+      {
+        "title": "Mobile Access",
+        "desc": "Check your balance, set up transfers, and track savings goals from anywhere with the app."
+      },
+      {
+        "title": "FDIC Insured",
+        "desc": "Your deposits are insured up to $250,000 per depositor, per ownership category."
+      },
+      {
+        "title": "Linked Checking Bonus",
+        "desc": "Waive the monthly fee by linking to any Meridian personal checking account."
+      }
+    ],
+    "faqs": [
+      "What is the current APY?",
+      "Is there a minimum balance to earn interest?",
+      "How often is interest paid?",
+      "Can I access my money anytime?",
+      "How do I waive the monthly fee?"
+    ],
+    "cta_title": "Ready to start saving?",
+    "cta_desc": "Open a High Yield Savings account in minutes. No minimum balance to get started.",
+    "category": "Savings & CDs",
+    "slug": "high-yield-savings"
+  },
+  "home-equity": {
+    "title": "Home Equity Lines & Loans",
+    "subtitle": "Tap into your home's equity for renovations, debt consolidation, or major expenses. Choose between a flexible line of credit (HELOC) or a fixed-rate loan.",
+    "summary": [
+      {
+        "label": "HELOC rate (from)",
+        "value": "7.49% APR"
+      },
+      {
+        "label": "HE Loan rate (from)",
+        "value": "6.99% APR"
+      },
+      {
+        "label": "Borrow up to",
+        "value": "85% of home value"
+      },
+      {
+        "label": "Draw period (HELOC)",
+        "value": "10 years"
+      },
+      {
+        "label": "Closing costs",
+        "value": "Waived on lines $50K+"
+      }
+    ],
+    "features": [
+      {
+        "title": "Lower Rates Than Credit Cards",
+        "desc": "Home equity rates are typically much lower than personal loans or credit cards."
+      },
+      {
+        "title": "Potential Tax Benefits",
+        "desc": "Interest may be tax deductible when used for home improvements. Consult a tax advisor."
+      },
+      {
+        "title": "Borrow Up to 85% LTV",
+        "desc": "Access up to 85% of your home's appraised value, minus your existing mortgage."
+      },
+      {
+        "title": "No Closing Costs",
+        "desc": "Closing costs waived on lines of $50,000 or more. No application fee."
+      },
+      {
+        "title": "Online Access",
+        "desc": "Draw funds, make payments, and manage your line online or in the app."
+      },
+      {
+        "title": "Fixed-Rate Option",
+        "desc": "Convert all or part of your HELOC balance to a fixed rate at any time."
+      }
+    ],
+    "faqs": [
+      "What's the difference between a HELOC and a home equity loan?",
+      "How much equity do I need?",
+      "Is the interest tax deductible?",
+      "How long does it take to get approved?"
+    ],
+    "cta_title": "Unlock your home's equity",
+    "cta_desc": "Apply online or speak with a home equity specialist today.",
+    "category": "Loans",
+    "slug": "home-equity"
+  },
+  "managed-portfolios": {
+    "title": "Meridian Managed Portfolios",
+    "subtitle": "Let our experts build and manage a diversified portfolio for you. Automated investing with professional oversight, tax-loss harvesting, and automatic rebalancing.",
+    "summary": [
+      {
+        "label": "Advisory fee",
+        "value": "0.35% / year"
+      },
+      {
+        "label": "Account minimum",
+        "value": "$500"
+      },
+      {
+        "label": "Rebalancing",
+        "value": "Automatic"
+      },
+      {
+        "label": "Tax-loss harvesting",
+        "value": "Included"
+      },
+      {
+        "label": "Advisor access",
+        "value": "Unlimited"
+      }
+    ],
+    "features": [
+      {
+        "title": "Personalized Strategy",
+        "desc": "We build a portfolio aligned to your goals, risk tolerance, and time horizon."
+      },
+      {
+        "title": "Automatic Rebalancing",
+        "desc": "Your portfolio is continuously monitored and rebalanced to stay on track."
+      },
+      {
+        "title": "Tax-Loss Harvesting",
+        "desc": "Automatically offset gains with losses to help reduce your tax bill."
+      },
+      {
+        "title": "Advisor Access",
+        "desc": "Unlimited access to licensed financial advisors by phone, chat, or in branch."
+      },
+      {
+        "title": "Diversified ETFs",
+        "desc": "Globally diversified portfolio of low-cost ETFs across asset classes."
+      },
+      {
+        "title": "Goal Tracking",
+        "desc": "Set goals and track progress with projections updated in real time."
+      }
+    ],
+    "faqs": [
+      "What does the 0.35% fee cover?",
+      "How is my portfolio built?",
+      "Can I withdraw my money anytime?",
+      "What is tax-loss harvesting?",
+      "Can I talk to a human advisor?"
+    ],
+    "cta_title": "Let us invest for you",
+    "cta_desc": "Get started with $500 and a 0.35% annual fee. Professional management, zero hassle.",
+    "category": "Investing",
+    "slug": "managed-portfolios"
+  },
+  "money-market": {
+    "title": "Meridian Money Market Account",
+    "subtitle": "A higher-balance savings option with tiered interest rates. Earn more as your balance grows, with the flexibility to write checks and make transfers.",
+    "summary": [
+      {
+        "label": "APY (up to)",
+        "value": "4.50%"
+      },
+      {
+        "label": "Monthly fee",
+        "value": "$12 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "$2,500+ daily balance"
+      },
+      {
+        "label": "Check writing",
+        "value": "Included"
+      },
+      {
+        "label": "Tiered rates",
+        "value": "Earn more at higher balances"
+      }
+    ],
+    "features": [
+      {
+        "title": "Tiered Interest Rates",
+        "desc": "Your rate increases as your balance grows. Earn up to 4.50% APY on balances of $100,000+."
+      },
+      {
+        "title": "Check Writing",
+        "desc": "Write checks directly from your money market account for added flexibility."
+      },
+      {
+        "title": "Easy Transfers",
+        "desc": "Transfer funds between your Meridian accounts instantly, anytime."
+      },
+      {
+        "title": "Online & Mobile",
+        "desc": "Full access through online banking and the Meridian mobile app."
+      },
+      {
+        "title": "FDIC Insured",
+        "desc": "Your deposits are protected up to $250,000 per depositor."
+      },
+      {
+        "title": "Debit Card Access",
+        "desc": "Optional debit card for ATM withdrawals and point-of-sale purchases."
+      }
+    ],
+    "faqs": [
+      "How are tiered rates calculated?",
+      "Can I write checks from this account?",
+      "Is there a limit on transactions?",
+      "How does this compare to a savings account?"
+    ],
+    "cta_title": "Ready to earn more?",
+    "cta_desc": "Open a Money Market account and start earning tiered rates today.",
+    "category": "Savings & CDs",
+    "slug": "money-market"
+  },
+  "mortgages": {
+    "title": "Meridian Home Mortgages",
+    "subtitle": "Whether you're buying your first home or refinancing, we offer competitive rates, flexible terms, and dedicated loan officers to guide you through every step.",
+    "summary": [
+      {
+        "label": "30-year fixed",
+        "value": "6.375% APR"
+      },
+      {
+        "label": "15-year fixed",
+        "value": "5.750% APR"
+      },
+      {
+        "label": "5/1 ARM",
+        "value": "5.875% APR"
+      },
+      {
+        "label": "Down payment",
+        "value": "As low as 3%"
+      },
+      {
+        "label": "Loan amounts",
+        "value": "Up to $2,000,000"
+      }
+    ],
+    "features": [
+      {
+        "title": "Pre-Qualification in Minutes",
+        "desc": "Check your rate online without affecting your credit score."
+      },
+      {
+        "title": "Dedicated Loan Officer",
+        "desc": "Work with a single point of contact from application to closing."
+      },
+      {
+        "title": "Down Payments from 3%",
+        "desc": "Low down payment options for qualified buyers. No PMI with 20% down."
+      },
+      {
+        "title": "Digital Application",
+        "desc": "Apply online, upload documents, and track your loan status from anywhere."
+      },
+      {
+        "title": "Rate Lock Options",
+        "desc": "Lock your rate for up to 90 days while you shop for your home."
+      },
+      {
+        "title": "First-Time Buyer Programs",
+        "desc": "Special programs with down payment assistance and reduced fees."
+      }
+    ],
+    "faqs": [
+      "How much can I afford?",
+      "What credit score do I need for a mortgage?",
+      "What's the difference between fixed and adjustable rates?",
+      "How long does the mortgage process take?",
+      "Can I refinance my existing mortgage with Meridian?"
+    ],
+    "cta_title": "Ready to find your rate?",
+    "cta_desc": "Get pre-qualified in minutes with no impact to your credit score.",
+    "category": "Loans",
+    "slug": "mortgages"
+  },
+  "personal-loans": {
+    "title": "Meridian Personal Loans",
+    "subtitle": "Borrow $2,000 to $50,000 with a fixed rate and predictable monthly payments. No collateral required. Use for debt consolidation, home projects, or major purchases.",
+    "summary": [
+      {
+        "label": "APR (from)",
+        "value": "6.99%"
+      },
+      {
+        "label": "Loan amounts",
+        "value": "$2,000 \u2013 $50,000"
+      },
+      {
+        "label": "Terms",
+        "value": "12 \u2013 84 months"
+      },
+      {
+        "label": "Origination fee",
+        "value": "None"
+      },
+      {
+        "label": "Prepayment penalty",
+        "value": "None"
+      }
+    ],
+    "features": [
+      {
+        "title": "Debt Consolidation",
+        "desc": "Combine multiple balances into one fixed payment at a lower rate."
+      },
+      {
+        "title": "Home Improvements",
+        "desc": "Fund renovations or repairs without tapping your home equity."
+      },
+      {
+        "title": "Medical Expenses",
+        "desc": "Cover unexpected medical bills with predictable monthly payments."
+      },
+      {
+        "title": "No Collateral Required",
+        "desc": "Unsecured loan \u2014 your home, car, and savings are never at risk."
+      },
+      {
+        "title": "Check Rate, No Impact",
+        "desc": "See your rate with a soft credit pull. No effect on your score."
+      },
+      {
+        "title": "Flexible Terms",
+        "desc": "Choose 12 to 84 months. Pay off early anytime with no penalty."
+      }
+    ],
+    "faqs": [
+      "What credit score do I need?",
+      "How quickly can I get my funds?",
+      "Can I pay off my loan early?",
+      "Does checking my rate affect my credit?"
+    ],
+    "cta_title": "Check your rate in minutes",
+    "cta_desc": "No impact to your credit score. Get funds as soon as the next business day.",
+    "category": "Loans",
+    "slug": "personal-loans"
+  },
+  "premier-checking": {
+    "title": "Meridian Premier Checking",
+    "subtitle": "Premium checking with no Chase ATM fees worldwide, no foreign exchange fees, and relationship interest rates on linked savings. Designed for those who want more.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$25 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "$15,000+ combined balance"
+      },
+      {
+        "label": "Global ATMs",
+        "value": "No fees worldwide"
+      },
+      {
+        "label": "Foreign exchange",
+        "value": "No adjustment fees"
+      },
+      {
+        "label": "Relationship rates",
+        "value": "On linked savings"
+      }
+    ],
+    "features": [
+      {
+        "title": "Global ATM Access",
+        "desc": "No Meridian fees at any ATM worldwide. No foreign exchange rate adjustment fees."
+      },
+      {
+        "title": "Relationship Rates",
+        "desc": "Earn higher interest rates on linked savings accounts when you complete 5+ transactions monthly."
+      },
+      {
+        "title": "No Foreign Exchange Fees",
+        "desc": "Use your debit card internationally without foreign exchange rate adjustment fees."
+      },
+      {
+        "title": "Free Checks & Money Orders",
+        "desc": "No fees on personal checks, money orders, or cashier's checks."
+      },
+      {
+        "title": "Wealth Integration",
+        "desc": "Connect with Meridian Wealth Management for personalized investment guidance."
+      },
+      {
+        "title": "Priority Service",
+        "desc": "Dedicated support line and priority scheduling at any Meridian branch."
+      }
+    ],
+    "faqs": [
+      "What do I need to open this account?",
+      "How do I set up direct deposit?",
+      "Can I access my account from my phone?",
+      "How do I avoid the monthly service fee?",
+      "What happens if I overdraw my account?"
+    ],
+    "cta_title": "Ready to open your account?",
+    "cta_desc": "It takes just a few minutes to get started. Open online or visit a branch near you.",
+    "category": "Checking",
+    "slug": "premier-checking"
+  },
+  "retirement-accounts": {
+    "title": "Retirement Accounts",
+    "subtitle": "Plan for your future with tax-advantaged IRA accounts. Choose Traditional or Roth, self-directed or managed. $0 commission on online trades.",
+    "summary": [
+      {
+        "label": "Account fee",
+        "value": "$0"
+      },
+      {
+        "label": "Online trades",
+        "value": "$0 commission"
+      },
+      {
+        "label": "2026 contribution limit",
+        "value": "$7,000 ($8,000 if 50+)"
+      },
+      {
+        "label": "Account types",
+        "value": "Traditional, Roth, Rollover"
+      },
+      {
+        "label": "Management options",
+        "value": "Self-directed or managed"
+      }
+    ],
+    "features": [
+      {
+        "title": "$0 Commission Trades",
+        "desc": "Trade stocks and ETFs with no commission in your IRA."
+      },
+      {
+        "title": "Choose Your Style",
+        "desc": "Self-directed trading or professionally managed \u2014 pick what suits you."
+      },
+      {
+        "title": "Advisor Support",
+        "desc": "Access licensed advisors to help plan your retirement strategy."
+      },
+      {
+        "title": "Rollover Assistance",
+        "desc": "We help you consolidate old 401(k)s with no tax penalties. Full support."
+      },
+      {
+        "title": "Retirement Planner",
+        "desc": "Use our calculator to project savings growth and set contribution goals."
+      },
+      {
+        "title": "SIPC Protected",
+        "desc": "Your investment accounts are protected up to $500,000."
+      }
+    ],
+    "faqs": [
+      "What's the difference between Traditional and Roth?",
+      "How much can I contribute in 2026?",
+      "How do I roll over a 401(k)?",
+      "When can I withdraw from my IRA?",
+      "Can I have both a Traditional and Roth IRA?"
+    ],
+    "cta_title": "Start planning your retirement",
+    "cta_desc": "Open a Traditional or Roth IRA today. $0 account fees. $0 commission trades.",
+    "category": "Investing",
+    "slug": "retirement-accounts"
+  },
+  "savings-rates": {
+    "title": "CD rates",
+    "subtitle": "Current rates for Meridian Bank Certificates of Deposit. Rates effective March 24, 2026. Rates subject to change without notice.",
+    "summary": [],
+    "features": [],
+    "faqs": [
+      "How often do rates change?",
+      "What is a relationship rate?",
+      "How is interest calculated?",
+      "What is APY vs. interest rate?"
+    ],
+    "cta_title": "Ready to earn more on your savings?",
+    "cta_desc": "Open a savings account or CD online in minutes.",
+    "category": "Savings & CDs",
+    "slug": "savings-rates"
+  },
+  "secure-checking": {
+    "title": "Meridian Secure Checking\u2120",
+    "subtitle": "A checking account with no overdraft fees. Spend only what you have. No fees on most everyday transactions. Direct deposits up to two business days early.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$4.95 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "Free for ages 17\u201324"
+      },
+      {
+        "label": "Overdraft fees",
+        "value": "None \u2014 ever"
+      },
+      {
+        "label": "Direct deposit",
+        "value": "Up to 2 days early"
+      },
+      {
+        "label": "Debit card",
+        "value": "Included, free"
+      }
+    ],
+    "features": [
+      {
+        "title": "No Overdraft Fees",
+        "desc": "You spend only what you have. No overdraft or insufficient funds fees, ever."
+      },
+      {
+        "title": "Early Direct Deposit",
+        "desc": "Get your paycheck up to two business days early with qualifying direct deposit."
+      },
+      {
+        "title": "Free Everyday Banking",
+        "desc": "No fees on money orders, cashier's checks, Zelle\u00ae transfers, or Meridian ATMs."
+      },
+      {
+        "title": "Mobile Banking",
+        "desc": "Deposit checks, pay bills, and manage your account from anywhere."
+      },
+      {
+        "title": "Zero Liability",
+        "desc": "Get reimbursed for unauthorized debit card transactions when reported promptly."
+      },
+      {
+        "title": "Credit Score Access",
+        "desc": "Check your credit score and get a personalized improvement plan, free."
+      }
+    ],
+    "faqs": [
+      "What do I need to open this account?",
+      "How do I set up direct deposit?",
+      "Can I access my account from my phone?",
+      "How do I avoid the monthly service fee?",
+      "What happens if I overdraw my account?"
+    ],
+    "cta_title": "Ready to open your account?",
+    "cta_desc": "It takes just a few minutes to get started. Open online or visit a branch near you.",
+    "category": "Checking",
+    "slug": "secure-checking"
+  },
+  "self-directed-investing": {
+    "title": "Self-Directed Investing",
+    "subtitle": "Build your own portfolio with $0 commission online trades for stocks and ETFs. Access research, tools, and real-time data \u2014 all in one platform.",
+    "summary": [
+      {
+        "label": "Online trades",
+        "value": "$0 commission"
+      },
+      {
+        "label": "Account minimum",
+        "value": "$0"
+      },
+      {
+        "label": "Stocks & ETFs",
+        "value": "Thousands available"
+      },
+      {
+        "label": "Mutual funds",
+        "value": "4,000+ no-load funds"
+      },
+      {
+        "label": "Options trading",
+        "value": "$0.65 per contract"
+      }
+    ],
+    "features": [
+      {
+        "title": "Real-Time Quotes",
+        "desc": "Stream live market data, charts, and news for every stock and ETF."
+      },
+      {
+        "title": "Research & Analysis",
+        "desc": "Access third-party research reports, analyst ratings, and market commentary."
+      },
+      {
+        "title": "Mobile Trading",
+        "desc": "Trade stocks, ETFs, and options from anywhere with the Meridian app."
+      },
+      {
+        "title": "Portfolio Tracker",
+        "desc": "Monitor performance, allocation, and gains/losses in real time."
+      },
+      {
+        "title": "SIPC Protection",
+        "desc": "Your securities are protected up to $500,000 through SIPC membership."
+      },
+      {
+        "title": "Tax-Lot Optimization",
+        "desc": "Choose your tax-lot method to help minimize your tax impact."
+      }
+    ],
+    "faqs": [
+      "What can I trade?",
+      "Is there an account minimum?",
+      "How do I transfer an account from another brokerage?",
+      "Are fractional shares available?",
+      "What research tools are included?"
+    ],
+    "cta_title": "Start investing today",
+    "cta_desc": "Open an account in minutes with $0 minimum. Commission-free stock and ETF trades.",
+    "category": "Investing",
+    "slug": "self-directed-investing"
+  },
+  "student-checking": {
+    "title": "Meridian Student Checking",
+    "subtitle": "A checking account designed for students ages 17\u201324. No monthly service fee. Build healthy financial habits with mobile tools and budgeting features.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$0"
+      },
+      {
+        "label": "Eligible ages",
+        "value": "17\u201324 years old"
+      },
+      {
+        "label": "ATM access",
+        "value": "16,000+ fee-free ATMs"
+      },
+      {
+        "label": "Mobile deposit",
+        "value": "Included, free"
+      },
+      {
+        "label": "Overdraft assist",
+        "value": "No fee if \u2264$50 overdrawn"
+      }
+    ],
+    "features": [
+      {
+        "title": "$0 Monthly Fee",
+        "desc": "No monthly service fee for eligible students ages 17\u201324. No minimum balance required."
+      },
+      {
+        "title": "Mobile Banking",
+        "desc": "Deposit checks, send money with Zelle\u00ae, set up alerts and track spending from the app."
+      },
+      {
+        "title": "Budgeting Tools",
+        "desc": "Set spending alerts, categorize transactions, and track your budget right in the app."
+      },
+      {
+        "title": "Overdraft Assist",
+        "desc": "No overdraft fee if you're overdrawn by $50 or less at end of business day."
+      },
+      {
+        "title": "Free Debit Card",
+        "desc": "Make purchases, withdraw cash at ATMs, and add to your mobile wallet."
+      },
+      {
+        "title": "Build Credit",
+        "desc": "Access your credit score and get personalized tips to start building your credit history."
+      }
+    ],
+    "faqs": [
+      "What do I need to open this account?",
+      "How do I set up direct deposit?",
+      "Can I access my account from my phone?",
+      "How do I avoid the monthly service fee?",
+      "What happens if I overdraw my account?"
+    ],
+    "cta_title": "Ready to open your account?",
+    "cta_desc": "It takes just a few minutes to get started. Open online or visit a branch near you.",
+    "category": "Checking",
+    "slug": "student-checking"
+  },
+  "total-checking": {
+    "title": "Meridian Total Checking\u00ae",
+    "subtitle": "Our most popular checking account with all the everyday banking essentials. No monthly fee with qualifying direct deposits. Access to 16,000+ ATMs and mobile banking.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$12 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "Direct deposit $500+/mo"
+      },
+      {
+        "label": "ATM access",
+        "value": "16,000+ fee-free ATMs"
+      },
+      {
+        "label": "Bonus",
+        "value": "$300 for new customers"
+      },
+      {
+        "label": "Overdraft assist",
+        "value": "No fee if \u2264$50 overdrawn"
+      }
+    ],
+    "features": [
+      {
+        "title": "Mobile Banking",
+        "desc": "Deposit checks, pay bills, send money with Zelle\u00ae, and lock your debit card \u2014 all from the app."
+      },
+      {
+        "title": "Chase Overdraft Assist",
+        "desc": "No overdraft fee if you're overdrawn by $50 or less at end of business day."
+      },
+      {
+        "title": "Zelle\u00ae Payments",
+        "desc": "Send and receive money fast with people you know and trust, right from the app."
+      },
+      {
+        "title": "Early Direct Deposit",
+        "desc": "Get your paycheck up to two business days early with qualifying direct deposit."
+      },
+      {
+        "title": "Debit Card Controls",
+        "desc": "Instantly lock or unlock your debit card if misplaced. Real-time transaction alerts."
+      },
+      {
+        "title": "Bill Pay",
+        "desc": "Pay rent, mortgage, credit cards and other bills with Meridian Online Bill Pay."
+      }
+    ],
+    "faqs": [
+      "What do I need to open this account?",
+      "How do I set up direct deposit?",
+      "Can I access my account from my phone?",
+      "How do I avoid the monthly service fee?",
+      "What happens if I overdraw my account?"
+    ],
+    "cta_title": "Ready to open your account?",
+    "cta_desc": "It takes just a few minutes to get started. Open online or visit a branch near you.",
+    "category": "Checking",
+    "slug": "total-checking"
+  },
+  "travel-rewards-card": {
+    "title": "Meridian Travel Rewards Visa Signature\u00ae",
+    "subtitle": "Earn 3X points on travel and dining, 1.5X on everything else. 60,000 bonus points after qualifying spend. No foreign transaction fees.",
+    "summary": [],
+    "features": [
+      {
+        "title": "No Foreign Transaction Fees",
+        "desc": "Use your card anywhere in the world with zero added fees."
+      },
+      {
+        "title": "Travel Insurance",
+        "desc": "Trip cancellation/interruption, baggage delay, and travel accident coverage."
+      },
+      {
+        "title": "Airport Lounge Access",
+        "desc": "Complimentary access to 1,000+ lounges worldwide with Priority Pass Select."
+      },
+      {
+        "title": "Zero Liability",
+        "desc": "24/7 fraud monitoring. Never pay for unauthorized charges."
+      },
+      {
+        "title": "Flexible Redemption",
+        "desc": "Redeem for travel, gift cards, cash back, or statement credits."
+      },
+      {
+        "title": "Auto Rental Insurance",
+        "desc": "Primary rental car coverage when you pay with your card."
+      }
+    ],
+    "faqs": [
+      "How much are points worth?",
+      "Can I transfer points to airline partners?",
+      "Is there a foreign transaction fee?",
+      "What travel insurance is included?"
+    ],
+    "cta_title": "Start earning travel rewards",
+    "cta_desc": "Apply online and get an instant decision. 60,000 bonus points are waiting.",
+    "category": "Credit Cards",
+    "slug": "travel-rewards-card"
+  }
+}
