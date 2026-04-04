@@ -91,6 +91,48 @@ export default function CorporatePage() {
           </div>
         </section>
 
+        {/* Global Reach */}
+        <section className="py-16 max-md:py-10">
+          <div className="max-w-container mx-auto px-6">
+            <div className="grid grid-cols-2 gap-16 items-center max-lg:grid-cols-1 max-lg:gap-8">
+              <div className="min-h-[340px] bg-gray-200 rounded-xl overflow-hidden max-lg:min-h-[240px]">
+                <img
+                  src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&h=500&fit=crop&q=80"
+                  alt="Global financial centers"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div>
+                <h2 className="text-[30px] font-extrabold text-gray-800 mb-3 max-md:text-[22px]">Global reach, local expertise</h2>
+                <p className="text-[15px] text-gray-500 leading-relaxed mb-6">
+                  Operations across major financial centers worldwide, connecting you to opportunities with seamless cross-border solutions.
+                </p>
+                <ul className="list-none space-y-3 mb-8">
+                  {[
+                    'Presence in 40+ countries',
+                    'Dedicated relationship directors',
+                    'Integrated global treasury platform',
+                    'Payments in 120+ currencies',
+                  ].map((feat) => (
+                    <li key={feat} className="flex items-center gap-3 text-sm text-gray-700 font-medium">
+                      <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f7b3f" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>
+                      </div>
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/contact">
+                  <button className="px-7 py-3 text-sm font-bold text-white bg-cta-primary border-none rounded-md cursor-pointer font-sans hover:bg-cta-hover transition-all">
+                    Connect with us
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Insights */}
         <section className="py-16 max-md:py-10">
           <div className="max-w-container mx-auto px-6">

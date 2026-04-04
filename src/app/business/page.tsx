@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
 
@@ -28,20 +30,60 @@ export default function BusinessPage() {
     <>
       <Header variant="business" />
       <main id="main-content">
-        {/* Hero */}
+        {/* Hero with Product Finder */}
         <section className="bg-gradient-to-br from-navy-900 to-navy-700 relative overflow-hidden py-16 max-md:py-10">
+          <div className="absolute -top-1/2 -right-[10%] w-[800px] h-[800px] rounded-full border border-white/[0.04] pointer-events-none" />
           <div className="max-w-container mx-auto px-6 relative z-[1]">
-            <h1 className="text-[42px] font-extrabold text-white leading-tight mb-4 max-md:text-[28px]">
-              Banking built for<br />your business.
-            </h1>
-            <p className="text-[16px] text-white/60 leading-relaxed mb-8 max-w-[520px] max-md:text-sm">
-              From your first business account to complex treasury management — Meridian grows with you.
-            </p>
-            <Link href="/open-account">
-              <button className="px-8 py-3.5 text-[15px] font-bold text-white bg-cta-primary border-none rounded-md cursor-pointer font-sans hover:bg-cta-hover transition-all max-md:w-full">
-                Get started
-              </button>
-            </Link>
+            <div className="grid grid-cols-[1fr_380px] gap-16 items-center max-lg:grid-cols-1 max-lg:gap-8">
+              <div>
+                <h1 className="text-[42px] font-extrabold text-white leading-tight mb-4 max-md:text-[28px]">
+                  Banking built for<br />your business.
+                </h1>
+                <p className="text-[16px] text-white/60 leading-relaxed mb-8 max-w-[520px] max-md:text-sm">
+                  From your first business account to complex treasury management — Meridian grows with you.
+                </p>
+                <div className="flex items-center gap-4 flex-wrap max-md:gap-2.5">
+                  {['250K+ businesses served', 'FDIC Insured', '24/7 Support'].map((item) => (
+                    <span key={item} className="flex items-center gap-1.5 text-xs text-white/45 font-medium">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Product Finder */}
+              <div className="bg-white rounded-xl shadow-2xl p-7 max-lg:max-w-[420px] max-md:p-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-1">Find the right solution</h3>
+                <p className="text-sm text-gray-500 mb-5">Tell us what you need and we&apos;ll guide you.</p>
+                <div className="mb-4">
+                  <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">I&apos;m looking for</label>
+                  <select className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+                    <option>Choose an option</option>
+                    <option>Business checking</option>
+                    <option>Business credit card</option>
+                    <option>Loan or line of credit</option>
+                    <option>Payment processing</option>
+                    <option>Payroll services</option>
+                  </select>
+                </div>
+                <div className="mb-5">
+                  <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">My business type</label>
+                  <select className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+                    <option>Choose an option</option>
+                    <option>Sole proprietor</option>
+                    <option>LLC / Partnership</option>
+                    <option>Corporation</option>
+                    <option>Nonprofit</option>
+                  </select>
+                </div>
+                <Link href="/open-account">
+                  <button className="w-full py-3 text-[15px] font-bold text-white bg-cta-primary border-none rounded-md cursor-pointer font-sans hover:bg-cta-hover transition-all">
+                    Get started
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
