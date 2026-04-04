@@ -19,7 +19,7 @@ const industries = [
 
 const insights = [
   { title: 'U.S. economic outlook: Navigating rate policy in 2026', cat: 'Economic Commentary', href: '/insights/economic-outlook-2026', img: 'photo-1611974789855-9c2a0a7236a3' },
-  { title: 'Global M&A activity: Trends and outlook', cat: 'Capital Markets', href: '/insights/global-ma-trends', img: 'photo-1507679799987-c73b1a816610' },
+  { title: 'Global M&A activity: Trends and outlook', cat: 'Capital Markets', href: '/insights/global-ma-trends', img: 'photo-1450101499163-c8848c66ca85' },
 ];
 
 export default function CorporatePage() {
