@@ -1,0 +1,222 @@
+{
+  "energy": {
+    "title": "Energy & Infrastructure",
+    "subtitle": "Financing and advisory for conventional and renewable energy companies, utilities, and infrastructure developers across the project lifecycle.",
+    "services": [
+      {
+        "title": "Project Finance",
+        "desc": "Non-recourse financing for wind, solar, natural gas, and battery storage projects. Experienced in tax equity structures "
+      },
+      {
+        "title": "Reserve-Based Lending",
+        "desc": "Borrowing base facilities for E&P companies. Commodity hedging advisory and covenant structuring."
+      },
+      {
+        "title": "Infrastructure Finance",
+        "desc": "Financing for transportation, water, telecommunications, and social infrastructure. PPP advisory and concession finance."
+      },
+      {
+        "title": "Energy Transition",
+        "desc": "Advisory and financing for companies transitioning to lower-carbon operations. Green bonds, sustainability-linked loans,"
+      }
+    ]
+  },
+  "global-markets": {
+    "title": "Global Markets",
+    "subtitle": "Execution, research, and risk management across fixed income, equities, currencies, and commodities. Serving institutional investors, corporations, and financial institutions worldwide.",
+    "services": [
+      {
+        "title": "Fixed Income",
+        "desc": "Trading and distribution across government bonds, investment-grade and high-yield corporate credit, mortgage-backed secu"
+      },
+      {
+        "title": "Equities",
+        "desc": "Cash equities execution, program trading, ETF trading, and equity derivatives. Research-driven insights and electronic t"
+      },
+      {
+        "title": "Currencies & Commodities",
+        "desc": "Spot and forward FX, currency options, and commodity hedging solutions. 24-hour global coverage across major and emergin"
+      },
+      {
+        "title": "Structured Products",
+        "desc": "Customized investment solutions including structured notes, credit-linked instruments, and bespoke hedging strategies ta"
+      }
+    ]
+  },
+  "healthcare": {
+    "title": "Healthcare & Life Sciences",
+    "subtitle": "Specialized banking solutions for hospitals, health systems, pharmaceutical companies, medical device manufacturers, and healthcare services firms.",
+    "services": [
+      {
+        "title": "Healthcare Lending",
+        "desc": "Term loans, revolving facilities, and tax-exempt financing for health systems. Equipment financing and practice acquisit"
+      },
+      {
+        "title": "M&A Advisory",
+        "desc": "Strategic advisory for healthcare consolidation, physician practice roll-ups, and life sciences transactions."
+      },
+      {
+        "title": "Treasury & Payments",
+        "desc": "Revenue cycle optimization, patient payment solutions, and multi-entity cash management for complex health systems."
+      },
+      {
+        "title": "Capital Markets",
+        "desc": "Tax-exempt bond underwriting, private placements, and equity offerings for healthcare organizations."
+      }
+    ]
+  },
+  "insights": {
+    "title": "Insights & Research",
+    "subtitle": "Economic analysis, market commentary, and sector research from our team of strategists and economists. Data-driven perspectives to inform your business decisions.",
+    "services": [
+      {
+        "title": "Economic Commentary",
+        "desc": "Weekly and monthly analysis of macroeconomic trends, central bank policy, employment data, and GDP forecasts. Our chief "
+      },
+      {
+        "title": "Market Research",
+        "desc": "Cross-asset market outlook covering fixed income, equities, FX, and commodities. Trading ideas, valuation analysis, and "
+      },
+      {
+        "title": "Sector Reports",
+        "desc": "Deep-dive analysis of key industries including technology, healthcare, energy, financial institutions, and real estate. "
+      },
+      {
+        "title": "Thought Leadership",
+        "desc": "Long-form research on structural themes \u2014 digital transformation, ESG integration, supply chain resilience, and the evol"
+      }
+    ]
+  },
+  "investment-banking": {
+    "title": "Investment Banking",
+    "subtitle": "Strategic advisory, capital raising, and M&A execution for corporations, institutions, and sponsors. Trusted by Fortune 500 companies and middle-market leaders.",
+    "services": [
+      {
+        "title": "Mergers & Acquisitions",
+        "desc": "Buy-side and sell-side advisory across sectors. We manage the full transaction lifecycle from strategic assessment throu"
+      },
+      {
+        "title": "Capital Markets",
+        "desc": "Equity and debt capital raising for public and private companies. IPOs, follow-on offerings, high-yield bonds, investmen"
+      },
+      {
+        "title": "Strategic Advisory",
+        "desc": "Board-level counsel on corporate strategy, restructuring, activism defense, and special situations. Independent advice b"
+      },
+      {
+        "title": "Private Placements",
+        "desc": "Confidential capital raising for companies seeking growth equity, mezzanine financing, or private credit solutions. Acce"
+      }
+    ]
+  },
+  "lending": {
+    "title": "Corporate Lending",
+    "subtitle": "Financing solutions for large corporations, real estate developers, and infrastructure projects. Syndicated loans, bilateral facilities, and project finance.",
+    "services": [
+      {
+        "title": "Corporate Lending",
+        "desc": "Revolving credit facilities, term loans, and bridge financing for investment-grade and non-investment-grade borrowers. B"
+      },
+      {
+        "title": "Commercial Real Estate",
+        "desc": "Construction loans, permanent financing, and bridge loans for office, multifamily, industrial, and mixed-use properties."
+      },
+      {
+        "title": "Project Finance",
+        "desc": "Non-recourse and limited-recourse financing for infrastructure, energy, and transportation projects. Experienced in publ"
+      },
+      {
+        "title": "Acquisition Finance",
+        "desc": "Leveraged financing for private equity sponsors and corporate acquirers. Senior secured, unitranche, and mezzanine struc"
+      }
+    ]
+  },
+  "real-estate": {
+    "title": "Real Estate & Hospitality",
+    "subtitle": "Debt and equity solutions for developers, operators, REITs, and institutional investors across all property types and geographies.",
+    "services": [
+      {
+        "title": "Construction Finance",
+        "desc": "Construction loans for multifamily, office, industrial, hospitality, and mixed-use developments. Flexible draw schedules"
+      },
+      {
+        "title": "Permanent Financing",
+        "desc": "Fixed and floating-rate permanent debt for stabilized assets. Agency, CMBS, and balance sheet execution."
+      },
+      {
+        "title": "REIT Banking",
+        "desc": "Full-service banking for public and private REITs including revolving credit facilities, term loans, and treasury manage"
+      },
+      {
+        "title": "Investment Sales Advisory",
+        "desc": "Disposition and acquisition advisory for institutional-quality assets. Market analysis, valuation, and buyer identificat"
+      }
+    ]
+  },
+  "risk-management": {
+    "title": "Risk Management",
+    "subtitle": "Hedging and risk mitigation solutions across interest rates, currencies, commodities, and credit. Protect your business from market volatility.",
+    "services": [
+      {
+        "title": "Interest Rate Hedging",
+        "desc": "Swaps, caps, collars, and swaptions to manage exposure to rate movements. Fixed-to-floating and floating-to-fixed strate"
+      },
+      {
+        "title": "FX Risk Management",
+        "desc": "Forward contracts, options, and structured products to hedge currency exposure from international operations, trade flow"
+      },
+      {
+        "title": "Commodity Hedging",
+        "desc": "Hedging solutions for energy, metals, and agricultural commodities. Customized structures to stabilize input costs and p"
+      },
+      {
+        "title": "Credit Risk Solutions",
+        "desc": "Credit default swaps, credit-linked notes, and portfolio hedging strategies for institutional investors and financial in"
+      }
+    ]
+  },
+  "technology": {
+    "title": "Technology, Media & Telecommunications",
+    "subtitle": "Financing, advisory, and treasury solutions for technology companies at every stage \u2014 from growth-stage ventures to global enterprises.",
+    "services": [
+      {
+        "title": "Growth Capital",
+        "desc": "Equity and debt solutions for scaling companies. Venture lending, growth equity advisory, and IPO preparation."
+      },
+      {
+        "title": "M&A Advisory",
+        "desc": "Buy-side and sell-side advisory for technology transactions. Deep sector knowledge across SaaS, fintech, cybersecurity, "
+      },
+      {
+        "title": "Treasury Solutions",
+        "desc": "Cash management, FX hedging, and global payment solutions for companies with international operations and multi-currency"
+      },
+      {
+        "title": "Structured Finance",
+        "desc": "Asset-backed lending, recurring revenue facilities, and other structures designed for technology business models."
+      }
+    ]
+  },
+  "treasury-payments": {
+    "title": "Treasury & Payments",
+    "subtitle": "Enterprise cash management, trade finance, and cross-border payment solutions. Optimize liquidity, streamline operations, and manage working capital efficiently.",
+    "services": [
+      {
+        "title": "Cash Management",
+        "desc": "Centralized liquidity management, notional pooling, zero-balance accounts, and automated sweeps. Real-time visibility ac"
+      },
+      {
+        "title": "Trade Finance",
+        "desc": "Letters of credit, documentary collections, supply chain financing, and export credit solutions. Support for importers a"
+      },
+      {
+        "title": "Cross-Border Payments",
+        "desc": "Same-day and next-day international payments in 130+ currencies. Transparent FX pricing, regulatory compliance, and end-"
+      },
+      {
+        "title": "Liquidity Solutions",
+        "desc": "Investment strategies for corporate cash reserves including money market funds, time deposits, commercial paper, and cus"
+      }
+    ]
+  }
+}

@@ -1,0 +1,439 @@
+{
+  "business-savings": {
+    "title": "Business Savings Account",
+    "subtitle": "Earn competitive interest on your business reserves. FDIC insured. Easy transfers between your checking and savings accounts.",
+    "summary": [
+      {
+        "label": "APY",
+        "value": "3.50%"
+      },
+      {
+        "label": "Monthly fee",
+        "value": "$0 with $500 balance"
+      },
+      {
+        "label": "Minimum to open",
+        "value": "$100"
+      },
+      {
+        "label": "FDIC insured",
+        "value": "Up to $250,000"
+      },
+      {
+        "label": "Transfers",
+        "value": "6/month free"
+      }
+    ],
+    "features": [
+      {
+        "title": "Competitive Rate",
+        "desc": "3.50% APY on all balances. Interest compounded daily, paid monthly."
+      },
+      {
+        "title": "Easy Transfers",
+        "desc": "Move money between checking and savings instantly in the app."
+      },
+      {
+        "title": "FDIC Insured",
+        "desc": "Your deposits are protected up to $250,000 per depositor."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Put your idle cash to work",
+    "cta_desc": "Open a Business Savings account and start earning 3.50% APY."
+  },
+  "cash-back-card": {
+    "title": "Business Cash Rewards Visa\u00ae",
+    "subtitle": "Earn 2% cash back on the top 3 categories your business spends in most. Plus 1% on everything else. No annual fee.",
+    "summary": [
+      {
+        "label": "Cash back",
+        "value": "2% top categories"
+      },
+      {
+        "label": "Everything else",
+        "value": "1% cash back"
+      },
+      {
+        "label": "Welcome bonus",
+        "value": "$500 after $5K spend"
+      },
+      {
+        "label": "Annual fee",
+        "value": "$0"
+      },
+      {
+        "label": "Employee cards",
+        "value": "Free"
+      }
+    ],
+    "features": [
+      {
+        "title": "Auto-Category Optimization",
+        "desc": "We automatically identify your top 3 spending categories and apply 2% cash back."
+      },
+      {
+        "title": "Free Employee Cards",
+        "desc": "Issue cards to employees. Set individual spending limits and controls."
+      },
+      {
+        "title": "Expense Management",
+        "desc": "Categorize transactions, download reports, and integrate with accounting software."
+      },
+      {
+        "title": "No Foreign Txn Fees",
+        "desc": "Use your card internationally with no added fees."
+      },
+      {
+        "title": "Fraud Protection",
+        "desc": "Zero liability on unauthorized charges. Real-time transaction alerts."
+      },
+      {
+        "title": "Year-End Summary",
+        "desc": "Detailed annual spending summary for tax preparation."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Start earning on business spending",
+    "cta_desc": "Apply online. Instant decision in most cases."
+  },
+  "compare-accounts": {
+    "title": "Compare business accounts",
+    "subtitle": "Find the right account for your business size and needs.",
+    "summary": [],
+    "features": [],
+    "faqs": [],
+    "cta_title": "Not sure which account fits?",
+    "cta_desc": "Talk to a business banking specialist for personalized guidance."
+  },
+  "essential-checking": {
+    "title": "Business Essential Checking",
+    "subtitle": "Low-cost checking designed for small businesses and startups. No minimum balance required. 200 free transactions per month.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$10 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "$1,500 min balance"
+      },
+      {
+        "label": "Free transactions",
+        "value": "200/month"
+      },
+      {
+        "label": "Cash deposits",
+        "value": "$5,000/month free"
+      },
+      {
+        "label": "Debit card",
+        "value": "Included"
+      }
+    ],
+    "features": [
+      {
+        "title": "Business Debit Card",
+        "desc": "Visa\u00ae debit for everyday business purchases with fraud protection."
+      },
+      {
+        "title": "Online & Mobile Banking",
+        "desc": "Manage payroll, transfers, and invoicing from anywhere."
+      },
+      {
+        "title": "Free ACH Payments",
+        "desc": "Send and receive ACH payments at no additional cost."
+      },
+      {
+        "title": "QuickBooks Integration",
+        "desc": "Connect directly to QuickBooks, Xero, and other accounting tools."
+      },
+      {
+        "title": "Employee Cards",
+        "desc": "Issue additional debit cards for employees with spending controls."
+      },
+      {
+        "title": "Fraud Protection",
+        "desc": "Positive pay, dual authorization, and real-time alerts."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Open your business account today",
+    "cta_desc": "Apply online in minutes. No appointment needed."
+  },
+  "line-of-credit": {
+    "title": "Business Line of Credit",
+    "subtitle": "Flexible revolving credit from $10,000 to $250,000. Draw funds when you need them, pay interest only on what you use. Ideal for managing cash flow gaps.",
+    "summary": [
+      {
+        "label": "Credit lines",
+        "value": "$10K \u2013 $250K"
+      },
+      {
+        "label": "APR from",
+        "value": "7.50%"
+      },
+      {
+        "label": "Draw period",
+        "value": "Revolving"
+      },
+      {
+        "label": "Annual fee",
+        "value": "$0"
+      },
+      {
+        "label": "Prepayment penalty",
+        "value": "None"
+      }
+    ],
+    "features": [
+      {
+        "title": "Pay Only What You Use",
+        "desc": "Interest only on your outstanding balance. No penalty for early repayment."
+      },
+      {
+        "title": "Quick Access",
+        "desc": "Draw funds online, by phone, or write a check. Funds available same day."
+      },
+      {
+        "title": "Revolving Credit",
+        "desc": "As you repay, your available credit replenishes. No need to reapply."
+      },
+      {
+        "title": "Cash Flow Management",
+        "desc": "Bridge seasonal gaps, cover payroll, or fund inventory purchases."
+      },
+      {
+        "title": "Online Management",
+        "desc": "Draw funds, make payments, and track balances from the dashboard."
+      },
+      {
+        "title": "No Collateral Required",
+        "desc": "Unsecured lines up to $100K. Secured options available for larger lines."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Get flexible funding today",
+    "cta_desc": "Apply online. Most businesses get a decision within 24 hours."
+  },
+  "payments": {
+    "title": "Business Payment Solutions",
+    "subtitle": "Accept payments in-store and online, send invoices, and manage your cash flow with integrated payment processing tools.",
+    "summary": [
+      {
+        "label": "Card-present rate",
+        "value": "2.6% + 10\u00a2"
+      },
+      {
+        "label": "Online rate",
+        "value": "2.9% + 30\u00a2"
+      },
+      {
+        "label": "Monthly fee",
+        "value": "$0"
+      },
+      {
+        "label": "Next-day deposits",
+        "value": "Included"
+      },
+      {
+        "label": "POS hardware",
+        "value": "From $49/mo"
+      }
+    ],
+    "features": [
+      {
+        "title": "Next-Day Deposits",
+        "desc": "Funds arrive in your Meridian account the next business day."
+      },
+      {
+        "title": "PCI Compliant",
+        "desc": "Fully PCI-compliant processing protects your customers' card data."
+      },
+      {
+        "title": "Sales Dashboard",
+        "desc": "Track transactions, refunds, and settlements in real time from one dashboard."
+      },
+      {
+        "title": "POS Systems",
+        "desc": "Full point-of-sale with inventory management, tips, and employee tracking."
+      },
+      {
+        "title": "No Monthly Minimums",
+        "desc": "No processing minimums or long-term contracts. Pay only when you sell."
+      },
+      {
+        "title": "Recurring Billing",
+        "desc": "Set up subscription payments and automatic billing for repeat customers."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Start accepting payments",
+    "cta_desc": "No monthly fee. No long-term contract. Get set up in days."
+  },
+  "performance-checking": {
+    "title": "Business Performance Checking",
+    "subtitle": "Full-featured checking for growing businesses. Unlimited transactions, higher cash deposit limits, and earnings credit to offset fees.",
+    "summary": [
+      {
+        "label": "Monthly fee",
+        "value": "$30 or $0"
+      },
+      {
+        "label": "Fee waiver",
+        "value": "$25,000 min balance"
+      },
+      {
+        "label": "Transactions",
+        "value": "Unlimited"
+      },
+      {
+        "label": "Cash deposits",
+        "value": "$20,000/month free"
+      },
+      {
+        "label": "Wire transfers",
+        "value": "10 free/month"
+      }
+    ],
+    "features": [
+      {
+        "title": "Unlimited Transactions",
+        "desc": "No per-transaction fees, no matter how much your business grows."
+      },
+      {
+        "title": "Earnings Credit",
+        "desc": "Earn credits on your balance to offset monthly service charges and fees."
+      },
+      {
+        "title": "Free Wire Transfers",
+        "desc": "10 free domestic wires per month. International wires at reduced rates."
+      },
+      {
+        "title": "Dedicated Advisor",
+        "desc": "A dedicated business banker to help manage your accounts and plan ahead."
+      },
+      {
+        "title": "Advanced Reporting",
+        "desc": "Custom reports, cash flow analysis, and transaction categorization."
+      },
+      {
+        "title": "Positive Pay",
+        "desc": "Prevent check fraud with automated verification of every check presented."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Scale your business with confidence",
+    "cta_desc": "Unlimited transactions and dedicated support for growing businesses."
+  },
+  "term-loans": {
+    "title": "Business Term Loans & SBA Lending",
+    "subtitle": "Fixed-rate term loans from $25,000 to $5 million. SBA 7(a) and 504 loans with longer terms and lower down payments for qualifying businesses.",
+    "summary": [
+      {
+        "label": "Term loan amounts",
+        "value": "$25K \u2013 $5M"
+      },
+      {
+        "label": "Term loan APR from",
+        "value": "6.75%"
+      },
+      {
+        "label": "SBA 7(a) up to",
+        "value": "$5,000,000"
+      },
+      {
+        "label": "SBA 504 up to",
+        "value": "$5,500,000"
+      },
+      {
+        "label": "Terms",
+        "value": "1 \u2013 25 years"
+      }
+    ],
+    "features": [
+      {
+        "title": "SBA Preferred Lender",
+        "desc": "Faster processing and in-house approval authority for SBA loans."
+      },
+      {
+        "title": "Dedicated Loan Officer",
+        "desc": "Work with a single point of contact from application through funding."
+      },
+      {
+        "title": "Competitive Rates",
+        "desc": "Fixed and variable rate options to match your business needs."
+      },
+      {
+        "title": "Flexible Terms",
+        "desc": "1 to 25 year terms. Match repayment to the useful life of what you're financing."
+      },
+      {
+        "title": "Digital Application",
+        "desc": "Apply online, upload documents, and track your loan status digitally."
+      },
+      {
+        "title": "Commercial Real Estate",
+        "desc": "Finance owner-occupied properties with SBA 504 loans up to $5.5M."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Fund your next move",
+    "cta_desc": "Apply online or schedule a consultation with a lending specialist."
+  },
+  "travel-rewards-card": {
+    "title": "Business Travel Rewards Visa Signature\u00ae",
+    "subtitle": "Earn 3X points on travel and dining, 1.5X on everything else. Priority Pass lounge access and comprehensive travel insurance.",
+    "summary": [
+      {
+        "label": "Travel & dining",
+        "value": "3X points"
+      },
+      {
+        "label": "Everything else",
+        "value": "1.5X points"
+      },
+      {
+        "label": "Welcome bonus",
+        "value": "75,000 points"
+      },
+      {
+        "label": "Annual fee",
+        "value": "$95"
+      },
+      {
+        "label": "Lounge access",
+        "value": "Priority Pass"
+      }
+    ],
+    "features": [
+      {
+        "title": "No Foreign Transaction Fees",
+        "desc": "Your team can travel internationally without added card fees."
+      },
+      {
+        "title": "Travel Insurance",
+        "desc": "Trip cancellation, baggage delay, and travel accident coverage for all cardholders."
+      },
+      {
+        "title": "Auto Rental Insurance",
+        "desc": "Primary rental car coverage when employees pay with the card."
+      },
+      {
+        "title": "Employee Cards",
+        "desc": "Issue cards to traveling employees. All points accrue to the business account."
+      },
+      {
+        "title": "Expense Reporting",
+        "desc": "Categorized statements and year-end summaries for easy bookkeeping."
+      },
+      {
+        "title": "Flexible Redemption",
+        "desc": "Redeem for travel, statement credits, gift cards, or cash back."
+      }
+    ],
+    "faqs": [],
+    "cta_title": "Reward your business travel",
+    "cta_desc": "Apply online for 75,000 bonus points."
+  }
+}
