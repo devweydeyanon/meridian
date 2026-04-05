@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Header, Footer } from '@/components/layout';
 import { useFormAutosave } from '@/components/useFormAutosave';
+import { validators, formatters } from '@/lib/formValidation';
 
 const products = [
   { id: 'checking', label: 'Checking', desc: 'Everyday banking with debit card and mobile access.', icon: 'M2 5h20v14H2z M2 10h20' },
@@ -32,26 +33,70 @@ export default function OpenAccountPage() {
     password: '', confirm: '',
   });
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const clearFieldError = (field: string) => {
+    if (fieldErrors[field]) setFieldErrors(prev => { const n = { ...prev }; delete n[field]; return n; });
+  };
+
+  const updateFormatted = (field: string, value: string, formatter?: (v: string) => string) => {
+    const formatted = formatter ? formatter(value) : value;
+    update(field, formatted);
+    clearFieldError(field);
+  };
+
   const next = () => {
     setError('');
-    if (step === 1 && !product) { setError('Please select a product.'); return; }
+    const fe: Record<string, string> = {};
+
+    if (step === 1 && !product) { setError('Please select a product.'); setFieldErrors(fe); return; }
+
     if (step === 2) {
-      if (!form.first_name || !form.last_name || !form.email || !form.dob || !form.address || !form.city || !form.state || !form.zip || !form.ssn) {
-        setError('Please fill in all required fields.'); return;
+      const r = validators.required;
+      const fn = r(form.first_name, 'First name'); if (fn) fe.first_name = fn;
+      const ln = r(form.last_name, 'Last name'); if (ln) fe.last_name = ln;
+      const em = validators.email(form.email); if (em) fe.email = em;
+      const ph = validators.phone(form.phone); if (ph) fe.phone = ph;
+      const dob = validators.dob(form.dob); if (dob) fe.dob = dob;
+      const addr = r(form.address, 'Street address'); if (addr) fe.address = addr;
+      const city = r(form.city, 'City'); if (city) fe.city = city;
+      const st = r(form.state, 'State'); if (st) fe.state = st;
+      const zip = validators.zip(form.zip); if (zip) fe.zip = zip;
+      const ssn = validators.ssn(form.ssn); if (ssn) fe.ssn = ssn;
+    }
+
+    if (step === 3) {
+      const emp = validators.required(form.employment, 'Employment status'); if (emp) fe.employment = emp;
+      const inc = validators.income(form.income); if (inc) fe.income = inc;
+    }
+
+    if (step === 4) {
+      if (!form.agree1 || !form.agree2 || !form.agree3) fe.agree = 'Please agree to all terms to continue.';
+      const pw = validators.password(form.password); if (pw) fe.password = pw;
+      if (!fe.password) {
+        const pm = validators.passwordMatch(form.password, form.confirm); if (pm) fe.confirm = pm;
       }
     }
-    if (step === 3 && !form.employment) { setError('Please select your employment status.'); return; }
-    if (step === 4) {
-      if (!form.agree1 || !form.agree2 || !form.agree3) { setError('Please agree to all terms to continue.'); return; }
-      if (!form.password || form.password.length < 8) { setError('Password must be at least 8 characters.'); return; }
-      if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
+
+    if (step === 5) {
+      const rt = validators.routing(form.routing); if (rt) fe.routing = rt;
+      const dp = validators.deposit(form.deposit); if (dp) fe.deposit = dp;
     }
+
+    setFieldErrors(fe);
+    if (Object.keys(fe).length > 0) {
+      setError(step === 4 && fe.agree ? fe.agree : 'Please fix the errors below.');
+      return;
+    }
+
     if (step === 5) { handleSubmit(); return; }
     setStep(step + 1);
   };
+
+  const fieldClass = (field: string) =>
+    `w-full px-3.5 py-2.5 text-sm border rounded-md outline-none focus:ring-2 focus:ring-accent-500/10 ${fieldErrors[field] ? 'border-red-400 focus:border-red-400' : 'border-gray-300 focus:border-accent-500'}`;
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -135,21 +180,21 @@ export default function OpenAccountPage() {
                 <h2 className="text-lg font-bold text-gray-800 mb-1">Personal information</h2>
                 <p className="text-sm text-gray-500 mb-5">Tell us a bit about yourself to get started.</p>
                 <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">First name *</label><input value={form.first_name} onChange={e => update('first_name', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Last name *</label><input value={form.last_name} onChange={e => update('last_name', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">First name *</label><input value={form.first_name} onChange={e => updateFormatted('first_name', e.target.value)} className={fieldClass('first_name')} />{fieldErrors.first_name && <p className="text-xs text-red-500 mt-1">{fieldErrors.first_name}</p>}</div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Last name *</label><input value={form.last_name} onChange={e => updateFormatted('last_name', e.target.value)} className={fieldClass('last_name')} />{fieldErrors.last_name && <p className="text-xs text-red-500 mt-1">{fieldErrors.last_name}</p>}</div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Email *</label><input value={form.email} onChange={e => update('email', e.target.value)} type="email" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Phone</label><input value={form.phone} onChange={e => update('phone', e.target.value)} type="tel" placeholder="(555) 000-0000" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Email *</label><input value={form.email} onChange={e => updateFormatted('email', e.target.value)} type="email" className={fieldClass('email')} placeholder="you@example.com" />{fieldErrors.email && <p className="text-xs text-red-500 mt-1">{fieldErrors.email}</p>}</div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Phone</label><input value={form.phone} onChange={e => updateFormatted('phone', e.target.value, formatters.phone)} type="tel" placeholder="(555) 000-0000" className={fieldClass('phone')} />{fieldErrors.phone && <p className="text-xs text-red-500 mt-1">{fieldErrors.phone}</p>}</div>
                 </div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Date of birth *</label><input value={form.dob} onChange={e => update('dob', e.target.value)} type="date" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Street address *</label><input value={form.address} onChange={e => update('address', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Date of birth *</label><input value={form.dob} onChange={e => updateFormatted('dob', e.target.value)} type="date" className={fieldClass('dob')} />{fieldErrors.dob && <p className="text-xs text-red-500 mt-1">{fieldErrors.dob}</p>}</div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Street address *</label><input value={form.address} onChange={e => updateFormatted('address', e.target.value)} className={fieldClass('address')} />{fieldErrors.address && <p className="text-xs text-red-500 mt-1">{fieldErrors.address}</p>}</div>
                 <div className="grid grid-cols-3 gap-4 mt-4 max-md:grid-cols-1">
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">City *</label><input value={form.city} onChange={e => update('city', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State *</label><select value={form.state} onChange={e => update('state', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500 bg-white"><option value="">Select</option>{usStates.map(s => <option key={s}>{s}</option>)}</select></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">ZIP *</label><input value={form.zip} onChange={e => update('zip', e.target.value)} maxLength={5} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">City *</label><input value={form.city} onChange={e => updateFormatted('city', e.target.value)} className={fieldClass('city')} />{fieldErrors.city && <p className="text-xs text-red-500 mt-1">{fieldErrors.city}</p>}</div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State *</label><select value={form.state} onChange={e => { update('state', e.target.value); clearFieldError('state'); }} className={`${fieldClass('state')} bg-white`}><option value="">Select</option>{usStates.map(s => <option key={s}>{s}</option>)}</select>{fieldErrors.state && <p className="text-xs text-red-500 mt-1">{fieldErrors.state}</p>}</div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">ZIP *</label><input value={form.zip} onChange={e => updateFormatted('zip', e.target.value, formatters.zip)} className={fieldClass('zip')} />{fieldErrors.zip && <p className="text-xs text-red-500 mt-1">{fieldErrors.zip}</p>}</div>
                 </div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Social Security Number *</label><input value={form.ssn} onChange={e => update('ssn', e.target.value)} type="password" placeholder="•••-••-••••" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /><p className="text-xs text-gray-400 mt-1">Required for identity verification. Encrypted and secure.</p></div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Social Security Number *</label><input value={form.ssn} onChange={e => updateFormatted('ssn', e.target.value, formatters.ssn)} placeholder="000-00-0000" className={fieldClass('ssn')} />{fieldErrors.ssn && <p className="text-xs text-red-500 mt-1">{fieldErrors.ssn}</p>}<p className="text-xs text-gray-400 mt-1">Required for identity verification. Encrypted and secure.</p></div>
               </>
             )}
 
@@ -158,15 +203,15 @@ export default function OpenAccountPage() {
               <>
                 <h2 className="text-lg font-bold text-gray-800 mb-1">Employment information</h2>
                 <p className="text-sm text-gray-500 mb-5">This helps us verify your application.</p>
-                <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Employment status *</label><select value={form.employment} onChange={e => update('employment', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500 bg-white"><option value="">Select</option><option>Employed</option><option>Self-employed</option><option>Retired</option><option>Student</option><option>Unemployed</option></select></div>
+                <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Employment status *</label><select value={form.employment} onChange={e => { update('employment', e.target.value); clearFieldError('employment'); }} className={`${fieldClass('employment')} bg-white`}><option value="">Select</option><option>Employed</option><option>Self-employed</option><option>Retired</option><option>Student</option><option>Unemployed</option></select>{fieldErrors.employment && <p className="text-xs text-red-500 mt-1">{fieldErrors.employment}</p>}</div>
                 <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Employer name</label><input value={form.employer} onChange={e => update('employer', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Job title</label><input value={form.job_title} onChange={e => update('job_title', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Employer name</label><input value={form.employer} onChange={e => update('employer', e.target.value)} className={fieldClass('employer')} /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Job title</label><input value={form.job_title} onChange={e => update('job_title', e.target.value)} className={fieldClass('job_title')} /></div>
                 </div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Annual income</label><input value={form.income} onChange={e => update('income', e.target.value)} placeholder="$" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Annual income</label><input value={form.income} onChange={e => updateFormatted('income', e.target.value, formatters.currency)} placeholder="$" className={fieldClass('income')} />{fieldErrors.income && <p className="text-xs text-red-500 mt-1">{fieldErrors.income}</p>}</div>
                 <div className="grid grid-cols-2 gap-4 mt-4 max-md:grid-cols-1">
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Other income (optional)</label><input value={form.other_income} onChange={e => update('other_income', e.target.value)} placeholder="$" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Source</label><input value={form.other_source} onChange={e => update('other_source', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Other income (optional)</label><input value={form.other_income} onChange={e => updateFormatted('other_income', e.target.value, formatters.currency)} placeholder="$" className={fieldClass('other_income')} /></div>
+                  <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Source</label><input value={form.other_source} onChange={e => update('other_source', e.target.value)} className={fieldClass('other_source')} /></div>
                 </div>
               </>
             )}
@@ -190,8 +235,8 @@ export default function OpenAccountPage() {
                     ))}
                   </div>
                 </div>
-                <div className="mb-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Create password *</label><input value={form.password} onChange={e => update('password', e.target.value)} type="password" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /><p className="text-xs text-gray-400 mt-1">Min 8 characters, include uppercase and a number.</p></div>
-                <div className="mb-6"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Confirm password *</label><input value={form.confirm} onChange={e => update('confirm', e.target.value)} type="password" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                <div className="mb-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Create password *</label><input value={form.password} onChange={e => { update('password', e.target.value); clearFieldError('password'); }} type="password" className={fieldClass('password')} />{fieldErrors.password && <p className="text-xs text-red-500 mt-1">{fieldErrors.password}</p>}<p className="text-xs text-gray-400 mt-1">Min 8 characters, include an uppercase letter and a number.</p></div>
+                <div className="mb-6"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Confirm password *</label><input value={form.confirm} onChange={e => { update('confirm', e.target.value); clearFieldError('confirm'); }} type="password" className={fieldClass('confirm')} />{fieldErrors.confirm && <p className="text-xs text-red-500 mt-1">{fieldErrors.confirm}</p>}</div>
                 <div className="space-y-3">
                   {[
                     { f: 'agree1', t: 'I have read and agree to the Deposit Account Agreement and Electronic Consent.' },
@@ -209,9 +254,9 @@ export default function OpenAccountPage() {
               <>
                 <h2 className="text-lg font-bold text-gray-800 mb-1">Fund your account</h2>
                 <p className="text-sm text-gray-500 mb-5">Link an external account to make your initial deposit. You can also skip this step.</p>
-                <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Routing number</label><input value={form.routing} onChange={e => update('routing', e.target.value)} placeholder="9 digits" maxLength={9} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Account number</label><input value={form.account_ext} onChange={e => update('account_ext', e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Deposit amount</label><input value={form.deposit} onChange={e => update('deposit', e.target.value)} placeholder="$25 minimum" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" /></div>
+                <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Routing number</label><input value={form.routing} onChange={e => updateFormatted('routing', e.target.value, formatters.routing)} placeholder="9 digits" className={fieldClass('routing')} />{fieldErrors.routing && <p className="text-xs text-red-500 mt-1">{fieldErrors.routing}</p>}</div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Account number</label><input value={form.account_ext} onChange={e => updateFormatted('account_ext', e.target.value, formatters.accountNumber)} className={fieldClass('account_ext')} /></div>
+                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Deposit amount</label><input value={form.deposit} onChange={e => updateFormatted('deposit', e.target.value, formatters.currency)} placeholder="$25 minimum" className={fieldClass('deposit')} />{fieldErrors.deposit && <p className="text-xs text-red-500 mt-1">{fieldErrors.deposit}</p>}</div>
                 <p className="text-xs text-gray-400 mt-3">Your deposit will be transferred within 1–3 business days. You can also fund later from the dashboard.</p>
               </>
             )}
