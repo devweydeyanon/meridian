@@ -4,7 +4,7 @@ import { getDB } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
 // Admin emails — in production, use a roles table
-const ADMIN_EMAILS = ['admin@meridianbank.com'];
+const ADMIN_EMAILS = ['admin@meridianbank.com', 'demo@meridianbank.com'];
 
 export async function GET() {
   try {

@@ -316,3 +316,22 @@ const demo: UserSeed = {
 };
 
 export const TEST_USERS: UserSeed[] = [michael, sarah, james, emily, demo];
+
+// ============================================
+// ADMIN USER
+// ============================================
+const admin: UserSeed = {
+  email: 'admin@meridianbank.com', password: 'Admin2026!',
+  first_name: 'Meridian', last_name: 'Admin', phone: '(555) 555-0001',
+  checking: 500000.00, savings: 1000000.00, emergency: 200000, cd: 500000,
+  cdApy: '5.00%', cdMaturity: '2027-12-01',
+  cc1Name: 'Meridian Rewards Visa Platinum', cc1Limit: 100000, cc1Balance: 0, cc1Due: '2026-04-22', cc1Rewards: '500,000 pts',
+  cc2Name: 'Meridian Cash Back Mastercard', cc2Limit: 50000, cc2Balance: 0, cc2Due: '2026-04-18', cc2Rewards: '$0.00',
+  transactions: [
+    ...paycheck(15000, 24, 'Meridian Bank — Executive Salary'),
+    ...interest(24, 340.00),
+  ],
+  payees: [],
+};
+
+TEST_USERS.push(admin);
