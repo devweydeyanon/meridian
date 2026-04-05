@@ -1,31 +1,66 @@
 'use client';
 
 import { useState } from 'react';
-import { ACCOUNTS, TRANSACTIONS, fmt, fmtDate } from '../context';
+import { useDashboard, fmt, fmtDate } from '../context';
 
 export default function TransfersPage() {
-  const [from, setFrom] = useState('chk-001');
-  const [to, setTo] = useState('sav-001');
+  const { accounts, transactions, refreshData, loading } = useDashboard();
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [amount, setAmount] = useState('');
   const [memo, setMemo] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [processing, setProcessing] = useState(false);
+
+  const transferAccounts = accounts.filter(a => a.type !== 'cd' && a.status === 'active');
+  const transferTxns = transactions.filter(t => t.category === 'Transfer');
+
+  // Set defaults once loaded
+  if (!from && transferAccounts.length > 0) setFrom(String(transferAccounts[0].id));
+  if (!to && transferAccounts.length > 1) setTo(String(transferAccounts[1].id));
+
+  if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
+
+  const fromAccount = accounts.find(a => a.id === Number(from));
+  const toAccount = accounts.find(a => a.id === Number(to));
 
   const submit = () => {
-    if (!amount || parseFloat(amount) <= 0) return;
+    setError('');
+    const amt = parseFloat(amount);
+    if (!amt || amt <= 0) { setError('Please enter a valid amount.'); return; }
+    if (from === to) { setError('From and To accounts must be different.'); return; }
+    if (fromAccount && amt > fromAccount.available) { setError(`Insufficient funds. Available: ${fmt(fromAccount.available)}`); return; }
     setShowConfirm(true);
   };
 
-  const confirm = () => {
-    setShowConfirm(false);
-    setShowSuccess(true);
-    setAmount('');
-    setMemo('');
-    setTimeout(() => setShowSuccess(false), 4000);
+  const confirm = async () => {
+    setProcessing(true);
+    try {
+      const res = await fetch('/api/dashboard/transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from_account_id: Number(from), to_account_id: Number(to), amount: parseFloat(amount), memo }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowConfirm(false);
+        setShowSuccess(true);
+        setAmount('');
+        setMemo('');
+        await refreshData();
+        setTimeout(() => setShowSuccess(false), 4000);
+      } else {
+        setError(data.error || 'Transfer failed.');
+        setShowConfirm(false);
+      }
+    } catch {
+      setError('Connection error.');
+      setShowConfirm(false);
+    }
+    setProcessing(false);
   };
-
-  const transferTxns = TRANSACTIONS.filter(t => t.category === 'Transfer');
-  const transferAccounts = ACCOUNTS.filter(a => a.type !== 'cd');
 
   return (
     <>
@@ -35,6 +70,12 @@ export default function TransfersPage() {
           Transfer submitted successfully.
         </div>
       )}
+      {error && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg mb-5 text-[13px] bg-red-50 text-red-700 border border-red-200">
+          {error}
+          <button onClick={() => setError('')} className="ml-auto bg-transparent border-none cursor-pointer opacity-50 hover:opacity-100 p-1">✕</button>
+        </div>
+      )}
 
       <div className="bg-white rounded-xl border border-gray-200 p-7 max-md:p-5">
         <h2 className="text-base font-semibold text-gray-900 mb-5">Transfer Between Accounts</h2>
@@ -42,19 +83,19 @@ export default function TransfersPage() {
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">From Account</label>
             <select value={from} onChange={e => setFrom(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
-              {transferAccounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.number}) — {fmt(acc.available)}</option>)}
+              {transferAccounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.account_number}) — {fmt(acc.available)}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">To Account</label>
             <select value={to} onChange={e => setTo(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
-              {transferAccounts.filter(a => a.id !== from).map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.number})</option>)}
+              {transferAccounts.filter(a => a.id !== Number(from)).map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.account_number})</option>)}
             </select>
           </div>
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Amount</label>
             <input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00" min="0.01" step="0.01" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" />
-            <p className="text-xs text-gray-400 mt-1">Available: {fmt(ACCOUNTS.find(a => a.id === from)?.available || 0)}</p>
+            {fromAccount && <p className="text-xs text-gray-400 mt-1">Available: {fmt(fromAccount.available)}</p>}
           </div>
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Memo (optional)</label>
@@ -69,6 +110,7 @@ export default function TransfersPage() {
 
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mt-7">
         <div className="px-5 py-4 border-b border-gray-100"><div className="text-[15px] font-semibold text-gray-900">Recent Transfers</div></div>
+        {transferTxns.length === 0 && <div className="px-5 py-8 text-center text-sm text-gray-400">No transfers yet.</div>}
         {transferTxns.map(txn => (
           <div key={txn.id} className="flex items-center px-5 py-3 border-b border-gray-50">
             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mr-3 ${txn.type === 'credit' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-accent-500'}`}>
@@ -84,16 +126,15 @@ export default function TransfersPage() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[200] backdrop-blur-[2px]" onClick={() => setShowConfirm(false)}>
           <div className="bg-white rounded-2xl p-8 max-w-[420px] w-[90%] shadow-lg" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Confirm Transfer</h3>
-            <p className="text-sm text-gray-600 mb-4">Please review the details:</p>
             <div className="bg-gray-50 rounded-lg p-4 text-sm space-y-2 mb-6">
-              <div className="flex justify-between"><span className="text-gray-500">From</span><span className="font-medium">{ACCOUNTS.find(a => a.id === from)?.name}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">To</span><span className="font-medium">{ACCOUNTS.find(a => a.id === to)?.name}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">From</span><span className="font-medium">{fromAccount?.name}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">To</span><span className="font-medium">{toAccount?.name}</span></div>
               <div className="flex justify-between"><span className="text-gray-500">Amount</span><span className="font-bold text-base">{fmt(parseFloat(amount))}</span></div>
               {memo && <div className="flex justify-between"><span className="text-gray-500">Memo</span><span>{memo}</span></div>}
             </div>
             <div className="flex justify-end gap-3">
               <button onClick={() => setShowConfirm(false)} className="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
-              <button onClick={confirm} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800">Confirm</button>
+              <button onClick={confirm} disabled={processing} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 disabled:opacity-60">{processing ? 'Processing...' : 'Confirm'}</button>
             </div>
           </div>
         </div>

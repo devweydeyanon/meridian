@@ -1,6 +1,6 @@
 'use client';
 
-import { ACCOUNTS } from '../context';
+import { useDashboard } from '../context';
 
 const months = [
   { period: 'March 2026', date: 'Available Apr 5, 2026', ready: false },
@@ -12,11 +12,13 @@ const months = [
 ];
 
 export default function StatementsPage() {
+  const { accounts } = useDashboard();
+
   return (
     <>
       <div className="flex gap-2 mb-6 flex-wrap">
         <button className="px-3.5 py-2 text-xs font-semibold bg-navy-900 text-white border-navy-900 rounded-lg border cursor-pointer font-sans">All Accounts</button>
-        {ACCOUNTS.filter(a => a.type !== 'cd').map(acc => (
+        {accounts.filter(a => a.type !== 'cd').map(acc => (
           <button key={acc.id} className="px-3.5 py-2 text-xs font-semibold bg-white text-gray-600 border-gray-200 rounded-lg border cursor-pointer font-sans hover:bg-gray-50">{acc.name.replace('Meridian ', '')}</button>
         ))}
       </div>
@@ -32,11 +34,7 @@ export default function StatementsPage() {
               <div className="text-sm font-medium text-gray-800">{m.period}</div>
               <div className="text-xs text-gray-400">{m.date}</div>
             </div>
-            {m.ready && (
-              <button className="flex items-center gap-1.5 text-xs font-semibold text-accent-500 cursor-pointer bg-transparent border-none font-sans hover:text-accent-600">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>PDF
-              </button>
-            )}
+            {m.ready && <button className="flex items-center gap-1.5 text-xs font-semibold text-accent-500 cursor-pointer bg-transparent border-none font-sans">PDF</button>}
           </div>
         ))}
       </div>
@@ -51,9 +49,7 @@ export default function StatementsPage() {
             <div className="text-sm font-medium text-gray-800">2025 Tax Year — 1099-INT</div>
             <div className="text-xs text-gray-400">Generated Jan 31, 2026</div>
           </div>
-          <button className="flex items-center gap-1.5 text-xs font-semibold text-accent-500 cursor-pointer bg-transparent border-none font-sans">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>PDF
-          </button>
+          <button className="flex items-center gap-1.5 text-xs font-semibold text-accent-500 cursor-pointer bg-transparent border-none font-sans">PDF</button>
         </div>
       </div>
     </>

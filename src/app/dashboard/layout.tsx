@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { DashboardContext } from './context';
+import { DashboardProvider } from './context';
 
 interface User {
   id: number;
@@ -168,9 +168,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           <div className="p-6 max-md:p-4 max-md:pb-10">
-            <DashboardContext.Provider value={{ user, balanceVisible }}>
+            <DashboardProvider user={user} balanceVisible={balanceVisible}>
               {children}
-            </DashboardContext.Provider>
+            </DashboardProvider>
           </div>
         </main>
       </div>
