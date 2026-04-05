@@ -2,109 +2,178 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminPanel() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState('users');
   const router = useRouter();
 
   useEffect(() => {
     fetch('/api/admin')
-      .then(res => {
-        if (!res.ok) throw new Error('Not authorized');
-        return res.json();
-      })
+      .then(res => { if (!res.ok) throw new Error('Not authorized'); return res.json(); })
       .then(d => { setData(d); setLoading(false); })
       .catch(() => router.push('/login'));
   }, [router]);
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Open Sans', sans-serif" }}>
-      <p style={{ color: '#6c757d' }}>Loading admin panel...</p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center font-sans">
+      <div className="text-center">
+        <div className="w-8 h-8 border-3 border-gray-300 border-t-navy-900 rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-sm text-gray-500">Loading admin panel...</p>
+      </div>
     </div>
   );
 
-  const formatCurrency = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+  const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+  const fmtTime = (d: string) => new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa', fontFamily: "'Open Sans', sans-serif" }}>
-      <header style={{ background: '#0a1628', padding: '0 24px', height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <a href="/" style={{ color: 'white', fontSize: 17, fontWeight: 700, textDecoration: 'none' }}>Meridian<span style={{ fontWeight: 400, opacity: 0.7 }}>Bank</span></a>
-          <span style={{ color: '#c8102e', fontSize: 11, fontWeight: 700, background: 'rgba(200,16,46,0.15)', padding: '3px 10px', borderRadius: 100 }}>ADMIN</span>
+    <div className="min-h-screen bg-gray-100 font-sans">
+      {/* Header */}
+      <div className="bg-navy-900 text-white px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-cta-primary rounded-lg flex items-center justify-center font-bold text-sm">M</div>
+          <div>
+            <div className="text-base font-semibold">Meridian Bank</div>
+            <div className="text-[10px] uppercase tracking-[1.5px] text-white/40">Admin Panel</div>
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <a href="/dashboard" style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, textDecoration: 'none' }}>Dashboard</a>
-          <button onClick={() => { fetch('/api/auth/logout', { method: 'POST' }).then(() => router.push('/')); }} style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>Log out</button>
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard" className="text-xs text-white/60 hover:text-white no-underline">Dashboard</Link>
+          <Link href="/" className="text-xs text-white/60 hover:text-white no-underline">Website</Link>
         </div>
-      </header>
+      </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 24px' }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#1a1a2e', marginBottom: 24 }}>Admin Panel</h1>
-
+      <div className="max-w-[1100px] mx-auto px-6 py-6">
         {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 32 }}>
+        <div className="grid grid-cols-3 gap-4 mb-6 max-md:grid-cols-1">
           {[
-            { label: 'Registered Users', value: data.stats.total_users, color: '#0a1628' },
-            { label: 'Contact Submissions', value: data.stats.total_contacts, color: '#0077be' },
-            { label: 'Chat Messages', value: data.stats.total_chat_messages, color: '#0f7b3f' },
+            { label: 'Total Users', value: data.stats.total_users },
+            { label: 'Contact Submissions', value: data.stats.total_contacts },
+            { label: 'Chat Messages', value: data.stats.total_chat_messages },
           ].map(s => (
-            <div key={s.label} style={{ background: 'white', border: '1px solid #e9ecef', borderRadius: 10, padding: 22 }}>
-              <p style={{ fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>{s.label}</p>
-              <p style={{ fontSize: 32, fontWeight: 800, color: s.color }}>{s.value}</p>
+            <div key={s.label} className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{s.label}</div>
+              <div className="text-[28px] font-bold text-gray-900 mt-1">{s.value}</div>
             </div>
           ))}
         </div>
 
-        {/* Users Table */}
-        <div style={{ background: 'white', border: '1px solid #e9ecef', borderRadius: 10, overflow: 'hidden', marginBottom: 32 }}>
-          <div style={{ padding: '16px 22px', borderBottom: '1px solid #e9ecef' }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1a1a2e' }}>Registered Users</h2>
-          </div>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '10px 22px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase' }}>Name</th>
-                <th style={{ padding: '10px 22px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase' }}>Email</th>
-                <th style={{ padding: '10px 22px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase' }}>Account</th>
-                <th style={{ padding: '10px 22px', textAlign: 'right', fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase' }}>Balance</th>
-                <th style={{ padding: '10px 22px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: '#6c757d', textTransform: 'uppercase' }}>Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.users.map((u: any) => (
-                <tr key={u.id} style={{ borderBottom: '1px solid #f8f9fa' }}>
-                  <td style={{ padding: '12px 22px', fontSize: 13, fontWeight: 600, color: '#1a1a2e' }}>{u.name}</td>
-                  <td style={{ padding: '12px 22px', fontSize: 13, color: '#6c757d' }}>{u.email}</td>
-                  <td style={{ padding: '12px 22px', fontSize: 12, color: '#6c757d' }}>{u.account_number}</td>
-                  <td style={{ padding: '12px 22px', fontSize: 13, fontWeight: 700, color: '#1a1a2e', textAlign: 'right' }}>{formatCurrency(u.balance)}</td>
-                  <td style={{ padding: '12px 22px', fontSize: 12, color: '#adb5bd' }}>{new Date(u.created_at).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Tabs */}
+        <div className="flex gap-1 mb-5 bg-white rounded-lg border border-gray-200 p-1 w-fit">
+          {['users', 'contacts', 'verification'].map(t => (
+            <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 text-xs font-semibold rounded-md cursor-pointer font-sans transition-all ${tab === t ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>
+              {t === 'verification' ? 'Verification Codes' : t.charAt(0).toUpperCase() + t.slice(1)}
+            </button>
+          ))}
         </div>
 
-        {/* Contact Submissions */}
-        <div style={{ background: 'white', border: '1px solid #e9ecef', borderRadius: 10, overflow: 'hidden' }}>
-          <div style={{ padding: '16px 22px', borderBottom: '1px solid #e9ecef' }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1a1a2e' }}>Recent Contact Submissions</h2>
+        {/* Users Tab */}
+        {tab === 'users' && (
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-100">
+              <div className="text-[15px] font-semibold text-gray-900">Registered Users ({data.users.length})</div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[700px]">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Name</th>
+                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Account</th>
+                    <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Balance</th>
+                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.users.map((u: any) => (
+                    <tr key={u.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                      <td className="px-5 py-3 font-medium text-gray-800">{u.name}</td>
+                      <td className="px-5 py-3 text-gray-600">{u.email}</td>
+                      <td className="px-5 py-3 text-gray-500 font-mono text-xs">{u.account_number || '—'}</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-800">{fmt(u.balance || 0)}</td>
+                      <td className="px-5 py-3 text-gray-400 text-xs">{u.created_at ? fmtTime(u.created_at) : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          {data.recent_contacts.length === 0 ? (
-            <p style={{ padding: 22, fontSize: 13, color: '#adb5bd' }}>No submissions yet.</p>
-          ) : (
-            data.recent_contacts.map((c: any) => (
-              <div key={c.id} style={{ padding: '14px 22px', borderBottom: '1px solid #f8f9fa' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a2e' }}>{c.first_name} {c.last_name} — {c.topic || 'General'}</span>
-                  <span style={{ fontSize: 11, color: '#adb5bd' }}>{new Date(c.created_at).toLocaleDateString()}</span>
+        )}
+
+        {/* Contacts Tab */}
+        {tab === 'contacts' && (
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-100">
+              <div className="text-[15px] font-semibold text-gray-900">Contact Submissions</div>
+            </div>
+            {data.recent_contacts?.length > 0 ? data.recent_contacts.map((c: any) => (
+              <div key={c.id} className="px-5 py-4 border-b border-gray-50">
+                <div className="flex justify-between items-start mb-1">
+                  <div className="text-sm font-medium text-gray-800">{c.first_name} {c.last_name}</div>
+                  <div className="text-xs text-gray-400">{c.created_at ? fmtTime(c.created_at) : ''}</div>
                 </div>
-                <p style={{ fontSize: 13, color: '#6c757d' }}>{c.email}</p>
-                <p style={{ fontSize: 13, color: '#495057', marginTop: 4 }}>{c.message}</p>
+                <div className="text-xs text-gray-500 mb-1">{c.email} · {c.topic || 'General'}</div>
+                <div className="text-sm text-gray-600">{c.message}</div>
               </div>
-            ))
-          )}
-        </div>
+            )) : (
+              <div className="px-5 py-8 text-center text-sm text-gray-400">No contact submissions yet.</div>
+            )}
+          </div>
+        )}
+
+        {/* Verification Codes Tab */}
+        {tab === 'verification' && (
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-100">
+              <div className="text-[15px] font-semibold text-gray-900">Verification Codes</div>
+              <div className="text-xs text-gray-400 mt-0.5">View OTP codes sent to users. Use these to test login verification.</div>
+            </div>
+            {data.verification_codes?.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[700px]">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">User</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
+                      <th className="text-center px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Code</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Type</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Expires</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.verification_codes.map((vc: any) => {
+                      const expired = new Date(vc.expires_at) < new Date();
+                      const status = vc.used ? 'Used' : expired ? 'Expired' : 'Active';
+                      const statusColor = vc.used ? 'text-gray-400 bg-gray-100' : expired ? 'text-red-600 bg-red-50' : 'text-emerald-700 bg-emerald-50';
+                      return (
+                        <tr key={vc.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                          <td className="px-5 py-3 font-medium text-gray-800">{vc.user_name}</td>
+                          <td className="px-5 py-3 text-gray-600">{vc.email}</td>
+                          <td className="px-5 py-3 text-center">
+                            <span className="font-mono text-lg font-bold text-navy-900 tracking-widest">{vc.code}</span>
+                          </td>
+                          <td className="px-5 py-3 text-gray-500 capitalize">{vc.type}</td>
+                          <td className="px-5 py-3">
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColor}`}>{status}</span>
+                          </td>
+                          <td className="px-5 py-3 text-gray-400 text-xs">{fmtTime(vc.expires_at)}</td>
+                          <td className="px-5 py-3 text-gray-400 text-xs">{fmtTime(vc.created_at)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="px-5 py-8 text-center text-sm text-gray-400">No verification codes generated yet.</div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

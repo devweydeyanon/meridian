@@ -35,7 +35,12 @@ export function LoginPanel() {
       });
       const data = await res.json();
       if (res.ok) {
-        router.push('/dashboard');
+        const data = await res.json();
+        if (data.requiresVerification) {
+          router.push(`/verify?email=${encodeURIComponent(data.email)}`);
+        } else {
+          router.push('/dashboard');
+        }
       } else {
         setApiError(data.error || 'Invalid email or password.');
         setLoading(false);

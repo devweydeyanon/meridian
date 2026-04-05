@@ -47,16 +47,27 @@ export async function POST(req: NextRequest) {
 
     await sql`UPDATE users SET last_login = NOW() WHERE id = ${user.id}`;
 
-    const token = signToken({
-      id: user.id, email: user.email,
-      first_name: user.first_name, last_name: user.last_name,
+    // Generate OTP for two-factor verification
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    // Invalidate previous codes
+    await sql`UPDATE verification_codes SET used = TRUE WHERE email = ${email} AND used = FALSE`;
+
+    // Store new code
+    await sql`
+      INSERT INTO verification_codes (user_id, email, code, type, expires_at)
+      VALUES (${user.id}, ${email}, ${code}, 'login', ${expiresAt.toISOString()})
+    `;
+
+    logger.info('Login OTP generated', { userId: user.id, email });
+
+    // Don't set auth cookie yet — wait for OTP verification
+    return NextResponse.json({ 
+      success: true, 
+      requiresVerification: true,
+      email: user.email,
     });
-
-    logger.info('Successful login', { userId: user.id, email });
-
-    const response = NextResponse.json({ success: true, user: { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name } });
-    response.cookies.set('meridian_auth', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 60 * 60 * 24 * 7, path: '/' });
-    return response;
   } catch (error: any) {
     logger.error('Login error', { error: error.message });
     return NextResponse.json({ error: 'Login failed' }, { status: 500 });

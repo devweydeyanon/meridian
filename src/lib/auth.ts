@@ -28,3 +28,17 @@ export async function getAuthUser(): Promise<UserPayload | null> {
   if (!token) return null;
   return verifyToken(token);
 }
+
+export function createSession(userId: number, response: any) {
+  // This is used by the verify route to set auth cookie after OTP verification
+  // The actual token is set in the login route via Set-Cookie header
+  // Here we just need to set the cookie on the response
+  const token = signToken({ id: userId, email: '', first_name: '', last_name: '' });
+  response.cookies.set('meridian_auth', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    maxAge: 60 * 60 * 24 * 7,
+    path: '/',
+  });
+}

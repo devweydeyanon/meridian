@@ -76,6 +76,19 @@ export async function GET() {
       )
     `;
 
+    await sql`
+      CREATE TABLE IF NOT EXISTS verification_codes (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id),
+        email VARCHAR(255) NOT NULL,
+        code VARCHAR(6) NOT NULL,
+        type VARCHAR(30) DEFAULT 'login',
+        used BOOLEAN DEFAULT FALSE,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
+
     // Indexes
     await sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)`;
@@ -83,14 +96,20 @@ export async function GET() {
     await sql`CREATE INDEX IF NOT EXISTS idx_contact_created ON contact_submissions(created_at)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_chat_session ON chat_messages(session_id)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets(token)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_verification_email ON verification_codes(email)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_verification_code ON verification_codes(code, email)`;
+
+    // Seed test users
+    const { seedTestUsers } = await import('@/lib/db');
+    const seeded = await seedTestUsers();
 
     logger.info('Database initialized successfully');
     
     return NextResponse.json({ 
       success: true, 
-      message: 'Database tables and indexes created successfully',
-      tables: ['users', 'transactions', 'contact_submissions', 'chat_messages', 'password_resets'],
-      indexes: ['idx_users_email', 'idx_transactions_user_id', 'idx_transactions_date', 'idx_contact_created', 'idx_chat_session', 'idx_password_resets_token'],
+      message: 'Database tables, indexes created. Test users seeded.',
+      tables: ['users', 'transactions', 'contact_submissions', 'chat_messages', 'password_resets', 'verification_codes'],
+      seeded_users: seeded,
     });
   } catch (error: any) {
     logger.error('DB setup error', { error: error.message });

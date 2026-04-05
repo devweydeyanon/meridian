@@ -63,6 +63,22 @@ export async function initializeDatabase() {
     )
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS verification_codes (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id),
+      email VARCHAR(255) NOT NULL,
+      code VARCHAR(6) NOT NULL,
+      type VARCHAR(30) DEFAULT 'login',
+      used BOOLEAN DEFAULT FALSE,
+      expires_at TIMESTAMP NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  await sql`CREATE INDEX IF NOT EXISTS idx_verification_email ON verification_codes(email)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_verification_code ON verification_codes(code, email)`;
+
   return { success: true };
 }
 
@@ -91,4 +107,43 @@ export async function seedDemoData(userId: number) {
       VALUES (${userId}, ${t.desc}, ${t.amount}, ${t.type}, ${t.category}, NOW() - INTERVAL '${daysAgo} days')
     `;
   }
+}
+
+export async function seedTestUsers() {
+  const sql = getDB();
+  const bcrypt = await import('bcryptjs');
+  
+  const testUsers = [
+    { email: 'michael.chen@meridianbank.demo', password: 'Meridian2026!', first_name: 'Michael', last_name: 'Chen', phone: '(555) 234-5678', balance: 12847.53, savings: 45230.18, card: 2341.67 },
+    { email: 'sarah.johnson@meridianbank.demo', password: 'Meridian2026!', first_name: 'Sarah', last_name: 'Johnson', phone: '(555) 345-6789', balance: 8432.10, savings: 22100.00, card: 567.23 },
+    { email: 'james.williams@meridianbank.demo', password: 'Meridian2026!', first_name: 'James', last_name: 'Williams', phone: '(555) 456-7890', balance: 34291.87, savings: 78500.00, card: 4120.55 },
+    { email: 'emily.davis@meridianbank.demo', password: 'Meridian2026!', first_name: 'Emily', last_name: 'Davis', phone: '(555) 567-8901', balance: 5673.22, savings: 15800.00, card: 890.40 },
+    { email: 'demo@meridianbank.com', password: 'Demo1234!', first_name: 'Demo', last_name: 'User', phone: '(555) 000-0000', balance: 25000.00, savings: 50000.00, card: 1500.00 },
+  ];
+
+  const results = [];
+
+  for (const u of testUsers) {
+    // Check if user already exists
+    const existing = await sql`SELECT id FROM users WHERE email = ${u.email}`;
+    if (existing.length > 0) {
+      results.push({ email: u.email, status: 'exists', id: existing[0].id });
+      continue;
+    }
+
+    const hash = await bcrypt.hash(u.password, 10);
+    const acctNum = 'MRB-' + Math.random().toString().slice(2, 9);
+
+    const inserted = await sql`
+      INSERT INTO users (email, password_hash, first_name, last_name, phone, account_number, balance, savings_balance, card_balance)
+      VALUES (${u.email}, ${hash}, ${u.first_name}, ${u.last_name}, ${u.phone}, ${acctNum}, ${u.balance}, ${u.savings}, ${u.card})
+      RETURNING id
+    `;
+
+    // Seed transactions for this user
+    await seedDemoData(inserted[0].id);
+    results.push({ email: u.email, status: 'created', id: inserted[0].id });
+  }
+
+  return results;
 }
