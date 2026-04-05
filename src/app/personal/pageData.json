@@ -196,39 +196,6 @@
     "category": "Savings & CDs",
     "slug": "certificates-of-deposit"
   },
-  "compare-cards": {
-    "title": "Compare credit cards",
-    "subtitle": "Find the right card for your goals. Compare rewards, rates, and benefits side by side.",
-    "summary": [],
-    "features": [],
-    "faqs": [
-      "Does checking pre-approval affect my credit score?",
-      "Can I have more than one Meridian credit card?",
-      "What credit score do I need to apply?",
-      "How quickly will I receive my card?",
-      "Can I add authorized users to my card?"
-    ],
-    "cta_title": "Not sure which card is right for you?",
-    "cta_desc": "Check if you're pre-approved with no impact to your credit score.",
-    "category": "Credit Cards",
-    "slug": "compare-cards"
-  },
-  "compare-checking": {
-    "title": "Compare checking accounts",
-    "subtitle": "Find the right checking account for your needs. Compare features, fees, and benefits side by side.",
-    "summary": [],
-    "features": [],
-    "faqs": [
-      "What do I need to open a checking account?",
-      "Can I switch my checking account type later?",
-      "How do I set up direct deposit?",
-      "Is there a minimum balance to open an account?"
-    ],
-    "cta_title": "Ready to get started?",
-    "cta_desc": "Open your account online in minutes.",
-    "category": "Checking",
-    "slug": "compare-checking"
-  },
   "education-savings": {
     "title": "Education Savings Plans",
     "subtitle": "Save for education with tax-advantaged 529 plans and Coverdell ESAs. Invest in your child's future with flexible options and potential state tax benefits.",
@@ -792,22 +759,6 @@
     "cta_desc": "Open a Traditional or Roth IRA today. $0 account fees. $0 commission trades.",
     "category": "Investing",
     "slug": "retirement-accounts"
-  },
-  "savings-rates": {
-    "title": "CD rates",
-    "subtitle": "Current rates for Meridian Bank Certificates of Deposit. Rates effective March 24, 2026. Rates subject to change without notice.",
-    "summary": [],
-    "features": [],
-    "faqs": [
-      "How often do rates change?",
-      "What is a relationship rate?",
-      "How is interest calculated?",
-      "What is APY vs. interest rate?"
-    ],
-    "cta_title": "Ready to earn more on your savings?",
-    "cta_desc": "Open a savings account or CD online in minutes.",
-    "category": "Savings & CDs",
-    "slug": "savings-rates"
   },
   "secure-checking": {
     "title": "Meridian Secure Checking\u2120",
