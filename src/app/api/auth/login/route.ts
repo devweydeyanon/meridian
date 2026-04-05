@@ -45,16 +45,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
+    const isFirstLogin = !user.last_login;
     await sql`UPDATE users SET last_login = NOW() WHERE id = ${user.id}`;
 
-    // Generate OTP for two-factor verification
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    // First login: skip OTP, set auth cookie directly
+    if (isFirstLogin) {
+      const token = signToken({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name });
+      const response = NextResponse.json({ success: true, requiresVerification: false });
+      response.cookies.set('meridian_auth', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+      });
+      logger.info('First login — OTP skipped', { userId: user.id, email });
+      return response;
+    }
 
-    // Invalidate previous codes
+    // Subsequent logins: generate OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
     await sql`UPDATE verification_codes SET used = TRUE WHERE email = ${email} AND used = FALSE`;
 
-    // Store new code
     await sql`
       INSERT INTO verification_codes (user_id, email, code, type, expires_at)
       VALUES (${user.id}, ${email}, ${code}, 'login', ${expiresAt.toISOString()})
@@ -62,7 +76,6 @@ export async function POST(req: NextRequest) {
 
     logger.info('Login OTP generated', { userId: user.id, email });
 
-    // Don't set auth cookie yet — wait for OTP verification
     return NextResponse.json({ 
       success: true, 
       requiresVerification: true,
