@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Header, Footer } from '@/components/layout';
+import { LoginPanel } from '@/components/LoginPanel';
 
 const shortcuts = [
   { label: 'Checking', href: '/personal/compare-checking', icon: 'M2 5h20v14H2z M2 10h20' },
@@ -83,23 +84,7 @@ export default function HomePage() {
             </div>
 
             {/* Login Panel */}
-            <div className="bg-white rounded-xl shadow-2xl p-7 max-w-[400px] max-lg:max-w-full max-md:p-6 max-md:mb-8">
-              <h2 className="text-xl font-extrabold text-gray-800 mb-1">Welcome back</h2>
-              <p className="text-[13px] text-gray-500 mb-5">Sign in to manage your accounts.</p>
-              <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">Username or email</label>
-              <input type="text" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none mb-3.5 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/10" placeholder="Enter username" />
-              <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">Password</label>
-              <input type="password" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none mb-4 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/10" placeholder="Enter password" />
-              <Link href="/login">
-                <button className="w-full py-3 text-[15px] font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans transition-all hover:bg-navy-800">
-                  Sign in
-                </button>
-              </Link>
-              <div className="flex justify-between mt-3.5 text-xs">
-                <Link href="/forgot-password" className="text-accent-500 font-semibold no-underline">Forgot password?</Link>
-                <Link href="/enroll" className="text-accent-500 font-semibold no-underline">Enroll now</Link>
-              </div>
-            </div>
+            <LoginPanel />
           </div>
         </section>
 
