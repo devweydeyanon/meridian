@@ -13,15 +13,15 @@ export async function GET() {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // Role check — only admins or first registered user
-    const sql = getDB();
-    const firstUser = await sql`SELECT id FROM users ORDER BY id ASC LIMIT 1`;
-    const isAdmin = ADMIN_EMAILS.includes(user.email) || (firstUser.length > 0 && firstUser[0].id === user.id);
+    // Role check — only admin emails
+    const isAdmin = ADMIN_EMAILS.includes(user.email);
     
     if (!isAdmin) {
       logger.warn('Unauthorized admin access attempt', { userId: user.id, email: user.email });
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
     }
+
+    const sql = getDB();
 
     const users = await sql`
       SELECT id, email, first_name, last_name, member_id, 
