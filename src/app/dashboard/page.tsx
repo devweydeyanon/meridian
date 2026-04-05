@@ -23,7 +23,7 @@ export default function DashboardOverview() {
   return (
     <>
       <div className="mb-5">
-        <div className="text-[22px] font-semibold text-gray-900">{greeting}, {user.first_name}</div>
+        <div className="text-[22px] max-md:text-[18px] font-semibold text-gray-900">{greeting}, {user.first_name}</div>
         <div className="text-sm text-gray-400 mt-0.5">Here&apos;s your financial summary.</div>
       </div>
 
@@ -74,7 +74,7 @@ export default function DashboardOverview() {
               </div>
               <div className={`w-2 h-2 rounded-full ${acc.status === 'active' ? 'bg-emerald-500' : 'bg-gray-300'}`} />
             </div>
-            <div className="text-[24px] font-bold text-gray-900 mt-3">{bal(acc.balance)}</div>
+            <div className="text-[24px] max-md:text-[20px] font-bold text-gray-900 mt-3">{bal(acc.balance)}</div>
             <div className="text-[11px] text-gray-400 mb-2">Current balance</div>
             <div className="flex gap-4 text-xs text-gray-400">
               {acc.type !== 'cd' && <div>Available: <span className="font-semibold text-gray-600">{bal(acc.available)}</span></div>}

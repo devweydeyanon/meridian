@@ -16,7 +16,7 @@ export default function StatementsPage() {
 
   return (
     <>
-      <div className="flex gap-2 mb-6 flex-wrap">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 max-md:flex-nowrap scrollbar-hide">
         <button className="px-3.5 py-2 text-xs font-semibold bg-navy-900 text-white border-navy-900 rounded-lg border cursor-pointer font-sans">All Accounts</button>
         {accounts.filter(a => a.type !== 'cd').map(acc => (
           <button key={acc.id} className="px-3.5 py-2 text-xs font-semibold bg-white text-gray-600 border-gray-200 rounded-lg border cursor-pointer font-sans hover:bg-gray-50">{acc.name.replace('Meridian ', '')}</button>

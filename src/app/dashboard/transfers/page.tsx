@@ -133,9 +133,9 @@ export default function TransfersPage() {
       )}
 
       {/* Tab Switcher */}
-      <div className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 w-fit">
-        <button onClick={() => { setTab('internal'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all ${tab === 'internal' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Between My Accounts</button>
-        <button onClick={() => { setTab('external'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all ${tab === 'external' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Send to Another Bank</button>
+      <div className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 w-fit max-md:w-full">
+        <button onClick={() => { setTab('internal'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all max-md:flex-1 max-md:text-center max-md:px-2 max-md:text-xs ${tab === 'internal' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Between My Accounts</button>
+        <button onClick={() => { setTab('external'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all max-md:flex-1 max-md:text-center max-md:px-2 max-md:text-xs ${tab === 'external' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Send to Another Bank</button>
       </div>
 
       {/* INTERNAL TRANSFER FORM */}

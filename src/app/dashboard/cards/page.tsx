@@ -73,11 +73,11 @@ export default function CardsPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-6 max-w-[800px]">
+      <div className="grid grid-cols-1 gap-6 max-w-[800px] w-full">
         {cards.map(card => (
           <div key={card.id} className={`bg-white rounded-xl border p-6 ${card.status === 'cancelled' ? 'border-red-200 opacity-60' : card.status === 'locked' ? 'border-amber-300' : 'border-gray-200'}`}>
             {/* Card Visual */}
-            <div className={`rounded-xl p-5 h-[180px] flex flex-col justify-between text-white relative overflow-hidden ${card.type === 'credit' && card.name.includes('Visa') ? 'bg-gradient-to-br from-navy-900 to-accent-600' : card.type === 'credit' ? 'bg-gradient-to-br from-gray-800 to-gray-600' : 'bg-gradient-to-br from-emerald-800 to-emerald-600'}`}>
+            <div className={`rounded-xl p-5 h-[180px] max-md:h-[160px] flex flex-col justify-between text-white relative overflow-hidden ${card.type === 'credit' && card.name.includes('Visa') ? 'bg-gradient-to-br from-navy-900 to-accent-600' : card.type === 'credit' ? 'bg-gradient-to-br from-gray-800 to-gray-600' : 'bg-gradient-to-br from-emerald-800 to-emerald-600'}`}>
               {card.status === 'locked' && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center gap-2">

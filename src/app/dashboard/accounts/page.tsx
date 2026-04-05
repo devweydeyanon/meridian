@@ -15,7 +15,7 @@ export default function AccountsPage() {
 
   return (
     <>
-      <div className="flex gap-2 mb-6 flex-wrap">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 max-md:flex-nowrap scrollbar-hide">
         <button onClick={() => setSelected('all')} className={`px-3.5 py-2 text-xs font-semibold rounded-lg border cursor-pointer font-sans transition-all ${selected === 'all' ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}>All Accounts</button>
         {accounts.map(acc => (
           <button key={acc.id} onClick={() => setSelected(acc.id)} className={`px-3.5 py-2 text-xs font-semibold rounded-lg border cursor-pointer font-sans transition-all ${selected === acc.id ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}>
@@ -35,7 +35,7 @@ export default function AccountsPage() {
               </div>
               <div className={`w-2 h-2 rounded-full ${acc.status === 'active' ? 'bg-emerald-500' : 'bg-gray-300'}`} />
             </div>
-            <div className="text-[24px] font-bold text-gray-900 mt-3">{bal(acc.balance)}</div>
+            <div className="text-[24px] max-md:text-[20px] font-bold text-gray-900 mt-3">{bal(acc.balance)}</div>
             <div className="text-[11px] text-gray-400 mb-2">Current balance</div>
             <div className="flex gap-4 text-xs text-gray-400">
               {acc.apy && <div>APY: <span className="font-semibold text-gray-600">{acc.apy}</span></div>}
