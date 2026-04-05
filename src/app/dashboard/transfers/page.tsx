@@ -2,32 +2,28 @@
 
 import { useState } from 'react';
 import { useDashboard, fmt, fmtDate } from '../context';
+import OtpModal from '@/components/OtpModal';
 
 export default function TransfersPage() {
-  const { accounts, transactions, refreshData, loading } = useDashboard();
+  const { user, accounts, transactions, refreshData, loading } = useDashboard();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [amount, setAmount] = useState('');
   const [memo, setMemo] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [processingStep, setProcessingStep] = useState('');
 
   const transferAccounts = accounts.filter(a => a.type !== 'cd' && a.status === 'active');
   const transferTxns = transactions.filter(t => t.category === 'Transfer');
 
-  // Set defaults once loaded — must use useEffect, not render-time setState
-  useState(() => {
-    // This runs once on mount
-  });
-
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
 
-  // Set defaults after loading (only if still empty)
   const effectiveFrom = from || (transferAccounts.length > 0 ? String(transferAccounts[0].id) : '');
   const effectiveTo = to || (transferAccounts.length > 1 ? String(transferAccounts[1].id) : '');
-
   const fromAccount = accounts.find(a => a.id === Number(effectiveFrom));
   const toAccount = accounts.find(a => a.id === Number(effectiveTo));
 
@@ -40,20 +36,24 @@ export default function TransfersPage() {
     setShowConfirm(true);
   };
 
-  const [processingStep, setProcessingStep] = useState('');
+  // User clicks Confirm → show OTP
+  const handleConfirm = () => {
+    setShowConfirm(false);
+    setShowOtp(true);
+  };
 
-  const confirm = async () => {
+  // OTP verified → process transfer
+  const handleOtpVerified = async () => {
+    setShowOtp(false);
+    setShowConfirm(true);
     setProcessing(true);
 
-    // Step 1: Verifying
     setProcessingStep('Verifying account details...');
+    await new Promise(r => setTimeout(r, 1000));
+
+    setProcessingStep('Processing transfer...');
     await new Promise(r => setTimeout(r, 1200));
 
-    // Step 2: Processing
-    setProcessingStep('Processing transfer...');
-    await new Promise(r => setTimeout(r, 1500));
-
-    // Step 3: Actual API call
     setProcessingStep('Confirming with Meridian servers...');
     try {
       const res = await fetch('/api/dashboard/transfer', {
@@ -62,7 +62,6 @@ export default function TransfersPage() {
         body: JSON.stringify({ from_account_id: Number(effectiveFrom), to_account_id: Number(effectiveTo), amount: parseFloat(amount), memo }),
       });
       const data = await res.json();
-
       if (res.ok) {
         setProcessingStep('Transfer complete!');
         await new Promise(r => setTimeout(r, 800));
@@ -130,6 +129,7 @@ export default function TransfersPage() {
         </div>
       </div>
 
+      {/* Recent Transfers */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mt-7">
         <div className="px-5 py-4 border-b border-gray-100"><div className="text-[15px] font-semibold text-gray-900">Recent Transfers</div></div>
         {transferTxns.length === 0 && <div className="px-5 py-8 text-center text-sm text-gray-400">No transfers yet.</div>}
@@ -144,6 +144,7 @@ export default function TransfersPage() {
         ))}
       </div>
 
+      {/* Confirmation Modal */}
       {showConfirm && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[200] backdrop-blur-[2px]" onClick={() => !processing && setShowConfirm(false)}>
           <div className="bg-white rounded-2xl p-8 max-w-[420px] w-[90%] shadow-lg" onClick={e => e.stopPropagation()}>
@@ -164,12 +165,23 @@ export default function TransfersPage() {
                 </div>
                 <div className="flex justify-end gap-3">
                   <button onClick={() => setShowConfirm(false)} className="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
-                  <button onClick={confirm} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800">Confirm Transfer</button>
+                  <button onClick={handleConfirm} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800">Confirm & Verify</button>
                 </div>
               </>
             )}
           </div>
         </div>
+      )}
+
+      {/* OTP Modal */}
+      {showOtp && (
+        <OtpModal
+          email={user.email}
+          action="transfer"
+          actionLabel="confirm transfer"
+          onVerified={handleOtpVerified}
+          onCancel={() => setShowOtp(false)}
+        />
       )}
     </>
   );
