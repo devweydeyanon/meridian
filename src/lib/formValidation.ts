@@ -63,6 +63,32 @@ export const validators = {
     return null;
   },
 
+  name: (val: string, label = 'Name'): string | null => {
+    if (!val.trim()) return `${label} is required.`;
+    if (val.trim().length < 2) return `${label} must be at least 2 characters.`;
+    if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ' -]+$/.test(val.trim())) return `${label} can only contain letters, hyphens, and apostrophes.`;
+    if (/^\d/.test(val.trim())) return `${label} cannot start with a number.`;
+    return null;
+  },
+
+  address: (val: string, label = 'Address'): string | null => {
+    if (!val.trim()) return `${label} is required.`;
+    if (val.trim().length < 5) return `Please enter a valid ${label.toLowerCase()}.`;
+    return null;
+  },
+
+  city: (val: string): string | null => {
+    if (!val.trim()) return 'City is required.';
+    if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ' .-]+$/.test(val.trim())) return 'City can only contain letters.';
+    return null;
+  },
+
+  employer: (val: string): string | null => {
+    if (!val.trim()) return null; // optional
+    if (val.trim().length < 2) return 'Employer name must be at least 2 characters.';
+    return null;
+  },
+
   dob: (val: string): string | null => {
     if (!val) return 'Date of birth is required.';
     const date = new Date(val);

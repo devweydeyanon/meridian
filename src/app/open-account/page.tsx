@@ -54,15 +54,14 @@ export default function OpenAccountPage() {
     if (step === 1 && !product) { setError('Please select a product.'); setFieldErrors(fe); return; }
 
     if (step === 2) {
-      const r = validators.required;
-      const fn = r(form.first_name, 'First name'); if (fn) fe.first_name = fn;
-      const ln = r(form.last_name, 'Last name'); if (ln) fe.last_name = ln;
+      const fn = validators.name(form.first_name, 'First name'); if (fn) fe.first_name = fn;
+      const ln = validators.name(form.last_name, 'Last name'); if (ln) fe.last_name = ln;
       const em = validators.email(form.email); if (em) fe.email = em;
       const ph = validators.phone(form.phone); if (ph) fe.phone = ph;
       const dob = validators.dob(form.dob); if (dob) fe.dob = dob;
-      const addr = r(form.address, 'Street address'); if (addr) fe.address = addr;
-      const city = r(form.city, 'City'); if (city) fe.city = city;
-      const st = r(form.state, 'State'); if (st) fe.state = st;
+      const addr = validators.address(form.address, 'Street address'); if (addr) fe.address = addr;
+      const city = validators.city(form.city); if (city) fe.city = city;
+      const st = validators.required(form.state, 'State'); if (st) fe.state = st;
       const zip = validators.zip(form.zip); if (zip) fe.zip = zip;
       const ssn = validators.ssn(form.ssn); if (ssn) fe.ssn = ssn;
     }
