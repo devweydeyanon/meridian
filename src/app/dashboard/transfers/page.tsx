@@ -35,8 +35,21 @@ export default function TransfersPage() {
     setShowConfirm(true);
   };
 
+  const [processingStep, setProcessingStep] = useState('');
+
   const confirm = async () => {
     setProcessing(true);
+
+    // Step 1: Verifying
+    setProcessingStep('Verifying account details...');
+    await new Promise(r => setTimeout(r, 1200));
+
+    // Step 2: Processing
+    setProcessingStep('Processing transfer...');
+    await new Promise(r => setTimeout(r, 1500));
+
+    // Step 3: Actual API call
+    setProcessingStep('Confirming with Meridian servers...');
     try {
       const res = await fetch('/api/dashboard/transfer', {
         method: 'POST',
@@ -44,13 +57,16 @@ export default function TransfersPage() {
         body: JSON.stringify({ from_account_id: Number(from), to_account_id: Number(to), amount: parseFloat(amount), memo }),
       });
       const data = await res.json();
+
       if (res.ok) {
+        setProcessingStep('Transfer complete!');
+        await new Promise(r => setTimeout(r, 800));
         setShowConfirm(false);
         setShowSuccess(true);
         setAmount('');
         setMemo('');
         await refreshData();
-        setTimeout(() => setShowSuccess(false), 4000);
+        setTimeout(() => setShowSuccess(false), 5000);
       } else {
         setError(data.error || 'Transfer failed.');
         setShowConfirm(false);
@@ -60,6 +76,7 @@ export default function TransfersPage() {
       setShowConfirm(false);
     }
     setProcessing(false);
+    setProcessingStep('');
   };
 
   return (
@@ -123,19 +140,29 @@ export default function TransfersPage() {
       </div>
 
       {showConfirm && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[200] backdrop-blur-[2px]" onClick={() => setShowConfirm(false)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[200] backdrop-blur-[2px]" onClick={() => !processing && setShowConfirm(false)}>
           <div className="bg-white rounded-2xl p-8 max-w-[420px] w-[90%] shadow-lg" onClick={e => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Confirm Transfer</h3>
-            <div className="bg-gray-50 rounded-lg p-4 text-sm space-y-2 mb-6">
-              <div className="flex justify-between"><span className="text-gray-500">From</span><span className="font-medium">{fromAccount?.name}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">To</span><span className="font-medium">{toAccount?.name}</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Amount</span><span className="font-bold text-base">{fmt(parseFloat(amount))}</span></div>
-              {memo && <div className="flex justify-between"><span className="text-gray-500">Memo</span><span>{memo}</span></div>}
-            </div>
-            <div className="flex justify-end gap-3">
-              <button onClick={() => setShowConfirm(false)} className="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
-              <button onClick={confirm} disabled={processing} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 disabled:opacity-60">{processing ? 'Processing...' : 'Confirm'}</button>
-            </div>
+            {processing ? (
+              <div className="text-center py-6">
+                <div className="w-12 h-12 border-[3px] border-gray-200 border-t-navy-900 rounded-full animate-spin mx-auto mb-5" />
+                <div className="text-[15px] font-semibold text-gray-800 mb-1">{processingStep}</div>
+                <p className="text-xs text-gray-400">Please do not close this window.</p>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Confirm Transfer</h3>
+                <div className="bg-gray-50 rounded-lg p-4 text-sm space-y-2 mb-6">
+                  <div className="flex justify-between"><span className="text-gray-500">From</span><span className="font-medium">{fromAccount?.name}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">To</span><span className="font-medium">{toAccount?.name}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">Amount</span><span className="font-bold text-base">{fmt(parseFloat(amount))}</span></div>
+                  {memo && <div className="flex justify-between"><span className="text-gray-500">Memo</span><span>{memo}</span></div>}
+                </div>
+                <div className="flex justify-end gap-3">
+                  <button onClick={() => setShowConfirm(false)} className="px-5 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
+                  <button onClick={confirm} className="px-5 py-2 text-sm font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800">Confirm Transfer</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
