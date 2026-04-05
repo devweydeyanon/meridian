@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDB, seedDemoData } from '@/lib/db';
+import { getDB } from '@/lib/db';
 import { signToken } from '@/lib/auth';
 import { validateEmail, validatePassword, sanitize, validateRequired, validateLength } from '@/lib/validate';
 import { rateLimit } from '@/lib/rateLimit';
@@ -39,16 +39,22 @@ export async function POST(req: NextRequest) {
     }
 
     const password_hash = await bcrypt.hash(password, 12);
-    const account_number = 'MRD' + Math.random().toString().slice(2, 12);
+    const memberId = 'MRB-' + Math.random().toString().slice(2, 9);
 
     const result = await sql`
-      INSERT INTO users (email, password_hash, first_name, last_name, phone, account_number)
-      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${account_number})
-      RETURNING id, email, first_name, last_name, account_number
+      INSERT INTO users (email, password_hash, first_name, last_name, phone, member_id)
+      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${memberId})
+      RETURNING id, email, first_name, last_name
     `;
 
     const user = result[0];
-    await seedDemoData(user.id);
+
+    // Create default checking account for new user
+    const chkNum = '****' + Math.random().toString().slice(2, 6);
+    await sql`
+      INSERT INTO accounts (user_id, type, name, account_number, balance, available, status)
+      VALUES (${user.id}, 'checking', 'Meridian Total Checking', ${chkNum}, 0, 0, 'active')
+    `;
 
     const token = signToken({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name });
 

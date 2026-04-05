@@ -82,8 +82,7 @@ export default function AdminPanel() {
                   <tr className="bg-gray-50 border-b border-gray-200">
                     <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Name</th>
                     <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
-                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Account</th>
-                    <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Balance</th>
+                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Member ID</th>
                     <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
                   </tr>
                 </thead>
@@ -92,8 +91,7 @@ export default function AdminPanel() {
                     <tr key={u.id} className="border-b border-gray-50 hover:bg-gray-50/50">
                       <td className="px-5 py-3 font-medium text-gray-800">{u.name}</td>
                       <td className="px-5 py-3 text-gray-600">{u.email}</td>
-                      <td className="px-5 py-3 text-gray-500 font-mono text-xs">{u.account_number || '—'}</td>
-                      <td className="px-5 py-3 text-right font-semibold text-gray-800">{fmt(u.balance || 0)}</td>
+                      <td className="px-5 py-3 text-gray-500 font-mono text-xs">{u.member_id || '—'}</td>
                       <td className="px-5 py-3 text-gray-400 text-xs">{u.created_at ? fmtTime(u.created_at) : '—'}</td>
                     </tr>
                   ))}

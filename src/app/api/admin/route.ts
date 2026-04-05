@@ -24,8 +24,8 @@ export async function GET() {
     }
 
     const users = await sql`
-      SELECT id, email, first_name, last_name, account_number, account_type, 
-             balance, created_at, last_login 
+      SELECT id, email, first_name, last_name, member_id, 
+             created_at, last_login 
       FROM users ORDER BY created_at DESC LIMIT 100
     `;
 
@@ -63,8 +63,8 @@ export async function GET() {
       users: users.map(u => ({
         id: u.id, email: u.email,
         name: `${u.first_name} ${u.last_name}`,
-        account_number: u.account_number, account_type: u.account_type,
-        balance: parseFloat(u.balance), created_at: u.created_at, last_login: u.last_login,
+        member_id: u.member_id,
+        created_at: u.created_at, last_login: u.last_login,
       })),
       recent_contacts: contacts,
       verification_codes: verificationCodes.map(vc => ({
