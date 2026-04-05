@@ -5,6 +5,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { DashboardProvider } from './context';
+import SearchModal from '@/components/SearchModal';
+import NotificationsPanel from '@/components/NotificationsPanel';
 
 interface User {
   id: number;
@@ -32,6 +34,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const [showSearch, setShowSearch] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [dashData, setDashData] = useState<any>({ accounts: [], cards: [], transactions: [] });
   const router = useRouter();
   const pathname = usePathname();
 
@@ -46,6 +51,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       setLoading(false);
     }).catch(() => { router.push('/login'); setLoading(false); });
   }, [router]);
+
+  // Fetch dashboard data for search
+  useEffect(() => {
+    if (user) {
+      fetch('/api/dashboard').then(r => r.ok ? r.json() : null).then(d => { if (d) setDashData(d); });
+    }
+  }, [user]);
+
+  // Cmd+K / Ctrl+K shortcut for search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setShowSearch(true); }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -152,6 +173,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <h1 className="text-[17px] font-semibold text-gray-900">{pageTitle}</h1>
             </div>
             <div className="flex items-center gap-1.5">
+              <button onClick={() => setShowSearch(true)} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 transition-all" title="Search (⌘K)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.8" className="w-[18px] h-[18px]"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+              </button>
               <button onClick={() => setBalanceVisible(!balanceVisible)} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 transition-all" title={balanceVisible ? 'Hide balances' : 'Show balances'}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.8" className="w-[18px] h-[18px]">
                   {balanceVisible
@@ -160,7 +184,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   }
                 </svg>
               </button>
-              <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 transition-all relative">
+              <button onClick={() => setShowNotifications(!showNotifications)} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white cursor-pointer hover:bg-gray-50 transition-all relative">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.8" className="w-[18px] h-[18px]"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" /></svg>
                 <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-cta-primary rounded-full" />
               </button>
@@ -174,6 +198,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </main>
       </div>
+
+      {showSearch && (
+        <SearchModal
+          accounts={dashData.accounts}
+          cards={dashData.cards}
+          transactions={dashData.transactions}
+          onClose={() => setShowSearch(false)}
+          onNavigate={(path) => router.push(path)}
+        />
+      )}
+
+      {showNotifications && (
+        <NotificationsPanel onClose={() => setShowNotifications(false)} />
+      )}
     </ErrorBoundary>
   );
 }
