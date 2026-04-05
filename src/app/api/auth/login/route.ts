@@ -45,25 +45,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    const isFirstLogin = !user.last_login;
     await sql`UPDATE users SET last_login = NOW() WHERE id = ${user.id}`;
 
-    // First login: skip OTP, set auth cookie directly
-    if (isFirstLogin) {
-      const token = signToken({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name });
-      const response = NextResponse.json({ success: true, requiresVerification: false });
-      response.cookies.set('meridian_auth', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7,
-        path: '/',
-      });
-      logger.info('First login — OTP skipped', { userId: user.id, email });
-      return response;
-    }
-
-    // Subsequent logins: generate OTP
+    // Always require OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
