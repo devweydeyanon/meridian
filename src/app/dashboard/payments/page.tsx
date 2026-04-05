@@ -16,17 +16,16 @@ export default function PaymentsPage() {
 
   const checkingAccounts = accounts.filter(a => a.type === 'checking' && a.status === 'active');
 
-  // Set defaults
-  if (!selectedAccount && checkingAccounts.length > 0) setSelectedAccount(String(checkingAccounts[0].id));
-
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
+
+  const effectiveAccount = selectedAccount || (checkingAccounts.length > 0 ? String(checkingAccounts[0].id) : '');
 
   const handleSchedule = async () => {
     setError('');
     if (!selectedPayee) { setError('Please select a payee.'); return; }
     if (!amount || parseFloat(amount) <= 0) { setError('Please enter a valid amount.'); return; }
 
-    const acct = checkingAccounts.find(a => a.id === Number(selectedAccount));
+    const acct = checkingAccounts.find(a => a.id === Number(effectiveAccount));
     if (acct && parseFloat(amount) > acct.available) {
       setError(`Insufficient funds. Available: ${fmt(acct.available)}`);
       return;
@@ -44,7 +43,7 @@ export default function PaymentsPage() {
       const res = await fetch('/api/dashboard/pay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ payee_id: Number(selectedPayee), account_id: Number(selectedAccount), amount: parseFloat(amount), date }),
+        body: JSON.stringify({ payee_id: Number(selectedPayee), account_id: Number(effectiveAccount), amount: parseFloat(amount), date }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -108,7 +107,7 @@ export default function PaymentsPage() {
             </div>
             <div>
               <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">From Account</label>
-              <select value={selectedAccount} onChange={e => setSelectedAccount(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+              <select value={effectiveAccount} onChange={e => setSelectedAccount(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
                 {checkingAccounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} — {fmt(acc.available)}</option>)}
               </select>
             </div>

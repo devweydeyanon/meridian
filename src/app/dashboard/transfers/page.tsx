@@ -17,20 +17,25 @@ export default function TransfersPage() {
   const transferAccounts = accounts.filter(a => a.type !== 'cd' && a.status === 'active');
   const transferTxns = transactions.filter(t => t.category === 'Transfer');
 
-  // Set defaults once loaded
-  if (!from && transferAccounts.length > 0) setFrom(String(transferAccounts[0].id));
-  if (!to && transferAccounts.length > 1) setTo(String(transferAccounts[1].id));
+  // Set defaults once loaded — must use useEffect, not render-time setState
+  useState(() => {
+    // This runs once on mount
+  });
 
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
 
-  const fromAccount = accounts.find(a => a.id === Number(from));
-  const toAccount = accounts.find(a => a.id === Number(to));
+  // Set defaults after loading (only if still empty)
+  const effectiveFrom = from || (transferAccounts.length > 0 ? String(transferAccounts[0].id) : '');
+  const effectiveTo = to || (transferAccounts.length > 1 ? String(transferAccounts[1].id) : '');
+
+  const fromAccount = accounts.find(a => a.id === Number(effectiveFrom));
+  const toAccount = accounts.find(a => a.id === Number(effectiveTo));
 
   const submit = () => {
     setError('');
     const amt = parseFloat(amount);
     if (!amt || amt <= 0) { setError('Please enter a valid amount.'); return; }
-    if (from === to) { setError('From and To accounts must be different.'); return; }
+    if (effectiveFrom === effectiveTo) { setError('From and To accounts must be different.'); return; }
     if (fromAccount && amt > fromAccount.available) { setError(`Insufficient funds. Available: ${fmt(fromAccount.available)}`); return; }
     setShowConfirm(true);
   };
@@ -54,7 +59,7 @@ export default function TransfersPage() {
       const res = await fetch('/api/dashboard/transfer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from_account_id: Number(from), to_account_id: Number(to), amount: parseFloat(amount), memo }),
+        body: JSON.stringify({ from_account_id: Number(effectiveFrom), to_account_id: Number(effectiveTo), amount: parseFloat(amount), memo }),
       });
       const data = await res.json();
 
@@ -99,14 +104,14 @@ export default function TransfersPage() {
         <div className="max-w-[480px] space-y-4">
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">From Account</label>
-            <select value={from} onChange={e => setFrom(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+            <select value={effectiveFrom} onChange={e => setFrom(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
               {transferAccounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.account_number}) — {fmt(acc.available)}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">To Account</label>
-            <select value={to} onChange={e => setTo(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
-              {transferAccounts.filter(a => a.id !== Number(from)).map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.account_number})</option>)}
+            <select value={effectiveTo} onChange={e => setTo(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+              {transferAccounts.filter(a => a.id !== Number(effectiveFrom)).map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.account_number})</option>)}
             </select>
           </div>
           <div>
