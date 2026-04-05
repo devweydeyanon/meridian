@@ -102,9 +102,11 @@ export async function seedDemoData(userId: number) {
 
   for (const t of transactions) {
     const daysAgo = Math.floor(Math.random() * 30);
+    const txDate = new Date();
+    txDate.setDate(txDate.getDate() - daysAgo);
     await sql`
       INSERT INTO transactions (user_id, description, amount, type, category, date)
-      VALUES (${userId}, ${t.desc}, ${t.amount}, ${t.type}, ${t.category}, NOW() - INTERVAL '${daysAgo} days')
+      VALUES (${userId}, ${t.desc}, ${t.amount}, ${t.type}, ${t.category}, ${txDate.toISOString()})
     `;
   }
 }
