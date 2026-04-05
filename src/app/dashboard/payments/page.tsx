@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useDashboard, fmt } from '../context';
+import OtpModal from '@/components/OtpModal';
 
 export default function PaymentsPage() {
-  const { accounts, payees, refreshData, loading } = useDashboard();
+  const { user, accounts, payees, refreshData, loading } = useDashboard();
   const [selectedPayee, setSelectedPayee] = useState('');
   const [selectedAccount, setSelectedAccount] = useState('');
   const [amount, setAmount] = useState('');
@@ -13,6 +14,7 @@ export default function PaymentsPage() {
   const [processingStep, setProcessingStep] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [showOtp, setShowOtp] = useState(false);
 
   const checkingAccounts = accounts.filter(a => a.type === 'checking' && a.status === 'active');
 
@@ -20,6 +22,7 @@ export default function PaymentsPage() {
 
   const effectiveAccount = selectedAccount || (checkingAccounts.length > 0 ? String(checkingAccounts[0].id) : '');
 
+  // Step 1: Validate then show OTP
   const handleSchedule = async () => {
     setError('');
     if (!selectedPayee) { setError('Please select a payee.'); return; }
@@ -31,7 +34,14 @@ export default function PaymentsPage() {
       return;
     }
 
+    setShowOtp(true);
+  };
+
+  // Step 2: OTP verified → process payment
+  const handleOtpVerified = async () => {
+    setShowOtp(false);
     setProcessing(true);
+
     setProcessingStep('Verifying payee details...');
     await new Promise(r => setTimeout(r, 1000));
 
@@ -143,6 +153,16 @@ export default function PaymentsPage() {
         ))}
         {payees.length === 0 && <div className="px-5 py-8 text-center text-sm text-gray-400">No saved payees.</div>}
       </div>
+
+      {showOtp && (
+        <OtpModal
+          email={user.email}
+          action="bill_pay"
+          actionLabel="confirm payment"
+          onVerified={handleOtpVerified}
+          onCancel={() => setShowOtp(false)}
+        />
+      )}
     </>
   );
 }
