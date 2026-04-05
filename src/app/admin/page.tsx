@@ -8,7 +8,18 @@ export default function AdminPanel() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('users');
+  const [typeFilter, setTypeFilter] = useState('all');
   const router = useRouter();
+
+  const typeLabels: Record<string, string> = {
+    login: 'Login',
+    transfer: 'Transfer',
+    internal_transfer: 'Internal Transfer',
+    external_transfer: 'External Transfer',
+    bill_pay: 'Bill Payment',
+    card_lock: 'Card Lock/Unlock',
+    card_cancel: 'Card Cancellation',
+  };
 
   useEffect(() => {
     fetch('/api/admin')
@@ -28,6 +39,10 @@ export default function AdminPanel() {
 
   const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
   const fmtTime = (d: string) => new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+  const filteredCodes = typeFilter === 'all'
+    ? (data.verification_codes || [])
+    : (data.verification_codes || []).filter((vc: any) => vc.type === typeFilter);
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans">
@@ -127,9 +142,19 @@ export default function AdminPanel() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100">
               <div className="text-[15px] font-semibold text-gray-900">Verification Codes</div>
-              <div className="text-xs text-gray-400 mt-0.5">View OTP codes sent to users. Use these to test login verification.</div>
+              <div className="text-xs text-gray-400 mt-0.5">OTP codes generated for user actions. Share codes with users to authorize their requests.</div>
             </div>
-            {data.verification_codes?.length > 0 ? (
+
+            {/* Type filter */}
+            <div className="px-5 py-3 border-b border-gray-100 flex gap-2 flex-wrap">
+              {['all', 'login', 'transfer', 'internal_transfer', 'external_transfer', 'bill_pay', 'card_lock', 'card_cancel'].map(f => (
+                <button key={f} onClick={() => setTypeFilter(f)} className={`px-3 py-1.5 text-[11px] font-semibold rounded-full border cursor-pointer font-sans transition-all ${typeFilter === f ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}>
+                  {f === 'all' ? 'All' : typeLabels[f] || f}
+                </button>
+              ))}
+            </div>
+
+            {filteredCodes.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm min-w-[700px]">
                   <thead>
@@ -137,17 +162,26 @@ export default function AdminPanel() {
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">User</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
                       <th className="text-center px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Code</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Type</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Purpose</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Expires</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.verification_codes.map((vc: any) => {
+                    {filteredCodes.map((vc: any) => {
                       const expired = new Date(vc.expires_at) < new Date();
                       const status = vc.used ? 'Used' : expired ? 'Expired' : 'Active';
                       const statusColor = vc.used ? 'text-gray-400 bg-gray-100' : expired ? 'text-red-600 bg-red-50' : 'text-emerald-700 bg-emerald-50';
+                      const typeColor: Record<string, string> = {
+                        login: 'text-blue-700 bg-blue-50',
+                        transfer: 'text-purple-700 bg-purple-50',
+                        internal_transfer: 'text-indigo-700 bg-indigo-50',
+                        external_transfer: 'text-orange-700 bg-orange-50',
+                        bill_pay: 'text-teal-700 bg-teal-50',
+                        card_lock: 'text-amber-700 bg-amber-50',
+                        card_cancel: 'text-red-700 bg-red-50',
+                      };
                       return (
                         <tr key={vc.id} className="border-b border-gray-50 hover:bg-gray-50/50">
                           <td className="px-5 py-3 font-medium text-gray-800">{vc.user_name}</td>
@@ -155,7 +189,9 @@ export default function AdminPanel() {
                           <td className="px-5 py-3 text-center">
                             <span className="font-mono text-lg font-bold text-navy-900 tracking-widest">{vc.code}</span>
                           </td>
-                          <td className="px-5 py-3 text-gray-500 capitalize">{vc.type}</td>
+                          <td className="px-5 py-3">
+                            <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${typeColor[vc.type] || 'text-gray-600 bg-gray-100'}`}>{typeLabels[vc.type] || vc.type}</span>
+                          </td>
                           <td className="px-5 py-3">
                             <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColor}`}>{status}</span>
                           </td>
@@ -168,7 +204,7 @@ export default function AdminPanel() {
                 </table>
               </div>
             ) : (
-              <div className="px-5 py-8 text-center text-sm text-gray-400">No verification codes generated yet.</div>
+              <div className="px-5 py-8 text-center text-sm text-gray-400">No verification codes {typeFilter !== 'all' ? `for "${typeLabels[typeFilter] || typeFilter}"` : 'generated yet'}.</div>
             )}
           </div>
         )}

@@ -177,8 +177,8 @@ export default function TransfersPage() {
       {showOtp && (
         <OtpModal
           email={user.email}
-          action="transfer"
-          actionLabel="confirm transfer"
+          action="internal_transfer"
+          actionLabel="confirm internal transfer"
           onVerified={handleOtpVerified}
           onCancel={() => setShowOtp(false)}
         />
