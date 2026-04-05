@@ -35,7 +35,6 @@ export function LoginPanel() {
       });
       const data = await res.json();
       if (res.ok) {
-        const data = await res.json();
         if (data.requiresVerification) {
           router.push(`/verify?email=${encodeURIComponent(data.email)}`);
         } else {
