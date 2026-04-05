@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Header, Footer } from '@/components/layout';
+import { useFormAutosave } from '@/components/useFormAutosave';
 
 const products = [
   { id: 'checking', label: 'Checking', desc: 'Everyday banking with debit card and mobile access.', icon: 'M2 5h20v14H2z M2 10h20' },
@@ -21,7 +22,7 @@ const usStates = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','I
 export default function OpenAccountPage() {
   const [step, setStep] = useState(1);
   const [product, setProduct] = useState('');
-  const [form, setForm] = useState({
+  const [form, update, clearForm] = useFormAutosave('open_account', {
     first_name: '', last_name: '', email: '', phone: '', dob: '',
     address: '', city: '', state: '', zip: '', ssn: '',
     employment: '', employer: '', job_title: '', income: '',
@@ -33,8 +34,6 @@ export default function OpenAccountPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const update = (field: string, value: string | boolean) => setForm(prev => ({ ...prev, [field]: value }));
 
   const next = () => {
     setError('');
@@ -63,6 +62,7 @@ export default function OpenAccountPage() {
         body: JSON.stringify({ email: form.email, password: form.password, first_name: form.first_name, last_name: form.last_name }),
       });
       if (res.ok) {
+        clearForm();
         setStep(6);
       } else {
         const data = await res.json();

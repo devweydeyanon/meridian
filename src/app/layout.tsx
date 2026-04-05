@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CookieBanner } from '@/components/layout';
+import { OfflineBanner } from '@/components/OfflineBanner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="absolute -top-10 left-0 bg-accent-500 text-white px-4 py-2 z-[99999] text-sm font-semibold no-underline focus:top-0 transition-[top] duration-200">
           Skip to main content
         </a>
+        <OfflineBanner />
         {children}
         <CookieBanner />
       </body>
