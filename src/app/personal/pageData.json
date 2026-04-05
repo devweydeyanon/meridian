@@ -60,7 +60,27 @@
     "cta_title": "Get pre-approved today",
     "cta_desc": "Know your rate before you shop. No impact to your credit score.",
     "category": "Loans",
-    "slug": "auto-loans"
+    "slug": "auto-loans",
+    "rate_options": [
+      {
+        "amount": "New",
+        "unit": "",
+        "label": "New vehicle financing",
+        "desc": "Competitive rates on new cars, trucks, and SUVs. Terms up to 72 months."
+      },
+      {
+        "amount": "Used",
+        "unit": "",
+        "label": "Used vehicle financing",
+        "desc": "Great rates on certified pre-owned and used vehicles up to 7 years old."
+      },
+      {
+        "amount": "Refi",
+        "unit": "",
+        "label": "Refinance your auto loan",
+        "desc": "Lower your rate or monthly payment by refinancing with Meridian."
+      }
+    ]
   },
   "balance-transfer-card": {
     "title": "Meridian Balance Transfer Visa\u00ae",
@@ -101,7 +121,29 @@
     "cta_title": "Pay down your balance faster",
     "cta_desc": "Apply online for 0% intro APR for 21 months. No annual fee.",
     "category": "Credit Cards",
-    "slug": "balance-transfer-card"
+    "slug": "balance-transfer-card",
+    "rewards": [
+      {
+        "amount": "0",
+        "unit": "%",
+        "label": "Intro APR for 21 months",
+        "desc": "On balance transfers made within 60 days of account opening."
+      },
+      {
+        "amount": "0",
+        "unit": "%",
+        "label": "Intro APR for 12 months",
+        "desc": "On new purchases. Then variable 16.74%\u201326.74%."
+      },
+      {
+        "amount": "$0",
+        "unit": "",
+        "label": "Annual fee",
+        "desc": "No annual fee \u2014 ever. Simple, straightforward pricing."
+      }
+    ],
+    "rewards_title": "Save on interest",
+    "rewards_subtitle": "One of the longest 0% intro APR offers available \u2014 designed to help you pay down debt."
   },
   "cash-back-card": {
     "title": "Meridian Cash Rewards Visa\u00ae",
@@ -143,7 +185,27 @@
     "cta_title": "Ready to start earning cash back?",
     "cta_desc": "Apply online in minutes. No annual fee. Instant decision in most cases.",
     "category": "Credit Cards",
-    "slug": "cash-back-card"
+    "slug": "cash-back-card",
+    "rewards": [
+      {
+        "amount": "1.5",
+        "unit": "%",
+        "label": "Unlimited cash back",
+        "desc": "On every purchase, every day. No categories to track."
+      },
+      {
+        "amount": "$200",
+        "unit": "",
+        "label": "Welcome bonus",
+        "desc": "After spending $1,000 in the first 90 days."
+      },
+      {
+        "amount": "0",
+        "unit": "%",
+        "label": "Intro APR for 15 months",
+        "desc": "On purchases and balance transfers. Then variable 18.74%\u201328.74%."
+      }
+    ]
   },
   "certificates-of-deposit": {
     "title": "Meridian Certificates of Deposit",
@@ -382,7 +444,27 @@
     "cta_title": "Unlock your home's equity",
     "cta_desc": "Apply online or speak with a home equity specialist today.",
     "category": "Loans",
-    "slug": "home-equity"
+    "slug": "home-equity",
+    "rate_options": [
+      {
+        "amount": "HELOC",
+        "unit": "",
+        "label": "Home equity line of credit",
+        "desc": "Draw funds as needed during a 10-year draw period. Variable rate."
+      },
+      {
+        "amount": "Loan",
+        "unit": "",
+        "label": "Home equity loan",
+        "desc": "Lump sum with fixed rate and predictable monthly payments."
+      },
+      {
+        "amount": "80%",
+        "unit": "",
+        "label": "Up to 80% LTV",
+        "desc": "Borrow up to 80% of your home's appraised value minus mortgage balance."
+      }
+    ]
   },
   "managed-portfolios": {
     "title": "Meridian Managed Portfolios",
@@ -570,7 +652,27 @@
     "cta_title": "Ready to find your rate?",
     "cta_desc": "Get pre-qualified in minutes with no impact to your credit score.",
     "category": "Loans",
-    "slug": "mortgages"
+    "slug": "mortgages",
+    "rate_options": [
+      {
+        "amount": "30",
+        "unit": "yr",
+        "label": "Fixed-rate mortgage",
+        "desc": "Predictable monthly payments. Our most popular option for long-term stability."
+      },
+      {
+        "amount": "15",
+        "unit": "yr",
+        "label": "Fixed-rate mortgage",
+        "desc": "Pay off your home faster with a lower rate and significant interest savings."
+      },
+      {
+        "amount": "5/1",
+        "unit": "",
+        "label": "Adjustable-rate (ARM)",
+        "desc": "Lower initial rate for 5 years, then adjusts annually. Ideal if you plan to move or refinance."
+      }
+    ]
   },
   "personal-loans": {
     "title": "Meridian Personal Loans",
@@ -632,7 +734,27 @@
     "cta_title": "Check your rate in minutes",
     "cta_desc": "No impact to your credit score. Get funds as soon as the next business day.",
     "category": "Loans",
-    "slug": "personal-loans"
+    "slug": "personal-loans",
+    "rate_options": [
+      {
+        "amount": "Fixed",
+        "unit": "",
+        "label": "Fixed-rate loan",
+        "desc": "Predictable payments from $2,000 to $50,000. Terms from 12 to 60 months."
+      },
+      {
+        "amount": "No",
+        "unit": "",
+        "label": "No origination fee",
+        "desc": "No hidden charges. The rate you see is the rate you get."
+      },
+      {
+        "amount": "Fast",
+        "unit": "",
+        "label": "Quick funding",
+        "desc": "Apply online and receive funds as soon as the next business day."
+      }
+    ]
   },
   "premier-checking": {
     "title": "Meridian Premier Checking",
@@ -1051,6 +1173,26 @@
     "cta_title": "Start earning travel rewards",
     "cta_desc": "Apply online and get an instant decision. 60,000 bonus points are waiting.",
     "category": "Credit Cards",
-    "slug": "travel-rewards-card"
+    "slug": "travel-rewards-card",
+    "rewards": [
+      {
+        "amount": "3",
+        "unit": "X",
+        "label": "Points on travel & dining",
+        "desc": "Hotels, flights, restaurants, and food delivery."
+      },
+      {
+        "amount": "60K",
+        "unit": "",
+        "label": "Welcome bonus points",
+        "desc": "After spending $4,000 in the first 90 days."
+      },
+      {
+        "amount": "1.5",
+        "unit": "X",
+        "label": "Points on everything else",
+        "desc": "Every other purchase earns 1.5X points."
+      }
+    ]
   }
 }

@@ -15,6 +15,10 @@ interface PageContent {
   faqs: string[];
   cta_title: string;
   cta_desc: string;
+  rewards?: { amount: string; unit: string; label: string; desc: string }[];
+  rewards_title?: string;
+  rewards_subtitle?: string;
+  rate_options?: { amount: string; unit: string; label: string; desc: string }[];
 }
 
 const data = pageData as Record<string, PageContent>;
@@ -97,6 +101,53 @@ export default function PersonalProductPage() {
             </div>
           </div>
         </section>
+
+        {/* REWARDS GRID (credit cards) */}
+        {page.rewards && page.rewards.length > 0 && (
+          <section className="py-16 max-md:py-10">
+            <div className="max-w-container mx-auto px-6">
+              <div className="text-center mb-10 max-md:mb-6">
+                <h2 className="text-[30px] font-extrabold text-gray-800 mb-2 max-md:text-[22px]">{page.rewards_title || 'Rewards at a glance'}</h2>
+                {page.rewards_subtitle && <p className="text-[15px] text-gray-500">{page.rewards_subtitle}</p>}
+              </div>
+              <div className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
+                {page.rewards.map((r, i) => (
+                  <div key={i} className="bg-white rounded-xl border border-gray-200 p-7 text-center hover:shadow-md hover:border-accent-500/30 transition-all">
+                    <div className="text-[48px] font-extrabold text-navy-900 leading-none mb-1 tracking-tight max-md:text-[40px]">
+                      {r.amount}<span className="text-[28px] text-accent-500 font-bold max-md:text-[22px]">{r.unit}</span>
+                    </div>
+                    <div className="text-sm font-bold text-gray-800 mb-2">{r.label}</div>
+                    <p className="text-[13px] text-gray-500 leading-relaxed">{r.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* RATE OPTIONS (loans) */}
+        {page.rate_options && page.rate_options.length > 0 && (
+          <section className="py-16 max-md:py-10">
+            <div className="max-w-container mx-auto px-6">
+              <div className="text-center mb-10 max-md:mb-6">
+                <h2 className="text-[30px] font-extrabold text-gray-800 mb-2 max-md:text-[22px]">
+                  {page.category === 'Loans' ? (slug === 'mortgages' ? 'Mortgage options' : slug === 'auto-loans' ? 'Buy new, used, or refinance' : 'Loan options') : 'Options'}
+                </h2>
+              </div>
+              <div className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
+                {page.rate_options.map((r, i) => (
+                  <div key={i} className="bg-white rounded-xl border border-gray-200 p-7 text-center hover:shadow-md hover:border-accent-500/30 transition-all">
+                    <div className="text-[42px] font-extrabold text-navy-900 leading-none mb-1 tracking-tight max-md:text-[34px]">
+                      {r.amount}<span className="text-[22px] text-gray-400 font-semibold max-md:text-lg">{r.unit}</span>
+                    </div>
+                    <div className="text-sm font-bold text-gray-800 mb-2">{r.label}</div>
+                    <p className="text-[13px] text-gray-500 leading-relaxed">{r.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* FEATURES */}
         {page.features.length > 0 && (
