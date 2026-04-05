@@ -161,49 +161,11 @@ export async function initializeDatabase() {
 }
 
 // ============================================
-// SEED DATA
+// SEED DATA — imported from seedData.ts
 // ============================================
 
-interface UserSeed {
-  email: string; password: string; first_name: string; last_name: string; phone: string;
-  checking: number; savings: number; emergency: number; cd: number;
-  creditCard1Balance: number; creditCard1Limit: number;
-  creditCard2Balance: number; creditCard2Limit: number;
-}
-
-const TEST_USERS: UserSeed[] = [
-  { email: 'michael.chen@meridianbank.demo', password: 'Meridian2026!', first_name: 'Michael', last_name: 'Chen', phone: '(555) 234-5678', checking: 12847.53, savings: 45230.18, emergency: 8500, cd: 25000, creditCard1Balance: 2341.67, creditCard1Limit: 15000, creditCard2Balance: 567.23, creditCard2Limit: 8000 },
-  { email: 'sarah.johnson@meridianbank.demo', password: 'Meridian2026!', first_name: 'Sarah', last_name: 'Johnson', phone: '(555) 345-6789', checking: 8432.10, savings: 22100, emergency: 5000, cd: 10000, creditCard1Balance: 1200.50, creditCard1Limit: 12000, creditCard2Balance: 340.00, creditCard2Limit: 5000 },
-  { email: 'james.williams@meridianbank.demo', password: 'Meridian2026!', first_name: 'James', last_name: 'Williams', phone: '(555) 456-7890', checking: 34291.87, savings: 78500, emergency: 15000, cd: 50000, creditCard1Balance: 4120.55, creditCard1Limit: 25000, creditCard2Balance: 890.00, creditCard2Limit: 10000 },
-  { email: 'emily.davis@meridianbank.demo', password: 'Meridian2026!', first_name: 'Emily', last_name: 'Davis', phone: '(555) 567-8901', checking: 5673.22, savings: 15800, emergency: 3200, cd: 0, creditCard1Balance: 890.40, creditCard1Limit: 8000, creditCard2Balance: 0, creditCard2Limit: 3000 },
-  { email: 'demo@meridianbank.com', password: 'Demo1234!', first_name: 'Demo', last_name: 'User', phone: '(555) 000-0000', checking: 25000, savings: 50000, emergency: 10000, cd: 25000, creditCard1Balance: 1500, creditCard1Limit: 15000, creditCard2Balance: 450, creditCard2Limit: 8000 },
-];
-
-const DEMO_TRANSACTIONS = [
-  { desc: 'Direct Deposit — Employer', amount: 3250.00, type: 'credit', category: 'Income', acctType: 'checking' },
-  { desc: 'Whole Foods Market', amount: -87.43, type: 'debit', category: 'Groceries', acctType: 'checking', status: 'pending' },
-  { desc: 'Netflix Subscription', amount: -15.99, type: 'debit', category: 'Entertainment', acctType: 'credit' },
-  { desc: 'Transfer to Savings', amount: -500.00, type: 'debit', category: 'Transfer', acctType: 'checking' },
-  { desc: 'Transfer from Checking', amount: 500.00, type: 'credit', category: 'Transfer', acctType: 'savings' },
-  { desc: 'Shell Gas Station', amount: -52.18, type: 'debit', category: 'Auto', acctType: 'checking' },
-  { desc: 'Amazon.com', amount: -124.99, type: 'debit', category: 'Shopping', acctType: 'credit' },
-  { desc: 'Starbucks', amount: -6.45, type: 'debit', category: 'Dining', acctType: 'checking' },
-  { desc: 'Meridian Mortgage Payment', amount: -1842.00, type: 'debit', category: 'Housing', acctType: 'checking' },
-  { desc: 'Uber', amount: -23.50, type: 'debit', category: 'Transport', acctType: 'credit2' },
-  { desc: 'CVS Pharmacy', amount: -18.75, type: 'debit', category: 'Health', acctType: 'checking' },
-  { desc: 'Interest Payment', amount: 15.82, type: 'credit', category: 'Interest', acctType: 'savings' },
-  { desc: 'Chipotle Mexican Grill', amount: -12.95, type: 'debit', category: 'Dining', acctType: 'checking' },
-  { desc: 'AT&T Wireless', amount: -89.00, type: 'debit', category: 'Bills', acctType: 'checking' },
-  { desc: 'Zelle — Sarah M.', amount: -150.00, type: 'debit', category: 'Transfer', acctType: 'checking' },
-];
-
-const DEMO_PAYEES = [
-  { name: 'Electric Company', category: 'Utilities', amount: 142.50 },
-  { name: 'Water & Sewer', category: 'Utilities', amount: 67.80 },
-  { name: 'Internet Provider', category: 'Utilities', amount: 79.99 },
-  { name: 'Auto Insurance', category: 'Insurance', amount: 156.00 },
-  { name: 'Credit Card Payment', category: 'Finance', amount: 500.00 },
-];
+import { TEST_USERS } from './seedData';
+import type { UserSeed } from './seedData';
 
 export async function seedTestUsers() {
   const sql = getDB();
@@ -246,10 +208,9 @@ export async function seedTestUsers() {
     `;
     const savId = savResult[0].id;
 
-    const emgResult = await sql`
+    await sql`
       INSERT INTO accounts (user_id, type, name, account_number, balance, available, apy, status)
       VALUES (${userId}, 'savings', 'Emergency Fund', ${emgNum}, ${u.emergency}, ${u.emergency}, '4.25%', 'active')
-      RETURNING id
     `;
 
     let cdId = null;
@@ -257,7 +218,7 @@ export async function seedTestUsers() {
       const cdNum = '****' + Math.random().toString().slice(2, 6);
       const cdResult = await sql`
         INSERT INTO accounts (user_id, type, name, account_number, balance, available, apy, maturity_date, status)
-        VALUES (${userId}, 'cd', '12-Month CD', ${cdNum}, ${u.cd}, 0, '4.75%', '2027-03-15', 'active')
+        VALUES (${userId}, 'cd', '12-Month CD', ${cdNum}, ${u.cd}, 0, ${u.cdApy}, ${u.cdMaturity}, 'active')
         RETURNING id
       `;
       cdId = cdResult[0].id;
@@ -266,59 +227,55 @@ export async function seedTestUsers() {
     // Create cards
     const cc1Num = '****' + Math.random().toString().slice(2, 6);
     const cc2Num = '****' + Math.random().toString().slice(2, 6);
-    const dcNum = chkNum; // debit linked to checking
 
     const cc1Result = await sql`
       INSERT INTO cards (user_id, linked_account_id, type, name, card_number, credit_limit, balance, available, min_payment, due_date, rewards, status)
-      VALUES (${userId}, ${chkId}, 'credit', 'Meridian Rewards Visa', ${cc1Num}, ${u.creditCard1Limit}, ${u.creditCard1Balance}, ${u.creditCard1Limit - u.creditCard1Balance}, ${Math.max(25, u.creditCard1Balance * 0.02)}, '2026-04-22', '24,580 pts', 'active')
+      VALUES (${userId}, ${chkId}, 'credit', ${u.cc1Name}, ${cc1Num}, ${u.cc1Limit}, ${u.cc1Balance}, ${u.cc1Limit - u.cc1Balance}, ${Math.max(25, Math.round(u.cc1Balance * 0.02 * 100) / 100)}, ${u.cc1Due}, ${u.cc1Rewards}, 'active')
       RETURNING id
     `;
     const cc1Id = cc1Result[0].id;
 
     const cc2Result = await sql`
       INSERT INTO cards (user_id, linked_account_id, type, name, card_number, credit_limit, balance, available, min_payment, due_date, rewards, status)
-      VALUES (${userId}, ${chkId}, 'credit', 'Meridian Cash Back Mastercard', ${cc2Num}, ${u.creditCard2Limit}, ${u.creditCard2Balance}, ${u.creditCard2Limit - u.creditCard2Balance}, ${Math.max(25, u.creditCard2Balance * 0.02)}, '2026-04-18', '$42.15', 'active')
+      VALUES (${userId}, ${chkId}, 'credit', ${u.cc2Name}, ${cc2Num}, ${u.cc2Limit}, ${u.cc2Balance}, ${u.cc2Limit - u.cc2Balance}, ${Math.max(25, Math.round(u.cc2Balance * 0.02 * 100) / 100)}, ${u.cc2Due}, ${u.cc2Rewards}, 'active')
       RETURNING id
     `;
     const cc2Id = cc2Result[0].id;
 
     await sql`
       INSERT INTO cards (user_id, linked_account_id, type, name, card_number, daily_limit, status)
-      VALUES (${userId}, ${chkId}, 'debit', 'Meridian Debit Card', ${dcNum}, 5000, 'active')
+      VALUES (${userId}, ${chkId}, 'debit', 'Meridian Debit Card', ${chkNum}, 5000, 'active')
     `;
 
-    // Create transactions
-    const acctMap: Record<string, { id: number; cardId?: number }> = {
-      checking: { id: chkId },
-      savings: { id: savId },
-      credit: { id: chkId, cardId: cc1Id },
-      credit2: { id: chkId, cardId: cc2Id },
+    // Create transactions — map acct types to real IDs
+    const acctMap: Record<string, { accountId: number; cardId?: number }> = {
+      checking: { accountId: chkId },
+      savings: { accountId: savId },
+      cc1: { accountId: chkId, cardId: cc1Id },
+      cc2: { accountId: chkId, cardId: cc2Id },
     };
 
-    for (let i = 0; i < DEMO_TRANSACTIONS.length; i++) {
-      const t = DEMO_TRANSACTIONS[i];
-      const daysAgo = Math.floor(i * 0.5) + 1;
+    for (const t of u.transactions) {
       const txDate = new Date();
-      txDate.setDate(txDate.getDate() - daysAgo);
-
-      const target = acctMap[t.acctType] || acctMap.checking;
+      txDate.setDate(txDate.getDate() - t.daysAgo);
+      const target = acctMap[t.acct] || acctMap.checking;
       await sql`
         INSERT INTO transactions (user_id, account_id, card_id, description, amount, type, category, status, date)
-        VALUES (${userId}, ${target.id}, ${target.cardId || null}, ${t.desc}, ${t.amount}, ${t.type}, ${t.category}, ${t.status || 'posted'}, ${txDate.toISOString()})
+        VALUES (${userId}, ${target.accountId}, ${target.cardId || null}, ${t.desc}, ${t.amount}, ${t.type}, ${t.category}, ${t.status || 'posted'}, ${txDate.toISOString()})
       `;
     }
 
     // Create payees
-    for (const p of DEMO_PAYEES) {
+    for (const p of u.payees) {
       const paidDate = new Date();
-      paidDate.setDate(paidDate.getDate() - Math.floor(Math.random() * 20));
+      paidDate.setDate(paidDate.getDate() - p.daysAgo);
       await sql`
         INSERT INTO payees (user_id, name, category, last_paid, last_amount)
         VALUES (${userId}, ${p.name}, ${p.category}, ${paidDate.toISOString()}, ${p.amount})
       `;
     }
 
-    results.push({ email: u.email, status: 'created', id: userId });
+    results.push({ email: u.email, status: 'created', id: userId, transactions: u.transactions.length });
   }
 
   return results;
