@@ -14,7 +14,7 @@ export default function AdminPanel() {
     fetch('/api/admin')
       .then(res => { if (!res.ok) throw new Error('Not authorized'); return res.json(); })
       .then(d => { setData(d); setLoading(false); })
-      .catch(() => router.push('/login'));
+      .catch(() => router.push('/admin/login'));
   }, [router]);
 
   if (loading) return (
@@ -41,8 +41,8 @@ export default function AdminPanel() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="text-xs text-white/60 hover:text-white no-underline">Dashboard</Link>
           <Link href="/" className="text-xs text-white/60 hover:text-white no-underline">Website</Link>
+          <button onClick={async () => { await fetch('/api/admin/logout', { method: 'POST' }); router.push('/admin/login'); }} className="text-xs text-white/60 hover:text-white bg-transparent border border-white/20 rounded-md px-3 py-1.5 cursor-pointer font-sans">Sign Out</button>
         </div>
       </div>
 

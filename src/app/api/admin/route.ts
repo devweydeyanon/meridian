@@ -1,24 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/auth';
+import { getAdminUser } from '@/lib/auth';
 import { getDB } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
-// Admin emails — in production, use a roles table
-const ADMIN_EMAILS = ['admin@meridianbank.com', 'demo@meridianbank.com'];
-
 export async function GET() {
   try {
-    const user = await getAuthUser();
+    const user = await getAdminUser();
     if (!user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
-    }
-
-    // Role check — only admin emails
-    const isAdmin = ADMIN_EMAILS.includes(user.email);
-    
-    if (!isAdmin) {
-      logger.warn('Unauthorized admin access attempt', { userId: user.id, email: user.email });
-      return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
     }
 
     const sql = getDB();

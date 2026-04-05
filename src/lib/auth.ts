@@ -42,3 +42,16 @@ export function createSession(userId: number, response: any) {
     path: '/',
   });
 }
+
+const ADMIN_EMAILS = ['admin@meridianbank.com'];
+
+export async function getAdminUser(): Promise<UserPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('meridian_admin')?.value;
+  if (!token) return null;
+  const user = verifyToken(token);
+  if (!user) return null;
+  // Must be in admin list
+  if (!ADMIN_EMAILS.includes(user.email)) return null;
+  return user;
+}
