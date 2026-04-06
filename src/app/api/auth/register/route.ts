@@ -20,6 +20,17 @@ export async function POST(req: NextRequest) {
     const first_name = sanitize(body.first_name || '');
     const last_name = sanitize(body.last_name || '');
     const phone = sanitize(body.phone || '');
+    const dob = body.dob || null;
+    const ssn = sanitize(body.ssn || '');
+    const address = sanitize(body.address || '');
+    const city = sanitize(body.city || '');
+    const state = sanitize(body.state || '');
+    const zip = sanitize(body.zip || '');
+    const employment = sanitize(body.employment || '');
+    const employer = sanitize(body.employer || '');
+    const income = sanitize(body.income || '');
+    const product = sanitize(body.product || 'checking');
+    const deposit = parseFloat(body.deposit) || 0;
 
     const reqError = validateRequired({ email, password, first_name, last_name }, ['email', 'password', 'first_name', 'last_name']);
     if (reqError) return NextResponse.json({ error: reqError }, { status: 400 });
@@ -41,26 +52,49 @@ export async function POST(req: NextRequest) {
     const password_hash = await bcrypt.hash(password, 12);
     const memberId = 'MRB-' + Math.random().toString().slice(2, 9);
 
+    // Store only last 4 of SSN
+    const ssnLast4 = ssn ? ssn.replace(/\D/g, '').slice(-4) : null;
+
     const result = await sql`
-      INSERT INTO users (email, password_hash, first_name, last_name, phone, member_id)
-      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${memberId})
+      INSERT INTO users (email, password_hash, first_name, last_name, phone, dob, ssn_last4, address, city, state, zip, employment, employer, income, member_id)
+      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${dob || null}, ${ssnLast4}, ${address || null}, ${city || null}, ${state || null}, ${zip || null}, ${employment || null}, ${employer || null}, ${income || null}, ${memberId})
       RETURNING id, email, first_name, last_name
     `;
 
     const user = result[0];
 
-    // Create default checking account for new user
+    // Create account based on selected product
     const chkNum = '****' + Math.random().toString().slice(2, 6);
+    const accountName = product === 'savings' ? 'Meridian Premier Savings' 
+      : product === 'business' ? 'Meridian Business Checking'
+      : 'Meridian Total Checking';
+    const accountType = product === 'savings' ? 'savings' : 'checking';
+    const apy = accountType === 'savings' ? '4.25%' : null;
+
     await sql`
-      INSERT INTO accounts (user_id, type, name, account_number, balance, available, status)
-      VALUES (${user.id}, 'checking', 'Meridian Total Checking', ${chkNum}, 0, 0, 'active')
+      INSERT INTO accounts (user_id, type, name, account_number, balance, available, apy, status)
+      VALUES (${user.id}, ${accountType}, ${accountName}, ${chkNum}, ${deposit}, ${deposit}, ${apy}, 'active')
     `;
+
+    // If deposit > 0, create a transaction record
+    if (deposit > 0) {
+      const acct = await sql`SELECT id FROM accounts WHERE user_id = ${user.id} LIMIT 1`;
+      if (acct.length > 0) {
+        await sql`
+          INSERT INTO transactions (user_id, account_id, description, amount, type, category, status, date)
+          VALUES (${user.id}, ${acct[0].id}, 'Initial Deposit — Account Opening', ${deposit}, 'credit', 'Deposit', 'posted', NOW())
+        `;
+      }
+    }
 
     const token = signToken({ id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name });
 
-    logger.info('New user registered', { userId: user.id, email });
+    logger.info('New user registered', { userId: user.id, email, product, deposit });
 
-    const response = NextResponse.json({ success: true, user: { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, account_number: user.account_number } });
+    const response = NextResponse.json({ 
+      success: true, 
+      user: { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, member_id: memberId } 
+    });
     response.cookies.set('meridian_auth', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 60 * 60 * 24 * 7, path: '/' });
     return response;
   } catch (error: any) {

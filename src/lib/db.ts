@@ -8,7 +8,7 @@ export function getDB() {
 export async function initializeDatabase() {
   const sql = getDB();
 
-  // Users table (simplified — balances live in accounts now)
+  // Users table
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
@@ -17,6 +17,15 @@ export async function initializeDatabase() {
       first_name VARCHAR(100) NOT NULL,
       last_name VARCHAR(100) NOT NULL,
       phone VARCHAR(20),
+      dob DATE,
+      ssn_last4 VARCHAR(4),
+      address VARCHAR(255),
+      city VARCHAR(100),
+      state VARCHAR(2),
+      zip VARCHAR(10),
+      employment VARCHAR(50),
+      employer VARCHAR(100),
+      income VARCHAR(50),
       member_id VARCHAR(20),
       role VARCHAR(20) DEFAULT 'user',
       created_at TIMESTAMP DEFAULT NOW(),

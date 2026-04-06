@@ -103,7 +103,24 @@ export default function OpenAccountPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password, first_name: form.first_name, last_name: form.last_name }),
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+          first_name: form.first_name,
+          last_name: form.last_name,
+          phone: form.phone,
+          dob: form.dob,
+          ssn: form.ssn,
+          address: form.address,
+          city: form.city,
+          state: form.state,
+          zip: form.zip,
+          employment: form.employment,
+          employer: form.employer,
+          income: form.income,
+          product: product,
+          deposit: form.deposit ? parseFloat(form.deposit) : 0,
+        }),
       });
       if (res.ok) {
         clearForm();

@@ -33,6 +33,9 @@ export default function SettingsPage() {
               ['Full Name', `${user.first_name} ${user.last_name}`],
               ['Email Address', user.email],
               ['Phone Number', user.phone || '—'],
+              ['Date of Birth', user.dob ? new Date(user.dob).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'],
+              ['SSN', user.ssn_last4 ? `***-**-${user.ssn_last4}` : '—'],
+              ['Mailing Address', user.address ? `${user.address}, ${user.city}, ${user.state} ${user.zip}` : '—'],
               ['Member ID', user.member_id || '—'],
             ].map(([label, value]) => (
               <div key={label as string} className="flex items-center justify-between py-3.5 border-b border-gray-100">
