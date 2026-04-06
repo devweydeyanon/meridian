@@ -153,15 +153,38 @@ export function Footer({ variant = 'personal' }: FooterProps) {
             </div>
           </div>
 
-          {/* Legal */}
+          {/* Regulatory Badges + Legal */}
           <div className="pt-5 mt-5 border-t border-gray-200 max-md:pt-3 max-md:mt-3">
+            <div className="flex items-center justify-center gap-6 mb-4">
+              {/* FDIC Badge */}
+              <div className="flex items-center gap-2 text-gray-500">
+                <svg viewBox="0 0 80 32" className="h-7 w-auto opacity-60">
+                  <rect x="0" y="0" width="80" height="32" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <text x="40" y="14" textAnchor="middle" fontSize="9" fontWeight="800" fill="currentColor" fontFamily="Arial, sans-serif">FDIC</text>
+                  <text x="40" y="24" textAnchor="middle" fontSize="5.5" fill="currentColor" fontFamily="Arial, sans-serif">Member FDIC</text>
+                </svg>
+              </div>
+              {/* Equal Housing Lender Badge */}
+              <div className="flex items-center gap-1.5 text-gray-500">
+                <svg viewBox="0 0 24 24" className="h-6 w-6 opacity-60" fill="currentColor">
+                  <path d="M12 3L2 12h3v9h14v-9h3L12 3zm0 2.84L18 11v8H6v-8l6-5.16z"/>
+                  <path d="M10 15h4v4h-4z"/>
+                </svg>
+                <span className="text-[9px] font-semibold uppercase tracking-wider text-gray-400 leading-tight">Equal Housing<br/>Lender</span>
+              </div>
+            </div>
             <p className="text-[10.5px] text-gray-400 text-center leading-relaxed max-md:text-[10px]">
               © 2026 Meridian Bank, N.A. Member FDIC. Equal Housing Lender. NMLS #000000.{' '}
               <a href="#" className="text-gray-500">NMLS Consumer Access</a>
               <br />
+              Deposit products are offered by Meridian Bank, N.A. Loans are subject to credit approval.
+              <br className="max-md:hidden" />{' '}
+              Investment products are not FDIC insured, have no bank guarantee, and may lose value.
+              <br />
               <Link href="/privacy" className="text-gray-500 no-underline">Privacy</Link> ·{' '}
               <Link href="/terms" className="text-gray-500 no-underline">Terms</Link> ·{' '}
-              <Link href="/security" className="text-gray-500 no-underline">Security</Link>
+              <Link href="/security" className="text-gray-500 no-underline">Security</Link> ·{' '}
+              <Link href="/help" className="text-gray-500 no-underline">Accessibility</Link>
             </p>
           </div>
         </div>
