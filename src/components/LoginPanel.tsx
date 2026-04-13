@@ -60,6 +60,8 @@ export function LoginPanel() {
       <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">Email address</label>
       <input
         type="email"
+        autoComplete="username"
+        name="identifier"
         value={email}
         onChange={e => { setEmail(e.target.value); if (errors.email) setErrors(prev => ({ ...prev, email: '' })); }}
         className={`w-full px-3.5 py-2.5 text-sm border rounded-md outline-none mb-1 focus:ring-2 focus:ring-accent-500/10 ${errors.email ? 'border-red-400 focus:border-red-400' : 'border-gray-300 focus:border-accent-500'}`}
@@ -71,6 +73,8 @@ export function LoginPanel() {
       <label className="block text-[13px] font-semibold text-gray-600 mb-1.5">Password</label>
       <input
         type="password"
+        autoComplete="current-password"
+        name="credential"
         value={password}
         onChange={e => { setPassword(e.target.value); if (errors.password) setErrors(prev => ({ ...prev, password: '' })); }}
         onKeyDown={e => e.key === 'Enter' && handleLogin()}

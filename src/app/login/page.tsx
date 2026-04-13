@@ -69,12 +69,12 @@ export default function LoginPage() {
           {apiError && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-3 mb-4">{apiError}</div>}
 
           <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Email address</label>
-          <input value={email} onChange={e => { setEmail(e.target.value); clearFieldError('email'); }} type="email" className={`${fieldClass('email')} mb-1`} placeholder="you@example.com" />
+          <input value={email} onChange={e => { setEmail(e.target.value); clearFieldError('email'); }} type="email" autoComplete="username" name="identifier" className={`${fieldClass('email')} mb-1`} placeholder="you@example.com" />
           {errors.email && <p className="text-xs text-red-500 mb-2">{errors.email}</p>}
           {!errors.email && <div className="mb-3" />}
 
           <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Password</label>
-          <input value={password} onChange={e => { setPassword(e.target.value); clearFieldError('password'); }} onKeyDown={e => e.key === 'Enter' && handleLogin()} type="password" className={`${fieldClass('password')} mb-1`} placeholder="Enter password" />
+          <input value={password} onChange={e => { setPassword(e.target.value); clearFieldError('password'); }} onKeyDown={e => e.key === 'Enter' && handleLogin()} type="password" autoComplete="current-password" name="credential" className={`${fieldClass('password')} mb-1`} placeholder="Enter password" />
           {errors.password && <p className="text-xs text-red-500 mb-2">{errors.password}</p>}
           {!errors.password && <div className="mb-4" />}
 
