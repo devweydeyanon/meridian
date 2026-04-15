@@ -4,5 +4,9 @@ Disallow: /dashboard/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /verify
+Disallow: /login
+Disallow: /open-account
+Disallow: /forgot-password
+Disallow: /enroll
 
 Sitemap: https://meridianplc.com/sitemap.xml
