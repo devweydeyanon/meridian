@@ -20,6 +20,7 @@ export default function AdminPanel() {
     bill_pay: 'Bill Payment',
     card_lock: 'Card Lock/Unlock',
     card_cancel: 'Card Cancellation',
+    password_reset: 'Password Reset',
   };
 
   useEffect(() => {
@@ -216,7 +217,7 @@ export default function AdminPanel() {
 
             {/* Type filter */}
             <div className="px-5 py-3 border-b border-gray-100 flex gap-2 flex-wrap">
-              {['all', 'login', 'transfer', 'internal_transfer', 'external_transfer', 'bill_pay', 'card_lock', 'card_cancel'].map(f => (
+              {['all', 'login', 'transfer', 'internal_transfer', 'external_transfer', 'bill_pay', 'card_lock', 'card_cancel', 'password_reset'].map(f => (
                 <button key={f} onClick={() => setTypeFilter(f)} className={`px-3 py-1.5 text-[11px] font-semibold rounded-full border cursor-pointer font-sans transition-all ${typeFilter === f ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}>
                   {f === 'all' ? 'All' : typeLabels[f] || f}
                 </button>
@@ -249,6 +250,7 @@ export default function AdminPanel() {
                         bill_pay: 'text-teal-700 bg-teal-50',
                         card_lock: 'text-amber-700 bg-amber-50',
                         card_cancel: 'text-red-700 bg-red-50',
+                        password_reset: 'text-pink-700 bg-pink-50',
                       };
                       return (
                         <tr key={vc.id} className="border-b border-gray-50 hover:bg-gray-50/50">

@@ -10,7 +10,13 @@ export default function AccountsPage() {
 
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
 
-  const filteredTxns = selected === 'all' ? transactions : transactions.filter(t => t.account_id === selected);
+  const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+
+  const categories = ['all', ...Array.from(new Set(transactions.map(t => t.category)))];
+  const filteredTxns = (selected === 'all' ? transactions : transactions.filter(t => t.account_id === selected))
+    .filter(t => categoryFilter === 'all' || t.category === categoryFilter)
+    .filter(t => !search || t.description.toLowerCase().includes(search.toLowerCase()) || t.category.toLowerCase().includes(search.toLowerCase()));
   const grouped = groupByDate(filteredTxns);
 
   return (
@@ -47,8 +53,20 @@ export default function AccountsPage() {
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <div className="text-[15px] font-semibold text-gray-900">Transaction History</div>
+        <div className="px-5 py-4 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-[15px] font-semibold text-gray-900">Transaction History</div>
+            <div className="text-xs text-gray-400">{filteredTxns.length} transactions</div>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <div className="relative flex-1 min-w-[200px]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.8" className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search transactions..." className="w-full pl-9 pr-3 py-2 text-xs border border-gray-200 rounded-md outline-none focus:border-accent-500" />
+            </div>
+            <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} className="px-3 py-2 text-xs border border-gray-200 rounded-md outline-none bg-white focus:border-accent-500">
+              {categories.map(c => <option key={c} value={c}>{c === 'all' ? 'All Categories' : c}</option>)}
+            </select>
+          </div>
         </div>
         {Object.keys(grouped).length === 0 && <div className="px-5 py-8 text-center text-sm text-gray-400">No transactions found.</div>}
         {Object.entries(grouped).map(([date, txns]) => (

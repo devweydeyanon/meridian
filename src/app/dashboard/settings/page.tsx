@@ -4,10 +4,20 @@ import { useState } from 'react';
 import { useDashboard } from '../context';
 
 export default function SettingsPage() {
-  const { user, accounts } = useDashboard();
+  const { user, accounts, refreshData } = useDashboard();
   const [tab, setTab] = useState('profile');
   const [twoFactor, setTwoFactor] = useState(true);
   const [notifs, setNotifs] = useState({ email: true, sms: true, push: false, marketing: false });
+
+  // Profile edit state
+  const [editing, setEditing] = useState(false);
+  const [phone, setPhone] = useState(user.phone || '');
+  const [address, setAddress] = useState(user.address || '');
+  const [city, setCity] = useState(user.city || '');
+  const [state, setState] = useState(user.state || '');
+  const [zip, setZip] = useState(user.zip || '');
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState('');
 
   const Toggle = ({ on, onToggle }: { on: boolean; onToggle: () => void }) => (
     <div onClick={onToggle} className={`w-11 h-6 rounded-full cursor-pointer transition-all relative ${on ? 'bg-navy-900' : 'bg-gray-300'}`}>
@@ -28,21 +38,63 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl border border-gray-200 p-7 max-md:p-5">
         {tab === 'profile' && (
           <>
-            <h3 className="text-base font-semibold text-gray-900 mb-5 pb-3.5 border-b border-gray-100">Personal Information</h3>
-            {[
-              ['Full Name', `${user.first_name} ${user.last_name}`],
-              ['Email Address', user.email],
-              ['Phone Number', user.phone || '—'],
-              ['Date of Birth', user.dob ? new Date(user.dob).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'],
-              ['SSN', user.ssn_last4 ? `***-**-${user.ssn_last4}` : '—'],
-              ['Mailing Address', user.address ? `${user.address}, ${user.city}, ${user.state} ${user.zip}` : '—'],
-              ['Member ID', user.member_id || '—'],
-            ].map(([label, value]) => (
-              <div key={label as string} className="flex items-center justify-between py-3.5 border-b border-gray-100">
-                <div className="text-sm font-medium text-gray-600">{label}</div>
-                <div className="text-sm font-medium text-gray-800">{value}</div>
-              </div>
-            ))}
+            <div className="flex items-center justify-between mb-5 pb-3.5 border-b border-gray-100">
+              <h3 className="text-base font-semibold text-gray-900">Personal Information</h3>
+              {!editing ? (
+                <button onClick={() => setEditing(true)} className="px-3 py-1.5 text-xs font-semibold text-accent-500 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">Edit</button>
+              ) : (
+                <div className="flex gap-2">
+                  <button onClick={() => { setEditing(false); setPhone(user.phone || ''); setAddress(user.address || ''); setCity(user.city || ''); setState(user.state || ''); setZip(user.zip || ''); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
+                  <button onClick={async () => {
+                    setSaving(true);
+                    try {
+                      const res = await fetch('/api/dashboard/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, address, city, state, zip }) });
+                      if (res.ok) { setSaveMsg('Saved!'); setEditing(false); await refreshData(); setTimeout(() => setSaveMsg(''), 3000); }
+                    } catch {} setSaving(false);
+                  }} disabled={saving} className="px-3 py-1.5 text-xs font-semibold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 disabled:opacity-60">{saving ? 'Saving...' : 'Save'}</button>
+                </div>
+              )}
+            </div>
+            {saveMsg && <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg p-2.5 mb-4">{saveMsg}</div>}
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">Full Name</div>
+              <div className="text-sm font-medium text-gray-800">{user.first_name} {user.last_name}</div>
+            </div>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">Email Address</div>
+              <div className="text-sm font-medium text-gray-800">{user.email}</div>
+            </div>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">Phone Number</div>
+              {editing ? <input value={phone} onChange={e => setPhone(e.target.value)} className="px-3 py-1.5 text-sm border border-gray-300 rounded-md outline-none w-48 focus:border-accent-500" /> : <div className="text-sm font-medium text-gray-800">{user.phone || '—'}</div>}
+            </div>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">Date of Birth</div>
+              <div className="text-sm font-medium text-gray-800">{user.dob ? new Date(user.dob).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'}</div>
+            </div>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">SSN</div>
+              <div className="text-sm font-medium text-gray-800">{user.ssn_last4 ? `***-**-${user.ssn_last4}` : '—'}</div>
+            </div>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
+              <div className="text-sm font-medium text-gray-600">Mailing Address</div>
+              {editing ? (
+                <div className="flex flex-col gap-2 items-end">
+                  <input value={address} onChange={e => setAddress(e.target.value)} placeholder="Street address" className="px-3 py-1.5 text-sm border border-gray-300 rounded-md outline-none w-56 focus:border-accent-500" />
+                  <div className="flex gap-2">
+                    <input value={city} onChange={e => setCity(e.target.value)} placeholder="City" className="px-3 py-1.5 text-sm border border-gray-300 rounded-md outline-none w-24 focus:border-accent-500" />
+                    <input value={state} onChange={e => setState(e.target.value)} placeholder="ST" maxLength={2} className="px-3 py-1.5 text-sm border border-gray-300 rounded-md outline-none w-14 focus:border-accent-500" />
+                    <input value={zip} onChange={e => setZip(e.target.value)} placeholder="ZIP" maxLength={5} className="px-3 py-1.5 text-sm border border-gray-300 rounded-md outline-none w-20 focus:border-accent-500" />
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm font-medium text-gray-800">{user.address ? `${user.address}, ${user.city}, ${user.state} ${user.zip}` : '—'}</div>
+              )}
+            </div>
+            <div className="flex items-center justify-between py-3.5">
+              <div className="text-sm font-medium text-gray-600">Member ID</div>
+              <div className="text-sm font-medium text-gray-800">{user.member_id || '—'}</div>
+            </div>
           </>
         )}
         {tab === 'security' && (
