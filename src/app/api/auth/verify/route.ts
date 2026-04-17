@@ -6,7 +6,7 @@ import { logger } from '@/lib/logger';
 // Generate a 6-digit OTP and store it
 export async function POST(request: Request) {
   try {
-    const { email, action } = await request.json();
+    const { email, action, details } = await request.json();
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -29,8 +29,8 @@ export async function POST(request: Request) {
 
     // Store new code
     await sql`
-      INSERT INTO verification_codes (user_id, email, code, type, expires_at)
-      VALUES (${users[0].id}, ${email}, ${code}, ${action || 'login'}, ${expiresAt.toISOString()})
+      INSERT INTO verification_codes (user_id, email, code, type, details, expires_at)
+      VALUES (${users[0].id}, ${email}, ${code}, ${action || 'login'}, ${details || null}, ${expiresAt.toISOString()})
     `;
 
     logger.info('Verification code generated', { email, type: action || 'login' });

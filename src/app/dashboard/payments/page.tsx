@@ -159,6 +159,7 @@ export default function PaymentsPage() {
           email={user.email}
           action="bill_pay"
           actionLabel="confirm payment"
+          details={`Pay ${fmt(parseFloat(amount || '0'))} to ${payees.find(p => p.id === Number(selectedPayee))?.name || 'payee'}`}
           onVerified={handleOtpVerified}
           onCancel={() => setShowOtp(false)}
         />

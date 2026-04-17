@@ -169,6 +169,7 @@ export default function CardsPage() {
           email={user.email}
           action={otpAction}
           actionLabel={otpLabel}
+          details={`${pendingAction?.action === 'cancel' ? 'Cancel' : pendingAction?.action === 'lock' ? 'Lock' : 'Unlock'} card: ${pendingAction?.cardName}`}
           onVerified={handleOtpVerified}
           onCancel={() => { setShowOtp(false); setPendingAction(null); }}
         />

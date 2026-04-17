@@ -9,6 +9,7 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('users');
   const [typeFilter, setTypeFilter] = useState('all');
+  const [expandedUser, setExpandedUser] = useState<number | null>(null);
   const router = useRouter();
 
   const typeLabels: Record<string, string> = {
@@ -87,32 +88,100 @@ export default function AdminPanel() {
 
         {/* Users Tab */}
         {tab === 'users' && (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-100">
-              <div className="text-[15px] font-semibold text-gray-900">Registered Users ({data.users.length})</div>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm min-w-[700px]">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Name</th>
-                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
-                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Member ID</th>
-                    <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.users.map((u: any) => (
-                    <tr key={u.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                      <td className="px-5 py-3 font-medium text-gray-800">{u.name}</td>
-                      <td className="px-5 py-3 text-gray-600">{u.email}</td>
-                      <td className="px-5 py-3 text-gray-500 font-mono text-xs">{u.member_id || '—'}</td>
-                      <td className="px-5 py-3 text-gray-400 text-xs">{u.created_at ? fmtTime(u.created_at) : '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="space-y-3">
+            {data.users.map((u: any) => (
+              <div key={u.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div onClick={() => setExpandedUser(expandedUser === u.id ? null : u.id)} className="flex items-center px-5 py-4 cursor-pointer hover:bg-gray-50/50 transition-all">
+                  <div className="w-10 h-10 rounded-full bg-navy-900 text-white flex items-center justify-center text-xs font-bold shrink-0 mr-4">{u.name.split(' ').map((n: string) => n[0]).join('')}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-gray-900">{u.name}</div>
+                    <div className="text-xs text-gray-400">{u.email} · {u.member_id || 'No ID'}</div>
+                  </div>
+                  <div className="text-right mr-4 max-md:hidden">
+                    <div className="text-sm font-semibold text-gray-900">{fmt(u.accounts?.reduce((s: number, a: any) => s + a.balance, 0) || 0)}</div>
+                    <div className="text-xs text-gray-400">{u.accounts?.length || 0} accounts</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" className={`w-4 h-4 shrink-0 transition-transform ${expandedUser === u.id ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9" /></svg>
+                </div>
+
+                {expandedUser === u.id && (
+                  <div className="border-t border-gray-100 px-5 py-5 bg-gray-50/30">
+                    {/* Personal Info */}
+                    <div className="mb-5">
+                      <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Personal info</div>
+                      <div className="grid grid-cols-3 gap-3 max-md:grid-cols-2 text-xs">
+                        <div><span className="text-gray-400">Phone:</span> <span className="text-gray-700 font-medium">{u.phone || '—'}</span></div>
+                        <div><span className="text-gray-400">DOB:</span> <span className="text-gray-700 font-medium">{u.dob ? new Date(u.dob).toLocaleDateString() : '—'}</span></div>
+                        <div><span className="text-gray-400">SSN:</span> <span className="text-gray-700 font-medium">{u.ssn_last4 ? `***-**-${u.ssn_last4}` : '—'}</span></div>
+                        <div className="col-span-2"><span className="text-gray-400">Address:</span> <span className="text-gray-700 font-medium">{u.address || '—'}</span></div>
+                        <div><span className="text-gray-400">Last login:</span> <span className="text-gray-700 font-medium">{u.last_login ? fmtTime(u.last_login) : 'Never'}</span></div>
+                      </div>
+                    </div>
+
+                    {/* Accounts */}
+                    {u.accounts?.length > 0 && (
+                      <div className="mb-5">
+                        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Accounts</div>
+                        <div className="grid grid-cols-2 gap-2 max-md:grid-cols-1">
+                          {u.accounts.map((a: any) => (
+                            <div key={a.id} className="bg-white rounded-lg border border-gray-200 p-3">
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <div className="text-xs font-semibold text-gray-800">{a.name}</div>
+                                  <div className="text-[10px] text-gray-400">{a.number} · {a.type}</div>
+                                </div>
+                                <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${a.status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>{a.status}</span>
+                              </div>
+                              <div className="text-lg font-bold text-gray-900 mt-1">{fmt(a.balance)}</div>
+                              <div className="text-[10px] text-gray-400">Available: {fmt(a.available)}{a.apy ? ` · APY: ${a.apy}` : ''}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Cards */}
+                    {u.cards?.length > 0 && (
+                      <div className="mb-5">
+                        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Cards</div>
+                        <div className="grid grid-cols-3 gap-2 max-md:grid-cols-1">
+                          {u.cards.map((c: any) => (
+                            <div key={c.id} className="bg-white rounded-lg border border-gray-200 p-3">
+                              <div className="text-xs font-semibold text-gray-800">{c.name}</div>
+                              <div className="text-[10px] text-gray-400 mb-1">{c.number} · {c.type}</div>
+                              {c.type === 'credit' && <div className="text-sm font-bold text-gray-900">{fmt(c.balance)} <span className="text-[10px] font-normal text-gray-400">/ {fmt(c.limit)}</span></div>}
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${c.status === 'active' ? 'bg-emerald-50 text-emerald-700' : c.status === 'locked' ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-700'}`}>{c.status}</span>
+                                {c.rewards && <span className="text-[10px] text-gray-400">{c.rewards}</span>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Recent Transactions */}
+                    {u.recent_transactions?.length > 0 && (
+                      <div>
+                        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Recent transactions</div>
+                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                          {u.recent_transactions.map((t: any) => (
+                            <div key={t.id} className="flex items-center px-3 py-2 border-b border-gray-50 last:border-none text-xs">
+                              <div className={`w-5 h-5 rounded flex items-center justify-center shrink-0 mr-2 ${t.type === 'credit' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}`}>
+                                <span style={{ fontSize: '9px' }}>{t.type === 'credit' ? '+' : '−'}</span>
+                              </div>
+                              <div className="flex-1 min-w-0 truncate text-gray-700">{t.description}</div>
+                              <div className="text-gray-400 mx-2 max-md:hidden">{t.category}</div>
+                              <div className={`font-semibold shrink-0 ${t.type === 'credit' ? 'text-emerald-700' : 'text-gray-800'}`}>{fmt(t.amount)}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         )}
 

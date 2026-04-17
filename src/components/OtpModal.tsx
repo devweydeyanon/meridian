@@ -6,11 +6,12 @@ interface OtpModalProps {
   email: string;
   action: string;
   actionLabel: string;
+  details?: string;
   onVerified: () => void;
   onCancel: () => void;
 }
 
-export default function OtpModal({ email, action, actionLabel, onVerified, onCancel }: OtpModalProps) {
+export default function OtpModal({ email, action, actionLabel, details, onVerified, onCancel }: OtpModalProps) {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const [sending, setSending] = useState(true);
@@ -38,7 +39,7 @@ export default function OtpModal({ email, action, actionLabel, onVerified, onCan
       const res = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, action }),
+        body: JSON.stringify({ email, action, details }),
       });
       if (res.ok) {
         setSent(true);

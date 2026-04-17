@@ -149,6 +149,7 @@ export async function initializeDatabase() {
       email VARCHAR(255) NOT NULL,
       code VARCHAR(6) NOT NULL,
       type VARCHAR(30) DEFAULT 'login',
+      details TEXT,
       used BOOLEAN DEFAULT FALSE,
       expires_at TIMESTAMP NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()

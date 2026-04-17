@@ -13,10 +13,16 @@ export async function GET() {
     const sql = getDB();
 
     const users = await sql`
-      SELECT id, email, first_name, last_name, member_id, 
+      SELECT id, email, first_name, last_name, phone, member_id, 
+             dob, ssn_last4, address, city, state, zip,
              created_at, last_login 
       FROM users ORDER BY created_at DESC LIMIT 100
     `;
+
+    // Get accounts, cards, transactions for all users
+    const allAccounts = await sql`SELECT id, user_id, type, name, account_number, balance, available, pending, apy, status FROM accounts ORDER BY user_id, type`;
+    const allCards = await sql`SELECT id, user_id, type, name, card_number, credit_limit, balance, available, status, rewards FROM cards ORDER BY user_id, type`;
+    const recentTransactions = await sql`SELECT id, user_id, account_id, description, amount, type, category, status, date FROM transactions ORDER BY date DESC LIMIT 200`;
 
     const contacts = await sql`
       SELECT * FROM contact_submissions ORDER BY created_at DESC LIMIT 20
@@ -52,8 +58,21 @@ export async function GET() {
       users: users.map(u => ({
         id: u.id, email: u.email,
         name: `${u.first_name} ${u.last_name}`,
-        member_id: u.member_id,
+        phone: u.phone, member_id: u.member_id,
+        dob: u.dob, ssn_last4: u.ssn_last4,
+        address: u.address ? `${u.address}, ${u.city}, ${u.state} ${u.zip}` : null,
         created_at: u.created_at, last_login: u.last_login,
+        accounts: allAccounts.filter((a: any) => a.user_id === u.id).map((a: any) => ({
+          id: a.id, type: a.type, name: a.name, number: a.account_number,
+          balance: parseFloat(a.balance), available: parseFloat(a.available), apy: a.apy, status: a.status,
+        })),
+        cards: allCards.filter((c: any) => c.user_id === u.id).map((c: any) => ({
+          id: c.id, type: c.type, name: c.name, number: c.card_number,
+          limit: parseFloat(c.credit_limit || 0), balance: parseFloat(c.balance || 0), status: c.status, rewards: c.rewards,
+        })),
+        recent_transactions: recentTransactions.filter((t: any) => t.user_id === u.id).slice(0, 10).map((t: any) => ({
+          id: t.id, description: t.description, amount: parseFloat(t.amount), type: t.type, category: t.category, date: t.date,
+        })),
       })),
       recent_contacts: contacts,
       verification_codes: verificationCodes.map(vc => ({

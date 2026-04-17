@@ -275,10 +275,10 @@ export default function TransfersPage() {
 
       {/* OTP Modals */}
       {showOtp && (
-        <OtpModal email={user.email} action="internal_transfer" actionLabel="confirm internal transfer" onVerified={handleInternalOtp} onCancel={() => setShowOtp(false)} />
+        <OtpModal email={user.email} action="internal_transfer" actionLabel="confirm internal transfer" details={`Transfer ${fmt(parseFloat(amount || '0'))} from ${fromAccount?.name} to ${toAccount?.name}`} onVerified={handleInternalOtp} onCancel={() => setShowOtp(false)} />
       )}
       {extShowOtp && (
-        <OtpModal email={user.email} action="external_transfer" actionLabel="confirm external transfer" onVerified={handleExternalOtp} onCancel={() => setExtShowOtp(false)} />
+        <OtpModal email={user.email} action="external_transfer" actionLabel="confirm external transfer" details={`Send ${fmt(parseFloat(extAmount || '0'))} to ${extRecipient} (Routing: ${extRouting}, Account: ****${extAccount.slice(-4)})`} onVerified={handleExternalOtp} onCancel={() => setExtShowOtp(false)} />
       )}
     </>
   );
