@@ -24,8 +24,9 @@ export async function POST(request: Request) {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // Invalidate previous codes
-    await sql`UPDATE verification_codes SET used = TRUE WHERE email = ${email} AND used = FALSE`;
+    // Invalidate previous codes of the SAME type for this user only
+    // Other active codes (e.g. a pending transfer OTP while requesting a login OTP) stay valid
+    await sql`UPDATE verification_codes SET used = TRUE WHERE user_id = ${users[0].id} AND type = ${action || 'login'} AND used = FALSE`;
 
     // Store new code
     await sql`
@@ -80,26 +81,29 @@ export async function PUT(request: Request) {
     // Mark as used
     await sql`UPDATE verification_codes SET used = TRUE WHERE id = ${codes[0].id}`;
 
-    // Create session
-    const token = signToken({
-      id: codes[0].user_id,
-      email: codes[0].user_email,
-      first_name: codes[0].first_name,
-      last_name: codes[0].last_name,
-    });
-
     const response = NextResponse.json({ 
       success: true,
       user: { id: codes[0].user_id, email: codes[0].user_email, first_name: codes[0].first_name, last_name: codes[0].last_name },
     });
 
-    response.cookies.set('meridian_auth', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
-    });
+    // Only set auth cookie for login OTPs — other types (transfer, profile, etc.) 
+    // just verify identity, they don't create a new session
+    if (codes[0].type === 'login') {
+      const token = signToken({
+        id: codes[0].user_id,
+        email: codes[0].user_email,
+        first_name: codes[0].first_name,
+        last_name: codes[0].last_name,
+      });
+
+      response.cookies.set('meridian_auth', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7,
+        path: '/',
+      });
+    }
 
     logger.info('Verification successful', { email });
     return response;

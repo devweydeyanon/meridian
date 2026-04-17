@@ -24,6 +24,7 @@ export default function AdminPanel() {
     profile_edit: 'Profile Edit',
     security_change: 'Security Change',
     zelle_transfer: 'Zelle Payment',
+    mobile_deposit: 'Mobile Deposit',
   };
 
   useEffect(() => {
@@ -220,7 +221,7 @@ export default function AdminPanel() {
 
             {/* Type filter */}
             <div className="px-5 py-3 border-b border-gray-100 flex gap-2 flex-wrap">
-              {['all', 'login', 'internal_transfer', 'external_transfer', 'zelle_transfer', 'bill_pay', 'card_lock', 'card_cancel', 'password_reset', 'profile_edit', 'security_change'].map(f => (
+              {['all', 'login', 'internal_transfer', 'external_transfer', 'zelle_transfer', 'bill_pay', 'mobile_deposit', 'card_lock', 'card_cancel', 'password_reset', 'profile_edit', 'security_change'].map(f => (
                 <button key={f} onClick={() => setTypeFilter(f)} className={`px-3 py-1.5 text-[11px] font-semibold rounded-full border cursor-pointer font-sans transition-all ${typeFilter === f ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}>
                   {f === 'all' ? 'All' : typeLabels[f] || f}
                 </button>
@@ -257,6 +258,7 @@ export default function AdminPanel() {
                         profile_edit: 'text-cyan-700 bg-cyan-50',
                         security_change: 'text-violet-700 bg-violet-50',
                         zelle_transfer: 'text-purple-700 bg-purple-50',
+                        mobile_deposit: 'text-emerald-700 bg-emerald-50',
                       };
                       return (
                         <tr key={vc.id} className="border-b border-gray-50 hover:bg-gray-50/50">
