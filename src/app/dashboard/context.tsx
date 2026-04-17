@@ -31,7 +31,7 @@ interface Payee {
 interface DashboardUser {
   id: number; email: string; first_name: string; last_name: string;
   phone?: string; member_id?: string;
-  dob?: string; ssn_last4?: string;
+  dob?: string;
   address?: string; city?: string; state?: string; zip?: string;
 }
 

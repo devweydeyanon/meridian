@@ -18,7 +18,6 @@ export async function initializeDatabase() {
       last_name VARCHAR(100) NOT NULL,
       phone VARCHAR(20),
       dob DATE,
-      ssn_last4 VARCHAR(4),
       address VARCHAR(255),
       city VARCHAR(100),
       state VARCHAR(2),

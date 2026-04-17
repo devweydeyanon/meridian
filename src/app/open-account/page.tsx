@@ -25,7 +25,7 @@ export default function OpenAccountPage() {
   const [product, setProduct] = useState('');
   const [form, update, clearForm] = useFormAutosave('open_account', {
     first_name: '', last_name: '', email: '', phone: '', dob: '',
-    address: '', city: '', state: '', zip: '', ssn: '',
+    address: '', city: '', state: '', zip: '',
     employment: '', employer: '', job_title: '', income: '',
     other_income: '', other_source: '',
     agree1: false, agree2: false, agree3: false,
@@ -63,7 +63,6 @@ export default function OpenAccountPage() {
       const city = validators.city(form.city); if (city) fe.city = city;
       const st = validators.required(form.state, 'State'); if (st) fe.state = st;
       const zip = validators.zip(form.zip); if (zip) fe.zip = zip;
-      const ssn = validators.ssnLast4(form.ssn); if (ssn) fe.ssn = ssn;
     }
 
     if (step === 3) {
@@ -110,7 +109,6 @@ export default function OpenAccountPage() {
           last_name: form.last_name,
           phone: form.phone,
           dob: form.dob,
-          ssn: form.ssn,
           address: form.address,
           city: form.city,
           state: form.state,
@@ -210,7 +208,6 @@ export default function OpenAccountPage() {
                   <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">State *</label><select value={form.state} onChange={e => { update('state', e.target.value); clearFieldError('state'); }} className={`${fieldClass('state')} bg-white`}><option value="">Select</option>{usStates.map(s => <option key={s}>{s}</option>)}</select>{fieldErrors.state && <p className="text-xs text-red-500 mt-1">{fieldErrors.state}</p>}</div>
                   <div><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">ZIP *</label><input value={form.zip} onChange={e => updateFormatted('zip', e.target.value, formatters.zip)} className={fieldClass('zip')} />{fieldErrors.zip && <p className="text-xs text-red-500 mt-1">{fieldErrors.zip}</p>}</div>
                 </div>
-                <div className="mt-4"><label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Last 4 digits of Tax ID *</label><input value={form.ssn} onChange={e => updateFormatted('ssn', e.target.value, (v) => v.replace(/\D/g, '').slice(0, 4))} placeholder="0000" maxLength={4} autoComplete="off" name="tid_last4" className={fieldClass('ssn')} />{fieldErrors.ssn && <p className="text-xs text-red-500 mt-1">{fieldErrors.ssn}</p>}<p className="text-xs text-gray-400 mt-1">Used for identity verification only.</p></div>
               </>
             )}
 

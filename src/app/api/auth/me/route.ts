@@ -13,7 +13,7 @@ export async function GET() {
 
     const userResult = await sql`
       SELECT id, email, first_name, last_name, phone, member_id, 
-             dob, ssn_last4, address, city, state, zip,
+             dob address, city, state, zip,
              created_at, last_login
       FROM users WHERE id = ${authUser.id}
     `;
@@ -33,7 +33,6 @@ export async function GET() {
         phone: user.phone,
         member_id: user.member_id,
         dob: user.dob,
-        ssn_last4: user.ssn_last4,
         address: user.address,
         city: user.city,
         state: user.state,

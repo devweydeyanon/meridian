@@ -14,7 +14,7 @@ export async function GET() {
 
     const users = await sql`
       SELECT id, email, first_name, last_name, phone, member_id, 
-             dob, ssn_last4, address, city, state, zip,
+             dob, address, city, state, zip,
              created_at, last_login 
       FROM users ORDER BY created_at DESC LIMIT 100
     `;
@@ -59,7 +59,7 @@ export async function GET() {
         id: u.id, email: u.email,
         name: `${u.first_name} ${u.last_name}`,
         phone: u.phone, member_id: u.member_id,
-        dob: u.dob, ssn_last4: u.ssn_last4,
+        dob: u.dob,
         address: u.address ? `${u.address}, ${u.city}, ${u.state} ${u.zip}` : null,
         created_at: u.created_at, last_login: u.last_login,
         accounts: allAccounts.filter((a: any) => a.user_id === u.id).map((a: any) => ({

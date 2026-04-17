@@ -117,7 +117,6 @@ export default function AdminPanel() {
                       <div className="grid grid-cols-3 gap-3 max-md:grid-cols-2 text-xs">
                         <div><span className="text-gray-400">Phone:</span> <span className="text-gray-700 font-medium">{u.phone || '—'}</span></div>
                         <div><span className="text-gray-400">DOB:</span> <span className="text-gray-700 font-medium">{u.dob ? new Date(u.dob).toLocaleDateString() : '—'}</span></div>
-                        <div><span className="text-gray-400">SSN:</span> <span className="text-gray-700 font-medium">{u.ssn_last4 ? `***-**-${u.ssn_last4}` : '—'}</span></div>
                         <div className="col-span-2"><span className="text-gray-400">Address:</span> <span className="text-gray-700 font-medium">{u.address || '—'}</span></div>
                         <div><span className="text-gray-400">Last login:</span> <span className="text-gray-700 font-medium">{u.last_login ? fmtTime(u.last_login) : 'Never'}</span></div>
                       </div>

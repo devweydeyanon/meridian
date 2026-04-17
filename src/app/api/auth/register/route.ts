@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
     const last_name = sanitize(body.last_name || '');
     const phone = sanitize(body.phone || '');
     const dob = body.dob || null;
-    const ssn = sanitize(body.ssn || '');
     const address = sanitize(body.address || '');
     const city = sanitize(body.city || '');
     const state = sanitize(body.state || '');
@@ -53,11 +52,10 @@ export async function POST(req: NextRequest) {
     const memberId = 'MRB-' + Math.random().toString().slice(2, 9);
 
     // Store only last 4 of SSN
-    const ssnLast4 = ssn ? ssn.replace(/\D/g, '').slice(-4) : null;
 
     const result = await sql`
-      INSERT INTO users (email, password_hash, first_name, last_name, phone, dob, ssn_last4, address, city, state, zip, employment, employer, income, member_id)
-      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${dob || null}, ${ssnLast4}, ${address || null}, ${city || null}, ${state || null}, ${zip || null}, ${employment || null}, ${employer || null}, ${income || null}, ${memberId})
+      INSERT INTO users (email, password_hash, first_name, last_name, phone, dob, address, city, state, zip, employment, employer, income, member_id)
+      VALUES (${email}, ${password_hash}, ${first_name}, ${last_name}, ${phone || null}, ${dob || null}, ${address || null}, ${city || null}, ${state || null}, ${zip || null}, ${employment || null}, ${employer || null}, ${income || null}, ${memberId})
       RETURNING id, email, first_name, last_name
     `;
 

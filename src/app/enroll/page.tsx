@@ -8,7 +8,7 @@ import { validators, formatters } from '@/lib/formValidation';
 
 export default function EnrollPage() {
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({ account: '', ssn_last4: '', email: '', password: '', confirm: '' });
+  const [form, setForm] = useState({ account: '', email: '', password: '', confirm: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -28,7 +28,6 @@ export default function EnrollPage() {
 
     if (step === 1) {
       const acc = validators.required(form.account, 'Account number'); if (acc) fe.account = acc;
-      const ssn = validators.ssnLast4(form.ssn_last4); if (ssn) fe.ssn_last4 = ssn;
     }
     if (step === 2) {
       const em = validators.email(form.email); if (em) fe.email = em;
@@ -82,10 +81,6 @@ export default function EnrollPage() {
               <input value={form.account} onChange={e => updateFormatted('account', e.target.value, formatters.accountNumber)} className={`w-full px-3.5 py-2.5 text-sm border rounded-md outline-none focus:ring-2 focus:ring-accent-500/10 ${fieldErrors.account ? 'border-red-400' : 'border-gray-300 focus:border-accent-500'} mb-1`} placeholder="Enter your account number" />
               {fieldErrors.account && <p className="text-xs text-red-500 mb-2">{fieldErrors.account}</p>}
               {!fieldErrors.account && <div className="mb-3" />}
-              <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Last 4 of SSN</label>
-              <input value={form.ssn_last4} onChange={e => updateFormatted('ssn_last4', e.target.value, formatters.ssnLast4)} className={`w-full px-3.5 py-2.5 text-sm border rounded-md outline-none focus:ring-2 focus:ring-accent-500/10 ${fieldErrors.ssn_last4 ? 'border-red-400' : 'border-gray-300 focus:border-accent-500'} mb-1`} placeholder="••••" maxLength={4} />
-              {fieldErrors.ssn_last4 && <p className="text-xs text-red-500 mb-2">{fieldErrors.ssn_last4}</p>}
-              {!fieldErrors.ssn_last4 && <div className="mb-4" />}
             </>
           )}
 

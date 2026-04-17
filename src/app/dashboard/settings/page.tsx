@@ -113,10 +113,6 @@ export default function SettingsPage() {
               <div className="text-sm font-medium text-gray-800">{user.dob ? new Date(user.dob).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'}</div>
             </div>
             <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
-              <div className="text-sm font-medium text-gray-600">SSN</div>
-              <div className="text-sm font-medium text-gray-800">{user.ssn_last4 ? `***-**-${user.ssn_last4}` : '—'}</div>
-            </div>
-            <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
               <div className="text-sm font-medium text-gray-600">Mailing Address</div>
               {editing ? (
                 <div className="flex flex-col gap-2 items-end">
