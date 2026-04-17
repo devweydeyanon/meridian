@@ -6,7 +6,7 @@ import OtpModal from '@/components/OtpModal';
 
 export default function TransfersPage() {
   const { user, accounts, transactions, refreshData, loading } = useDashboard();
-  const [tab, setTab] = useState<'internal' | 'external'>('internal');
+  const [tab, setTab] = useState<'internal' | 'external' | 'zelle'>('internal');
 
   // Internal transfer state
   const [from, setFrom] = useState('');
@@ -23,6 +23,14 @@ export default function TransfersPage() {
   // External transfer state
   const [extFrom, setExtFrom] = useState('');
   const [extRecipient, setExtRecipient] = useState('');
+
+  // Zelle state
+  const [zelleFrom, setZelleFrom] = useState('');
+  const [zelleName, setZelleName] = useState('');
+  const [zelleEmail, setZelleEmail] = useState('');
+  const [zelleAmount, setZelleAmount] = useState('');
+  const [zelleMemo, setZelleMemo] = useState('');
+  const [zelleShowOtp, setZelleShowOtp] = useState(false);
   const [extRouting, setExtRouting] = useState('');
   const [extAccount, setExtAccount] = useState('');
   const [extAmount, setExtAmount] = useState('');
@@ -136,6 +144,7 @@ export default function TransfersPage() {
       <div className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 w-fit max-md:w-full">
         <button onClick={() => { setTab('internal'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all max-md:flex-1 max-md:text-center max-md:px-2 max-md:text-xs ${tab === 'internal' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Between My Accounts</button>
         <button onClick={() => { setTab('external'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all max-md:flex-1 max-md:text-center max-md:px-2 max-md:text-xs ${tab === 'external' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Send to Another Bank</button>
+        <button onClick={() => { setTab('zelle'); setError(''); }} className={`px-5 py-2.5 text-sm font-semibold rounded-md cursor-pointer font-sans transition-all max-md:flex-1 max-md:text-center max-md:px-2 max-md:text-xs ${tab === 'zelle' ? 'bg-navy-900 text-white' : 'bg-transparent text-gray-600 hover:bg-gray-50'}`}>Zelle®</button>
       </div>
 
       {/* INTERNAL TRANSFER FORM */}
@@ -243,6 +252,73 @@ export default function TransfersPage() {
         </>
       )}
 
+      {/* Zelle Tab */}
+      {tab === 'zelle' && !processing && !showSuccess && (
+        <>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+            <h2 className="text-base font-semibold text-gray-900 mb-1">Send money with Zelle®</h2>
+            <p className="text-xs text-gray-400 mb-5">Send money to almost anyone with an email address. Limit: $5,000 per transaction.</p>
+
+            {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-3 mb-4">{error}</div>}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Send from</label>
+                <select value={zelleFrom || transferAccounts[0]?.id} onChange={e => setZelleFrom(e.target.value)} className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none bg-white focus:border-accent-500">
+                  {transferAccounts.map(a => <option key={a.id} value={a.id}>{a.name} — {fmt(a.available)}</option>)}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5">Recipient name</label>
+                  <input value={zelleName} onChange={e => setZelleName(e.target.value)} placeholder="John Smith" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5">Recipient email or phone</label>
+                  <input value={zelleEmail} onChange={e => setZelleEmail(e.target.value)} placeholder="john@example.com" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5">Amount</label>
+                  <input type="number" value={zelleAmount} onChange={e => setZelleAmount(e.target.value)} placeholder="0.00" min="0.01" max="5000" step="0.01" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5">Memo (optional)</label>
+                  <input value={zelleMemo} onChange={e => setZelleMemo(e.target.value)} placeholder="Dinner last night" className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-md outline-none focus:border-accent-500" />
+                </div>
+              </div>
+            </div>
+            <button onClick={() => {
+              setError('');
+              if (!zelleName.trim()) { setError('Recipient name is required.'); return; }
+              if (!zelleEmail.trim()) { setError('Recipient email or phone is required.'); return; }
+              if (!zelleAmount || parseFloat(zelleAmount) <= 0) { setError('Enter a valid amount.'); return; }
+              if (parseFloat(zelleAmount) > 5000) { setError('Zelle limit is $5,000 per transaction.'); return; }
+              setZelleShowOtp(true);
+            }} className="mt-5 w-full py-3 text-sm font-bold text-white bg-cta-primary border-none rounded-md cursor-pointer font-sans hover:bg-cta-hover transition-all">
+              Send {zelleAmount ? fmt(parseFloat(zelleAmount)) : '$0.00'} via Zelle
+            </button>
+          </div>
+
+          {/* Recent Zelle Transfers */}
+          {transactions.filter(t => t.category === 'Zelle').length > 0 && (
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-100 text-[15px] font-semibold text-gray-900">Recent Zelle Transfers</div>
+              {transactions.filter(t => t.category === 'Zelle').slice(0, 5).map(txn => (
+                <div key={txn.id} className="flex items-center px-5 py-3.5 border-b border-gray-50">
+                  <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 shrink-0 mr-3">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5"><path d="M17 7l4 4-4 4M21 11H3" /></svg>
+                  </div>
+                  <div className="flex-1"><div className="text-[13px] font-medium text-gray-800">{txn.description}</div><div className="text-[11px] text-gray-400">{fmtDate(txn.date)}</div></div>
+                  <div className="text-[13px] font-semibold text-gray-800">{fmt(txn.amount)}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
       {/* Processing Overlay */}
       {processing && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[200] backdrop-blur-[2px]">
@@ -279,6 +355,27 @@ export default function TransfersPage() {
       )}
       {extShowOtp && (
         <OtpModal email={user.email} action="external_transfer" actionLabel="confirm external transfer" details={`Send ${fmt(parseFloat(extAmount || '0'))} to ${extRecipient} (Routing: ${extRouting}, Account: ****${extAccount.slice(-4)})`} onVerified={handleExternalOtp} onCancel={() => setExtShowOtp(false)} />
+      )}
+      {zelleShowOtp && (
+        <OtpModal email={user.email} action="zelle_transfer" actionLabel="confirm Zelle payment" details={`Zelle ${fmt(parseFloat(zelleAmount || '0'))} to ${zelleName} (${zelleEmail})`} onVerified={async () => {
+          setZelleShowOtp(false);
+          setError('');
+          setProcessing(true);
+          setProcessingStep('Initiating Zelle payment...');
+          await new Promise(r => setTimeout(r, 1500));
+          setProcessingStep('Verifying recipient...');
+          await new Promise(r => setTimeout(r, 1200));
+          setProcessingStep('Sending funds...');
+          try {
+            const res = await fetch('/api/dashboard/zelle', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ from_account_id: Number(zelleFrom || transferAccounts[0]?.id), recipient_name: zelleName, recipient_email: zelleEmail, amount: parseFloat(zelleAmount), memo: zelleMemo }),
+            });
+            const data = await res.json();
+            if (res.ok) { setProcessing(false); setShowSuccess(data.message); setZelleName(''); setZelleEmail(''); setZelleAmount(''); setZelleMemo(''); await refreshData(); }
+            else { setProcessing(false); setError(data.error || 'Payment failed.'); }
+          } catch { setProcessing(false); setError('Connection error.'); }
+        }} onCancel={() => setZelleShowOtp(false)} />
       )}
     </>
   );

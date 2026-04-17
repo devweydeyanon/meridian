@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { id: 'transfers', label: 'Transfers', icon: 'M7 17l-4-4 4-4M3 13h18M17 7l4 4-4 4M21 11H3' },
   { id: 'payments', label: 'Pay Bills', icon: 'M2 5h20v14H2zM2 10h20' },
   { id: 'cards', label: 'Cards', icon: 'M1 4h22v16H1zM1 10h23M6 15h4' },
+  { id: 'deposit', label: 'Deposit', icon: 'M12 2v10m0 0l-3-3m3 3l3-3M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3' },
   { id: 'statements', label: 'Statements', icon: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8' },
 ];
 
@@ -83,6 +84,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     'payments': 'Bill Pay',
     'cards': 'Card Management',
     'statements': 'Statements & Documents',
+    'deposit': 'Mobile Deposit',
     'settings': 'Settings',
   }[currentPage] || 'Dashboard';
 

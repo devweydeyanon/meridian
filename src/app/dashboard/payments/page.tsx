@@ -18,6 +18,23 @@ export default function PaymentsPage() {
 
   const checkingAccounts = accounts.filter(a => a.type === 'checking' && a.status === 'active');
 
+  // Autopay state — persisted in localStorage
+  const [autopay, setAutopay] = useState<Record<number, { enabled: boolean; day: number }>>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('meridian_autopay');
+      if (saved) try { return JSON.parse(saved); } catch {}
+    }
+    return {};
+  });
+
+  const toggleAutopay = (payeeId: number) => {
+    setAutopay(prev => {
+      const updated = { ...prev, [payeeId]: prev[payeeId]?.enabled ? { enabled: false, day: 1 } : { enabled: true, day: 1 } };
+      localStorage.setItem('meridian_autopay', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading...</div>;
 
   const effectiveAccount = selectedAccount || (checkingAccounts.length > 0 ? String(checkingAccounts[0].id) : '');
@@ -143,12 +160,17 @@ export default function PaymentsPage() {
         {payees.map(p => (
           <div key={p.id} className="flex items-center px-5 py-3.5 border-b border-gray-100 hover:bg-gray-50 transition-all">
             <div className="w-10 h-10 rounded-lg bg-navy-900/5 flex items-center justify-center text-navy-700 font-bold text-sm shrink-0 mr-3.5">{p.name.charAt(0)}</div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <div className="text-sm font-medium text-gray-800">{p.name}</div>
               <div className="text-xs text-gray-400">{p.category}{p.last_paid ? ` · Last paid ${new Date(p.last_paid).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}` : ''}</div>
             </div>
-            <div className="text-sm font-semibold text-gray-700 mx-4">{fmt(p.last_amount)}</div>
-            <button onClick={() => handlePayNow(p.id, p.last_amount)} className="px-3 py-1.5 text-xs font-semibold text-accent-500 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">Pay Now</button>
+            <div className="flex items-center gap-3 shrink-0">
+              <button onClick={() => toggleAutopay(p.id)} className={`px-2 py-1 text-[10px] font-semibold rounded-full cursor-pointer font-sans border-none transition-all ${autopay[p.id]?.enabled ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}>
+                {autopay[p.id]?.enabled ? '✓ Autopay' : 'Autopay'}
+              </button>
+              <div className="text-sm font-semibold text-gray-700">{fmt(p.last_amount)}</div>
+              <button onClick={() => handlePayNow(p.id, p.last_amount)} className="px-3 py-1.5 text-xs font-semibold text-accent-500 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">Pay Now</button>
+            </div>
           </div>
         ))}
         {payees.length === 0 && <div className="px-5 py-8 text-center text-sm text-gray-400">No saved payees.</div>}
