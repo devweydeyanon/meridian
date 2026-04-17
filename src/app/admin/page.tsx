@@ -229,11 +229,10 @@ export default function AdminPanel() {
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-200">
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">User</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
                       <th className="text-center px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Code</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Purpose</th>
+                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Details</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Status</th>
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Expires</th>
                       <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase">Created</th>
                     </tr>
                   </thead>
@@ -253,18 +252,20 @@ export default function AdminPanel() {
                       };
                       return (
                         <tr key={vc.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                          <td className="px-5 py-3 font-medium text-gray-800">{vc.user_name}</td>
-                          <td className="px-5 py-3 text-gray-600">{vc.email}</td>
+                          <td className="px-5 py-3">
+                            <div className="font-medium text-gray-800">{vc.user_name}</div>
+                            <div className="text-[11px] text-gray-400">{vc.email}</div>
+                          </td>
                           <td className="px-5 py-3 text-center">
                             <span className="font-mono text-lg font-bold text-navy-900 tracking-widest">{vc.code}</span>
                           </td>
                           <td className="px-5 py-3">
                             <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${typeColor[vc.type] || 'text-gray-600 bg-gray-100'}`}>{typeLabels[vc.type] || vc.type}</span>
                           </td>
+                          <td className="px-5 py-3 text-xs text-gray-600 max-w-[220px]">{vc.details || '—'}</td>
                           <td className="px-5 py-3">
                             <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColor}`}>{status}</span>
                           </td>
-                          <td className="px-5 py-3 text-gray-400 text-xs">{fmtTime(vc.expires_at)}</td>
                           <td className="px-5 py-3 text-gray-400 text-xs">{fmtTime(vc.created_at)}</td>
                         </tr>
                       );

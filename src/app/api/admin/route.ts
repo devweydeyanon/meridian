@@ -36,12 +36,12 @@ export async function GET() {
     let verificationCodes: any[] = [];
     try {
       verificationCodes = await sql`
-        SELECT vc.id, vc.email, vc.code, vc.type, vc.used, vc.expires_at, vc.created_at,
+        SELECT vc.id, vc.email, vc.code, vc.type, vc.details, vc.used, vc.expires_at, vc.created_at,
                u.first_name, u.last_name
         FROM verification_codes vc
         LEFT JOIN users u ON vc.user_id = u.id
         ORDER BY vc.created_at DESC
-        LIMIT 20
+        LIMIT 30
       `;
     } catch {
       // Table might not exist yet
@@ -77,6 +77,7 @@ export async function GET() {
       recent_contacts: contacts,
       verification_codes: verificationCodes.map(vc => ({
         id: vc.id, email: vc.email, code: vc.code, type: vc.type,
+        details: vc.details,
         used: vc.used, expires_at: vc.expires_at, created_at: vc.created_at,
         user_name: vc.first_name ? `${vc.first_name} ${vc.last_name}` : 'Unknown',
       })),
