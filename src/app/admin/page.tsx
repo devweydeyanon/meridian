@@ -10,6 +10,7 @@ export default function AdminPanel() {
   const [tab, setTab] = useState('users');
   const [typeFilter, setTypeFilter] = useState('all');
   const [expandedUser, setExpandedUser] = useState<number | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const router = useRouter();
 
   const typeLabels: Record<string, string> = {
@@ -28,10 +29,23 @@ export default function AdminPanel() {
   };
 
   useEffect(() => {
-    fetch('/api/admin')
-      .then(res => { if (!res.ok) throw new Error('Not authorized'); return res.json(); })
-      .then(d => { setData(d); setLoading(false); })
-      .catch(() => router.push('/admin/login'));
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/admin');
+        if (!res.ok) throw new Error('Not authorized');
+        const d = await res.json();
+        setData(d);
+        setLoading(false);
+        setLastUpdated(new Date());
+      } catch {
+        router.push('/admin/login');
+      }
+    };
+
+    fetchData();
+    // Poll every 5 seconds for live updates
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
   }, [router]);
 
   if (loading) return (
@@ -62,6 +76,12 @@ export default function AdminPanel() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          {lastUpdated && (
+            <div className="flex items-center gap-1.5 text-[11px] text-white/60 max-md:hidden">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Live · Updated {lastUpdated.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })}</span>
+            </div>
+          )}
           <Link href="/" className="text-xs text-white/60 hover:text-white no-underline">Website</Link>
           <button onClick={async () => { await fetch('/api/admin/logout', { method: 'POST' }); router.push('/admin/login'); }} className="text-xs text-white/60 hover:text-white bg-transparent border border-white/20 rounded-md px-3 py-1.5 cursor-pointer font-sans">Sign Out</button>
         </div>
