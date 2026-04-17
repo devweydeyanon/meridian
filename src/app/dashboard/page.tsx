@@ -3,11 +3,21 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useDashboard, fmt, groupByDate } from './context';
+import OtpModal from '@/components/OtpModal';
 
 export default function DashboardOverview() {
-  const { user, balanceVisible, accounts, cards, transactions, loading } = useDashboard();
+  const { user, balanceVisible, accounts, cards, transactions, refreshData, loading } = useDashboard();
   const [showAlert, setShowAlert] = useState(true);
   const bal = (n: number) => balanceVisible ? fmt(n) : '••••••';
+
+  // Quick transfer state
+  const transferAccounts = accounts.filter(a => a.type !== 'cd' && a.status === 'active');
+  const [quickFrom, setQuickFrom] = useState('');
+  const [quickTo, setQuickTo] = useState('');
+  const [quickAmount, setQuickAmount] = useState('');
+  const [quickShowOtp, setQuickShowOtp] = useState(false);
+  const [quickSuccess, setQuickSuccess] = useState('');
+  const [quickError, setQuickError] = useState('');
 
   if (loading) return <div className="text-center py-20 text-sm text-gray-400">Loading accounts...</div>;
 
@@ -86,6 +96,38 @@ export default function DashboardOverview() {
         ))}
       </div>
 
+      {/* Quick Transfer */}
+      <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="text-[15px] font-semibold text-gray-900">Quick Transfer</div>
+          <Link href="/dashboard/transfers" className="text-xs font-semibold text-accent-500 no-underline">Full transfer page</Link>
+        </div>
+        <div className="flex gap-3 items-end flex-wrap">
+          <div className="flex-1 min-w-[140px]">
+            <label className="block text-[11px] font-semibold text-gray-500 mb-1">From</label>
+            <select value={quickFrom} onChange={e => setQuickFrom(e.target.value)} className="w-full px-3 py-2 text-xs border border-gray-200 rounded-md outline-none bg-white">
+              {transferAccounts.map(a => <option key={a.id} value={a.id}>{a.name.replace('Meridian ', '')} — {fmt(a.available)}</option>)}
+            </select>
+          </div>
+          <div className="flex-1 min-w-[140px]">
+            <label className="block text-[11px] font-semibold text-gray-500 mb-1">To</label>
+            <select value={quickTo} onChange={e => setQuickTo(e.target.value)} className="w-full px-3 py-2 text-xs border border-gray-200 rounded-md outline-none bg-white">
+              {transferAccounts.filter(a => a.id !== Number(quickFrom)).map(a => <option key={a.id} value={a.id}>{a.name.replace('Meridian ', '')}</option>)}
+            </select>
+          </div>
+          <div className="w-[120px]">
+            <label className="block text-[11px] font-semibold text-gray-500 mb-1">Amount</label>
+            <input type="number" value={quickAmount} onChange={e => setQuickAmount(e.target.value)} placeholder="0.00" min="0.01" step="0.01" className="w-full px-3 py-2 text-xs border border-gray-200 rounded-md outline-none" />
+          </div>
+          <button onClick={() => {
+            if (!quickAmount || parseFloat(quickAmount) <= 0) return;
+            setQuickShowOtp(true);
+          }} className="px-4 py-2 text-xs font-bold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 shrink-0">Transfer</button>
+        </div>
+        {quickSuccess && <div className="mt-3 text-xs text-emerald-700 bg-emerald-50 rounded-md px-3 py-2">{quickSuccess}</div>}
+        {quickError && <div className="mt-3 text-xs text-red-700 bg-red-50 rounded-md px-3 py-2">{quickError}</div>}
+      </div>
+
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div className="text-[15px] font-semibold text-gray-900">Recent Activity</div>
@@ -117,6 +159,31 @@ export default function DashboardOverview() {
           </div>
         ))}
       </div>
+
+      {quickShowOtp && (
+        <OtpModal
+          email={user.email}
+          action="internal_transfer"
+          actionLabel="confirm quick transfer"
+          details={`Quick transfer ${fmt(parseFloat(quickAmount || '0'))} from ${accounts.find(a => a.id === Number(quickFrom || transferAccounts[0]?.id))?.name || ''} to ${accounts.find(a => a.id === Number(quickTo || transferAccounts[1]?.id))?.name || ''}`}
+          onVerified={async () => {
+            setQuickShowOtp(false);
+            setQuickError('');
+            const fromId = Number(quickFrom || transferAccounts[0]?.id);
+            const toId = Number(quickTo || transferAccounts[1]?.id);
+            try {
+              const res = await fetch('/api/dashboard/transfer', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ from_account_id: fromId, to_account_id: toId, amount: parseFloat(quickAmount) }),
+              });
+              const data = await res.json();
+              if (res.ok) { setQuickSuccess('Transfer complete!'); setQuickAmount(''); await refreshData(); setTimeout(() => setQuickSuccess(''), 4000); }
+              else { setQuickError(data.error || 'Transfer failed.'); }
+            } catch { setQuickError('Connection error.'); }
+          }}
+          onCancel={() => setQuickShowOtp(false)}
+        />
+      )}
     </>
   );
 }

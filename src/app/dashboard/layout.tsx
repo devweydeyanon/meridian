@@ -7,6 +7,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { DashboardProvider } from './context';
 import SearchModal from '@/components/SearchModal';
 import NotificationsPanel from '@/components/NotificationsPanel';
+import SessionTimeout from '@/components/SessionTimeout';
 
 interface User {
   id: number;
@@ -212,6 +213,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {showNotifications && (
         <NotificationsPanel onClose={() => setShowNotifications(false)} />
       )}
+
+      <SessionTimeout />
     </ErrorBoundary>
   );
 }

@@ -56,7 +56,19 @@ export default function AccountsPage() {
         <div className="px-5 py-4 border-b border-gray-100">
           <div className="flex items-center justify-between mb-3">
             <div className="text-[15px] font-semibold text-gray-900">Transaction History</div>
-            <div className="text-xs text-gray-400">{filteredTxns.length} transactions</div>
+            <div className="flex items-center gap-3">
+              <div className="text-xs text-gray-400">{filteredTxns.length} transactions</div>
+              <button onClick={() => {
+                const header = 'Date,Description,Category,Amount,Type,Status,Account\n';
+                const rows = filteredTxns.map(t => `${new Date(t.date).toLocaleDateString()},${t.description.replace(/,/g, ';')},${t.category},${t.amount},${t.type},${t.status},${t.account_name || ''}`).join('\n');
+                const blob = new Blob([header + rows], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'Meridian_Transactions.csv'; a.click();
+                URL.revokeObjectURL(url);
+              }} className="flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3 h-3"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" /></svg>CSV
+              </button>
+            </div>
           </div>
           <div className="flex gap-2 flex-wrap">
             <div className="relative flex-1 min-w-[200px]">

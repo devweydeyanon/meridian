@@ -8,7 +8,21 @@ export default function SettingsPage() {
   const { user, accounts, refreshData } = useDashboard();
   const [tab, setTab] = useState('profile');
   const [twoFactor, setTwoFactor] = useState(true);
-  const [notifs, setNotifs] = useState({ email: true, sms: true, push: false, marketing: false });
+  const [notifs, setNotifs] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('meridian_notif_prefs');
+      if (saved) try { return JSON.parse(saved); } catch {}
+    }
+    return { email: true, sms: true, push: false, marketing: false };
+  });
+
+  const updateNotif = (key: string) => {
+    setNotifs((prev: any) => {
+      const updated = { ...prev, [key]: !prev[key] };
+      localStorage.setItem('meridian_notif_prefs', JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // Profile edit state
   const [editing, setEditing] = useState(false);
@@ -147,7 +161,7 @@ export default function SettingsPage() {
             ].map(item => (
               <div key={item.key} className="flex items-center justify-between py-3.5 border-b border-gray-100 last:border-none">
                 <div><div className="text-sm font-medium text-gray-600">{item.label}</div><div className="text-xs text-gray-400 mt-0.5">{item.desc}</div></div>
-                <Toggle on={(notifs as any)[item.key]} onToggle={() => setNotifs(prev => ({ ...prev, [item.key]: !(prev as any)[item.key] }))} />
+                <Toggle on={(notifs as any)[item.key]} onToggle={() => updateNotif(item.key)} />
               </div>
             ))}
           </>
