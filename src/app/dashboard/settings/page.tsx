@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useDashboard } from '../context';
+import OtpModal from '@/components/OtpModal';
 
 export default function SettingsPage() {
   const { user, accounts, refreshData } = useDashboard();
@@ -18,6 +19,37 @@ export default function SettingsPage() {
   const [zip, setZip] = useState(user.zip || '');
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+
+  // OTP state
+  const [showOtp, setShowOtp] = useState(false);
+  const [otpAction, setOtpAction] = useState('');
+  const [otpLabel, setOtpLabel] = useState('');
+  const [otpDetails, setOtpDetails] = useState('');
+  const [pendingCallback, setPendingCallback] = useState<(() => Promise<void>) | null>(null);
+
+  const requestOtp = (action: string, label: string, details: string, callback: () => Promise<void>) => {
+    setOtpAction(action);
+    setOtpLabel(label);
+    setOtpDetails(details);
+    setPendingCallback(() => callback);
+    setShowOtp(true);
+  };
+
+  const handleOtpVerified = async () => {
+    setShowOtp(false);
+    if (pendingCallback) await pendingCallback();
+    setPendingCallback(null);
+  };
+
+  // Profile save (after OTP)
+  const saveProfile = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch('/api/dashboard/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, address, city, state, zip }) });
+      if (res.ok) { setSaveMsg('Profile updated!'); setEditing(false); await refreshData(); setTimeout(() => setSaveMsg(''), 3000); }
+    } catch {}
+    setSaving(false);
+  };
 
   const Toggle = ({ on, onToggle }: { on: boolean; onToggle: () => void }) => (
     <div onClick={onToggle} className={`w-11 h-6 rounded-full cursor-pointer transition-all relative ${on ? 'bg-navy-900' : 'bg-gray-300'}`}>
@@ -45,13 +77,7 @@ export default function SettingsPage() {
               ) : (
                 <div className="flex gap-2">
                   <button onClick={() => { setEditing(false); setPhone(user.phone || ''); setAddress(user.address || ''); setCity(user.city || ''); setState(user.state || ''); setZip(user.zip || ''); }} className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans">Cancel</button>
-                  <button onClick={async () => {
-                    setSaving(true);
-                    try {
-                      const res = await fetch('/api/dashboard/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, address, city, state, zip }) });
-                      if (res.ok) { setSaveMsg('Saved!'); setEditing(false); await refreshData(); setTimeout(() => setSaveMsg(''), 3000); }
-                    } catch {} setSaving(false);
-                  }} disabled={saving} className="px-3 py-1.5 text-xs font-semibold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 disabled:opacity-60">{saving ? 'Saving...' : 'Save'}</button>
+                  <button onClick={() => requestOtp('profile_edit', 'save profile changes', `Update phone: ${phone}, address: ${address}, ${city}, ${state} ${zip}`, saveProfile)} disabled={saving} className="px-3 py-1.5 text-xs font-semibold text-white bg-navy-900 border-none rounded-md cursor-pointer font-sans hover:bg-navy-800 disabled:opacity-60">{saving ? 'Saving...' : 'Save'}</button>
                 </div>
               )}
             </div>
@@ -102,11 +128,11 @@ export default function SettingsPage() {
             <h3 className="text-base font-semibold text-gray-900 mb-5 pb-3.5 border-b border-gray-100">Security Settings</h3>
             <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
               <div><div className="text-sm font-medium text-gray-600">Two-Factor Authentication</div><div className="text-xs text-gray-400 mt-0.5">Extra security layer</div></div>
-              <Toggle on={twoFactor} onToggle={() => setTwoFactor(!twoFactor)} />
+              <Toggle on={twoFactor} onToggle={() => requestOtp('security_change', `${twoFactor ? 'disable' : 'enable'} two-factor authentication`, `${twoFactor ? 'Disable' : 'Enable'} 2FA`, async () => setTwoFactor(!twoFactor))} />
             </div>
             <div className="flex items-center justify-between py-3.5 border-b border-gray-100">
               <div><div className="text-sm font-medium text-gray-600">Password</div><div className="text-xs text-gray-400 mt-0.5">Last changed 45 days ago</div></div>
-              <button className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">Change</button>
+              <button onClick={() => requestOtp('security_change', 'change password', 'Password change request', async () => { setSaveMsg('Use forgot password to change your password.'); setTimeout(() => setSaveMsg(''), 4000); })} className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-200 rounded-md cursor-pointer font-sans hover:bg-gray-50">Change</button>
             </div>
           </>
         )}
@@ -143,6 +169,17 @@ export default function SettingsPage() {
           </>
         )}
       </div>
+
+      {showOtp && (
+        <OtpModal
+          email={user.email}
+          action={otpAction}
+          actionLabel={otpLabel}
+          details={otpDetails}
+          onVerified={handleOtpVerified}
+          onCancel={() => { setShowOtp(false); setPendingCallback(null); }}
+        />
+      )}
     </div>
   );
 }
